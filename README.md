@@ -8,3 +8,9 @@ The projet idea - build a navigation app that will store a local copy of pre sel
 The stack - this will be a node app utilizing react - react native for the front end.
 
 Pull requests are welcome!
+
+## Steps for development
+
+> Run "npm install" upon cloning
+
+> Run "npm run server" to start the server
