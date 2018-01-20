@@ -66,3 +66,4 @@ The main goal of the app is to provide the user with a map interface that they c
 
 ## *ToDo*
 * Improvements
+

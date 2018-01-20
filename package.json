@@ -1,0 +1,25 @@
+{
+  "name": "googlemaps-offline-navigator",
+  "version": "1.0.0",
+  "description": "Open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and google maps api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon ./backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vasanthkesavan/googleMaps-offline-navigator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vasanthkesavan/googleMaps-offline-navigator/issues"
+  },
+  "homepage": "https://github.com/Vasanthkesavan/googleMaps-offline-navigator#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "nodemon": "^1.14.11"
+  }
+}
