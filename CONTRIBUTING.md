@@ -56,7 +56,7 @@ The common misconception about contributing to an open source project is that yo
 
 ## Ground Rules & Expectations
 
-Since the project is constantly being updated with contributions of all sorts, it is important to establish ground rules and as well as expectations. This helps to ensure the best possible experience for users of the Offline Navigator application, as well as encourage a positive, helpful, and lively community of active contributors just like you!
+Since the project is constantly being updated with contributions of all sorts, it is important to establish ground rules and as well as expectations. This helps to ensure the best possible experience for users of the Offline Google Maps Navigator application, as well as encourage a positive, helpful, and lively community of active contributors just like you!
 
 Please make sure you read our [code of conduct][code-of-conduct] prior to contributing.
 
@@ -118,7 +118,7 @@ To start making a contribution:
 
 1. At this point, your contribution has been submitted for review. Please be patient while your contribution is being reviewed as this can take some time. Meanwhile, if there are questions or comments on your contribution, please respond and/or update with future commits.
 
-1. Once the pull request is approved and merged, you can pull the changes from `upstream` to your local repository and dlete your extra branch(es).
+1. Once the pull request is approved and merged, you can pull the changes from `upstream` to your local repository and delete your extra branch(es).
 
 Happy contributing!
 
