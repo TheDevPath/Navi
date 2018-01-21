@@ -1,0 +1,39 @@
+{
+  "name": "googlemaps-offline-navigator",
+  "version": "0.0.1",
+  "description": "Open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and google maps api",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "npm run start --prefix client",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheDevPath/googleMaps-offline-navigator.git"
+  },
+  "contributors": [
+    "Bryan Sharpley (https://github.com/motosharpley)",
+    "Christopher Gates (https://github.com/tophergates)",
+    "Raegan Millhollin (https://github.com/desdemonhu)",
+    "Peter Matthews (https://github.com/pjdmatts)",
+    "John Kwening (https://github.com/jkwening)",
+    "Vasanth (https://github.com/Vasanthkesavan)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TheDevPath/googleMaps-offline-navigator/issues"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.14.11"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongoose": "^5.0.1",
+    "morgan": "^1.9.0",
+    "helmet": "^3.9.0"
+  }
+}
