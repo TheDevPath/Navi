@@ -8,20 +8,23 @@ I wanted to use a green or blue since there are connections to adventure and nat
 
 Green Theme Values: 
 
-Primary: 
-Primary Light:
-Primary Accent:
-Light:
-Dark:
+|              |RGB               |HEX    |
+|--------------|------------------|-------|
+|Primary       |rgb(59, 138, 59)  |#3B8A3B|
+|Primary Light |rgb(112, 156, 96) |#709C60|
+|Primary Accent|rgb(255, 250, 204)|#FFFACC|
+|Light         |rgb(240, 235, 240)|#F0EBF0|
+|Dark          |rgb(41, 36, 41)   |#292429|
 
 Blue Theme Values:
 
-Primary: 
-Primary Light:
-Primary Accent:
-Light:
-Dark:
-
+|              |RGB               |HEX    |
+|--------------|------------------|-------|
+|Primary       |rgb(44, 91, 97)   |#2C5B61|
+|Primary Light |rgb(90, 152, 161) |#5A98A1|
+|Primary Accent|rgb(255, 252, 222)|#FFFCDE|
+|Light         |rgb(240, 235, 240)|#F0EBF0|
+|Dark          |rgb(41, 36, 41)   |#292429|
 
 <div align="center">
     <img width="80%" src="images/green-theme.png"/>
