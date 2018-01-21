@@ -1,29 +1,45 @@
+// Package Dependencies
 const bodyParser = require('body-parser');
 const express = require('express');
-
 const helmet = require('helmet');
-const mongoose = require('mongoose');  // using ODM wrapper for MongoDB
-const config = require('./config');
-const morgan = require('morgan');  // log requests to the console
+const mongoose = require('mongoose');
+const morgan = require('morgan');
 
+// Local Dependencies
+const { DB_URL, NODE_ENV: ENV } = require('./config');
+
+// Instantiate Express Server
 const app = express();
-app.use(helmet());
 
-// set up MongoDB connection using the global promise library and then get connection
-mongoose.connect(config.DB_URL, {promiseLibrary: global.Promise}, error => {
+/**
+ * MONGODB CONNECTION
+ */
+
+// Setup MongoDB connection using the global promise library and then get connection
+mongoose.connect(DB_URL, { promiseLibrary: global.Promise }, error => {
   if (error) {
     console.log(`MongoDB connection error: ${error}`);
-    process.exit(1);  // should consider alternative to exiting the app due to db conn issue
+
+    // should consider alternative to exiting the app due to db conn issue
+    process.exit(1);
   }
 });
+
 const db = mongoose.connection;
 
-// To allow access on headers and also to avoid CORS issues
+/**
+ * MIDDLEWARE
+ */
+
+// Set security-related HTTP headers (https://expressjs.com/en/advanced/best-practice-security.html#use-helmet)
+app.use(helmet());
+
+// Allow access on headers and avoid CORS issues
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Access, Authorization',
+    'Origin, X-Requested-With, Content-Type, Access, Authorization'
   );
 
   if (req.method === 'OPTIONS') {
@@ -38,18 +54,30 @@ app.use((req, res, next) => {
 // Parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(morgan('dev'));  // log every request to the console
 
-// Routes
-/*
-  TODO:
-  Update application routes
-*/
-app.get('/', (req, res) => {
-  res.status(200).send('Hello, World!');
-});
+// Log every request to the console
+app.use(morgan('dev'));
+
+/**
+ * ROUTES
+ */
 
 // API Routes
 app.use('/api', require('./routes/api'));
+
+// TODO: Create additional routes as necessary
+
+// Serve static assets and index.html in production
+if (ENV === 'production') {
+  // Serve static assets
+  app.use(express.static('client/build'));
+
+  // Serve index.html file if no other routes were matched
+  const { resolve } = require('path');
+
+  app.get('**', (req, res) => {
+    res.sendFile(resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 module.exports = app;
