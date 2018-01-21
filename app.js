@@ -1,12 +1,12 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');  // using ODM wrapper for MongoDB
-const database = require('./config/database');
+const config = require('./config');
 const morgan = require('morgan');  // log requests to the console
 const app = express();
 
 // set up MongoDB connection using the global promise library and then get connection
-mongoose.connect(database.url, {promiseLibrary: global.Promise}, error => {
+mongoose.connect(config.DB_URL, {promiseLibrary: global.Promise}, error => {
   if (error) {
     console.log(`MongoDB connection error: ${error}`);
     process.exit(1);  // should consider alternative to exiting the app due to db conn issue
