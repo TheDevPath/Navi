@@ -8,7 +8,7 @@ const morgan = require('morgan');
 // Local Dependencies
 const { DB_URL, NODE_ENV: ENV } = require('./config');
 
-// Instatiate Express Server
+// Instantiate Express Server
 const app = express();
 
 /**
@@ -72,7 +72,7 @@ if (ENV === 'production') {
 	// Serve static assets
 	app.use(express.static('client/build'));
 
-	// Serve index.html file if not other routes were matched
+	// Serve index.html file if no other routes were matched
 	const { resolve } = require('path');
 
 	app.get('**', (req, res) => {
