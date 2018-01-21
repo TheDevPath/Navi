@@ -1,7 +1,9 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const helmet = require('helmet');
 
 const app = express();
+app.use(helmet());
 
 // To allow access on headers and also to avoid CORS issues
 app.use((req, res, next) => {
