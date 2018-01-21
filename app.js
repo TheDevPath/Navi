@@ -1,9 +1,22 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+
 const helmet = require('helmet');
+const mongoose = require('mongoose');  // using ODM wrapper for MongoDB
+const config = require('./config');
+const morgan = require('morgan');  // log requests to the console
 
 const app = express();
 app.use(helmet());
+
+// set up MongoDB connection using the global promise library and then get connection
+mongoose.connect(config.DB_URL, {promiseLibrary: global.Promise}, error => {
+  if (error) {
+    console.log(`MongoDB connection error: ${error}`);
+    process.exit(1);  // should consider alternative to exiting the app due to db conn issue
+  }
+});
+const db = mongoose.connection;
 
 // To allow access on headers and also to avoid CORS issues
 app.use((req, res, next) => {
@@ -25,6 +38,7 @@ app.use((req, res, next) => {
 // Parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan('dev'));  // log every request to the console
 
 // Routes
 /*

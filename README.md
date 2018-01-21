@@ -56,7 +56,7 @@ The main goal of the app is to provide the user with a map interface that they c
 * [MIT License](../blob/master/LICENSE)
 
 ### *Where to get the files*
-* [This repository](https://github.com/motosharpley/googleMaps-offline-navigator)
+* [This repository](https://github.com/TheDevPath/googleMaps-offline-navigator)
 
 ### *Key files included*
 * Files
