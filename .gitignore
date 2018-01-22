@@ -92,3 +92,6 @@ Temporary Items
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# MongoDB DB path
+data/*
