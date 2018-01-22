@@ -1,6 +1,5 @@
 // api routes tests
 const request = require('supertest');
-const expect = require('expect');
 
 const app = require('../app');
 
@@ -12,7 +11,7 @@ describe('API Routes', () => {
           .get('/api/users/current')
           .expect(401);
         
-        expect(res).toEqual(expect.any(Object));
+        expect(res).to.be.an('object')
       } catch (error) {
         throw error;
       }
