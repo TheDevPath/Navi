@@ -9,8 +9,7 @@
     "client": "npm run start --prefix client",
     "server": "nodemon server.js",
     "test": "NODE_ENV=test mocha tests -r chai/register-expect",
-    "test-watch": "nodemon --exec 'npm test'",
-    "test-client": "mocha ./tests/components.test.js --compilers js:babel-core/register --reporter spec || exit 0"
+    "test-watch": "nodemon --exec 'npm test'"
   },
   "repository": {
     "type": "git",
@@ -33,7 +32,6 @@
     "concurrently": "^3.5.1",
     "mocha": "^5.0.0",
     "nodemon": "^1.14.11",
-    "preact-jsx-chai": "^2.2.1",
     "superagent": "^3.8.2",
     "supertest": "^3.0.0"
   },
