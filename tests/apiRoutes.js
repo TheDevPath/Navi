@@ -1,7 +1,7 @@
 // api routes tests
 const request = require('supertest');
 
-const app = require('../app');
+const app = require('app');
 
 describe('API Routes', () => {
   describe('GET /api/users/current', () => {
