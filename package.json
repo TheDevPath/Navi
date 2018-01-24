@@ -4,12 +4,16 @@
   "description": "Open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and google maps api",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "NODE_PATH=. node server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client": "npm run start --prefix client",
-    "server": "nodemon server.js",
-    "test": "NODE_ENV=test mocha tests -r chai/register-expect",
+    "server": "NODE_PATH=. nodemon server.js",
+    "test": "NODE_PATH=. NODE_ENV=test mocha tests -r chai/register-expect",
     "test-watch": "nodemon --exec 'npm test'"
+  },
+  "engines": {
+    "node": "8.9.4",
+    "npm": "5.6.0"
   },
   "repository": {
     "type": "git",
