@@ -1,5 +1,5 @@
 const express = require('express');
-const api = express.Router();
+const router = express.Router();
 
 // Middleware
 const authenticateUser = (req, res, next) => {
@@ -16,8 +16,8 @@ const authenticateUser = (req, res, next) => {
   TODO: 
   Setup API Routes
 */
-api.get('/users/current', authenticateUser, (req, res) => {
+router.get('/users/current', authenticateUser, (req, res) => {
   res.status(200).send({});
 });
 
-module.exports = api;
+module.exports = router;
