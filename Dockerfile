@@ -11,5 +11,5 @@ RUN npm install
 # Bundle app source
 COPY . /app
 
+CMD npm run server
 EXPOSE 3000
-CMD [ "npm", 'run', "start" ]

@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 services:
   mongo:
@@ -32,7 +32,7 @@ services:
       - 3000:3000
     volumes:
       - .:/app
-  project-ui:
+  preact:
       container_name: preact
       build: 
         context: ./client
