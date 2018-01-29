@@ -2,11 +2,13 @@ version: '3'
 
 services:
   mongo:
+    container_name: mongo
     image: 'mongo'
     volumes:
       - ./data:/data/db
 
   express:
+    container_name: express
     stdin_open: true
     tty: true # Enables debugging capabilities when attached to this container.
     build: .
@@ -29,6 +31,7 @@ services:
     volumes:
       - .:/app
   project-ui:
+      container_name: preact
       build: 
         context: ./client
       ports:
