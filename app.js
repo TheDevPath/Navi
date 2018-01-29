@@ -66,8 +66,10 @@ app.use(morgan('dev'));
 // app.use('/api', require('./routes/api'));
 
 // TODO: Create additional routes as necessary
-
-// Serve static assets and index.html in production
+app.get('/', function(req, res) {
+        res.send('hello world')
+    })
+    // Serve static assets and index.html in production
 if (ENV === 'production') {
     // Serve static assets
     app.use(express.static('client/build'));
