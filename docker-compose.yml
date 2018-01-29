@@ -9,6 +9,7 @@ services:
 
   express:
     container_name: express
+    # entrypoint: /bin/sh
     stdin_open: true
     tty: true # Enables debugging capabilities when attached to this container.
     build: .
@@ -19,7 +20,7 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=development
-      - DATABASE_URL=mongodb://mongo:27017/myapp
+      - DATABASE_URL=mongodb://mongo:27017/app_db
       - SKIP_DB_WAIT=0
       - SKIP_DB_MIGRATION=0
       - SKIP_NPM_INSTALL=0
