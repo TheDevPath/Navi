@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-
-const schema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+const searchHistorySchema = new Schema({
     query: {type: String, required: true},
     save_date: {type: Date, default: Date.now}
 });
 
-module.exports = mongoose.model('SearchHistory', schema);
+module.exports = mongoose.model('SearchHistory', searchHistorySchema);

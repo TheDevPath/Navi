@@ -1,8 +1,6 @@
-import { Schema } from 'mongoose';
-
 const mongoose = require('mongoose');
-
-const schema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+const savedDirectionsSchema = new Schema({
     origin: {type: Schema.Types.Mixed, required: true},
     destination: {type: Schema.Types.Mixed, required: true},
     geocoded_waypoints: {type: [Schema.Types.Mixed], required: true},
@@ -10,4 +8,4 @@ const schema = new mongoose.Schema({
     save_date: {type: Date, default: Date.now}
 });
 
-module.exports = mongoose.model('SavedDirections', schema);
+module.exports = mongoose.model('SavedDirections', savedDirectionsSchema);

@@ -11,5 +11,9 @@ const searchHistoryController = require('../controllers/search-history-controlle
  * TODO - hook up url route end points to constroller functions
  */
 
+ // temporary hook to confirm base routing is working
+ router.get('/', function(req, res) {
+    res.send('NOT IMPLEMENTED: Search View');
+})
 
 module.exports = router;
