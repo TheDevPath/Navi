@@ -13,6 +13,7 @@ services:
     stdin_open: true
     tty: true # Enables debugging capabilities when attached to this container.
     build: .
+    image: express
     labels:
       kompose.service.type: nodeport
     command: /bin/bash -c "if [ ! -d node_modules ] ; then npm install ; fi && npm run start"   
