@@ -1,48 +1,53 @@
 {
-  "name": "googlemaps-offline-navigator",
-  "version": "0.0.1",
-  "description": "Open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and google maps api",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "client": "npm run start --prefix client",
-    "server": "nodemon server.js",
-    "test": "concurrently \"npm run test-server\" \"npm run test-client\"",
-    "test-server": "cross-env NODE_ENV=test mocha tests -r chai/register-expect",
-    "test-watch": "nodemon --exec 'npm test'",
-    "test-client": "npm test --prefix client"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TheDevPath/googleMaps-offline-navigator.git"
-  },
-  "contributors": [
-    "Bryan Sharpley (https://github.com/motosharpley)",
-    "Christopher Gates (https://github.com/tophergates)",
-    "Raegan Millhollin (https://github.com/desdemonhu)",
-    "Peter Matthews (https://github.com/pjdmatts)",
-    "John Kwening (https://github.com/jkwening)",
-    "Vasanth (https://github.com/Vasanthkesavan)"
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/TheDevPath/googleMaps-offline-navigator/issues"
-  },
-  "devDependencies": {
-    "chai": "^4.1.2",
-    "concurrently": "^3.5.1",
-    "cross-env": "^5.1.3",
-    "mocha": "^5.0.0",
-    "nodemon": "^1.14.11",
-    "superagent": "^3.8.2",
-    "supertest": "^3.0.0"
-  },
-  "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.2",
-    "helmet": "^3.9.0",
-    "mongoose": "^5.0.1",
-    "morgan": "^1.9.0"
-  }
+    "name": "googlemaps-offline-navigator",
+    "version": "0.0.1",
+    "description": "Open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and google maps api",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "concurrently \"npm run server\" \"npm run client\"",
+        "client": "npm run start --prefix client",
+        "server": "nodemon server.js",
+        "test": "concurrently \"npm run test-server\" \"npm run test-client\"",
+        "test-server": "cross-env NODE_ENV=test mocha tests -r chai/register-expect",
+        "test-watch": "nodemon --exec 'npm test'",
+        "test-client": "npm test --prefix client"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TheDevPath/googleMaps-offline-navigator.git"
+    },
+    "contributors": [
+        "Bryan Sharpley (https://github.com/motosharpley)",
+        "Christopher Gates (https://github.com/tophergates)",
+        "Raegan Millhollin (https://github.com/desdemonhu)",
+        "Peter Matthews (https://github.com/pjdmatts)",
+        "John Kwening (https://github.com/jkwening)",
+        "Vasanth (https://github.com/Vasanthkesavan)",
+        "Travis Haley (https://github.com/Mallek"
+    ],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/TheDevPath/googleMaps-offline-navigator/issues"
+    },
+    "devDependencies": {
+        "babel-eslint": "^8.2.1",
+        "chai": "^4.1.2",
+        "concurrently": "^3.5.1",
+        "cross-env": "^5.1.3",
+        "eslint": "^4.16.0",
+        "eslint-config-airbnb-base": "^12.1.0",
+        "eslint-plugin-import": "^2.8.0",
+        "mocha": "^5.0.0",
+        "nodemon": "^1.14.11",
+        "superagent": "^3.8.2",
+        "supertest": "^3.0.0"
+    },
+    "dependencies": {
+        "body-parser": "^1.18.2",
+        "express": "^4.16.2",
+        "helmet": "^3.9.0",
+        "mongoose": "^5.0.1",
+        "morgan": "^1.9.0"
+    }
 }
