@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // require controller modules
-const googleApiController = require('../controllers/saved-directions-controller');
+const googleApiController = require('../controllers/google-api-controller');
 
 /**
  * TODO - hook up url route end points to constroller functions
@@ -12,5 +12,8 @@ const googleApiController = require('../controllers/saved-directions-controller'
  router.get('/', function(req, res) {
      res.send('NOT IMPLEMENTED: Map View');
  })
+
+ // Geolocation api hook
+ router.get('/geolocation', googleApiController.getGeolocation);
 
 module.exports = router;

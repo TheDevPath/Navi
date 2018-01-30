@@ -1,7 +1,12 @@
+const fs = require('fs');
+const path = require('path');
+
+const JSON_SECRETS = JSON.parse(fs.readFileSync(path.join(__dirname, 'secrets.json')));
+
 module.exports = {
   NODE_ENV: process.env.NODE_ENV || 'production',
   HOST: process.env.HOST,
   PORT: process.env.PORT,
-  // TODO - replace 'your_secret' with shorthand app name once that is decided
-  DB_URL : 'mongodb://localhost/your_secret'  // using default port (27017)
+  DB_URL : JSON_SECRETS.mongodb_prod.db_url,
+  GOOGLE_API_KEY: JSON_SECRETS.google_maps.api_key
 };
