@@ -87,6 +87,7 @@ Temporary Items
 .apdisk
 
 # VSCODE IGNORES
+.vscode/
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -95,3 +96,6 @@ Temporary Items
 
 # MongoDB DB path
 data/*
+
+# secrets.json ***SHOULD NEVER BE PUSHED INTO GITHUB***
+secrets.json
