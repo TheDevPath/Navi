@@ -1,15 +1,12 @@
 FROM node:8.9.4
+RUN mkdir -p /app/client
+WORKDIR /app/client
+RUN npm install -g nodemon
+ENV NPM_CONFIG_LOGLEVEL warn
+COPY package.json /app/client
 
-# Create app directory
-RUN mkdir -p /app
-WORKDIR /app
-
-# Install app dependencies
-COPY package.json /app
 RUN npm install
-
-# Bundle app source
-COPY . /app
-
-CMD npm run server
-EXPOSE 3000
+COPY . /app/client
+ENV NPM_CONFIG_LOGLEVEL warn
+CMD nodemon -L src/index.js
+EXPOSE 8080 8081

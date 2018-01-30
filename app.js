@@ -67,7 +67,7 @@ app.use(morgan('dev'));
 
 // TODO: Create additional routes as necessary
 app.get('/', function(req, res) {
-        res.send('hello world')
+        res.send('hello reall world')
     })
     // Serve static assets and index.html in production
 if (ENV === 'production') {

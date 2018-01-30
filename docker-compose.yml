@@ -16,7 +16,7 @@ services:
     image: express
     labels:
       kompose.service.type: nodeport
-    command: /bin/bash -c "if [ ! -d node_modules ] ; then npm install ; fi && npm run start"   
+    # command: /bin/bash -c "if [ ! -d node_modules ] ; then npm install ; fi && npm run start"   
     working_dir: /app
     environment:
       - PORT=3000
