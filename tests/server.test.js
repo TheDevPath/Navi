@@ -1,6 +1,6 @@
 it('test runner should work', () => {
   const foo = 'bar';
-  const beverages = { tea: [ 'chai', 'matcha', 'oolong' ] };
+  const beverages = { tea: ['chai', 'matcha', 'oolong'] };
 
   expect(foo).to.be.a('string');
   expect(foo).to.equal('bar');

@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 // Middleware
@@ -12,16 +13,16 @@ const authenticateUser = (req, res, next) => {
   next();
 };
 
-/* 
-  TODO: 
+/*
+  TODO:
   Setup API Routes
 */
 // temporary hook to confirm base routing is working
-router.get('/', function(req, res) {
+router.get('/', (req, res) => {
   res.send('NOT IMPLEMENTED: Users View');
-})
+});
 
-router.get('/users/current', authenticateUser, (req, res) => {
+router.get('/current', authenticateUser, (req, res) => {
   res.status(200).send({});
 });
 
