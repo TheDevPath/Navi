@@ -9,6 +9,17 @@ The stack - this will be a node app utilizing Preact for the front end.
 
 Pull requests are welcome!
 
+## Table of Contents
+
+- [Main Goal](#main-goal)
+- [Features](#features)
+- [About the application](#about-the-application)
+- [Where to get the files](#where-to-get-the-files)
+- [Key files included](#key-files-included)
+- [Requirements](#requirements)
+- [ToDo](#todo)
+
+
 ## Main Goal
 
 The main goal of the app is to provide the user with a map interface that they can use on their mobile device and that will continue to be useful in poor to no signal environments.
