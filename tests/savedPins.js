@@ -44,7 +44,7 @@ describe('POST /search/savedpins', () => {
     request(app)
       .post('/search/savedpins')
       .send({})
-      .expect(400)
+      .expect(500)
       .end((err, res) => {
         if (err) {
           return done(err);

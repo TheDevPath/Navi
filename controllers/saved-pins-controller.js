@@ -3,10 +3,7 @@ const { ObjectID } = require('mongodb');
 const SavedPins = require('../models/saved-pins');
 
 /**
- * Function to GET saved pins from the SavedPins model
- * @api GET /search/savedpins Request SavedPins information
- * @apiSuccess 200 {SavedPins} returns a collection of SavedPins.
- * @apiError 400 returns {error}
+ * @description Handles request for user saved pins
  *
  * @api {GET} /savedpins
  * @apiSuccess 200 {SavedPins} The collection of saved pins.
@@ -21,13 +18,12 @@ exports.getSavedPins = (appReq, appRes) => {
 };
 
 /**
- * Function to GET single saved pin from database
+ * @description GET single saved pin from database by id
  * @api GET /search/savedpins/:id Request single pin
  * @apiSuccess 200 {Pin} returns a single pin.
- * @apiError 400 returns {error}
- * @apiError 404 returns
- * @param {any} appReq
- * @param {any} appRes
+ * @apiError 500 returns {error}
+ * @apiError 404 returns - not found
+ * @param {any} appReq.params.id - id of pin
  */
 exports.getSavedPinsById = (appReq, appRes) => {
   const params = { id: appReq.params.id };
@@ -40,15 +36,12 @@ exports.getSavedPinsById = (appReq, appRes) => {
     }
     return appRes.send({ pin });
   }).catch((e) => {
-    appRes.status(400).send(e);
+    appRes.status(500).send(e);
   });
 };
 
 /**
- * Function to POST saved pins from the SavedPins model
- * @api POST /search/savedpins saves {SavedPins}
- * @apiSuccess 200 {Pin} returns the mongodb {SavedPins} after saved.
- * @apiError 400 returns {error}
+ * @description Handles request to save a pin
  *
  * @api {POST} /savedpins
  * @apiSuccess 200 {SavedPins} The document representing the saved pin.
@@ -73,29 +66,26 @@ exports.postSavedPins = (appReq, appRes) => {
 };
 
 /**
- * Function to DELETE all database
+ * @description DELETE all savedpins from database
  * @api DELETE /search/savedpins Delete all pins
  * @apiSuccess 200
- * @apiError 400 returns {error}
- * @param {any} appReq
- * @param {any} appRes
+ * @apiError 500 returns {error}
  */
 exports.deleteSavedPins = (appReq, appRes) => {
   SavedPins.remove({}).then(() => {
     appRes.status(200).send();
   }).catch((e) => {
-    appRes.status(400).send(e);
+    appRes.status(500).send(e);
   });
 };
 
 /**
- * Function to DELETE single saved pin from database
+ * @description DELETE single saved pin from database by id
  * @api DELETE /search/savedpins/:id Delete single pin
  * @apiSuccess 200 {Pin} returns deleted pin.
- * @apiError 400 returns {error}
- * @apiError 404 returns
- * @param {any} appReq
- * @param {any} appRes
+ * @apiError 500 returns {error}
+ * @apiError 404 returns - Not Found
+* @param {any} appReq.params.id - id of pin
  */
 exports.deleteSavedPinsById = (appReq, appRes) => {
   const params = { id: appReq.params.id };
@@ -111,6 +101,6 @@ exports.deleteSavedPinsById = (appReq, appRes) => {
 
     appRes.send({ pin });
   }).catch((e) => {
-    appRes.status(400).send(e);
+    appRes.status(500).send(e);
   });
 };
