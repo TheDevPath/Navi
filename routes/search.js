@@ -18,5 +18,9 @@ router.get('/', (req, res) => {
 });
 
 router.get('/savedpins', savedPinsController.getSavedPins);
+router.get('/savedpins/:id', savedPinsController.getSavedPinsById);
 router.post('/savedpins', savedPinsController.postSavedPins);
+router.delete('/savedpins', savedPinsController.deleteSavedPins);
+router.delete('/savedpins/:id', savedPinsController.deleteSavedPinsById);
+
 module.exports = router;
