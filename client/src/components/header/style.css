@@ -5,7 +5,7 @@
 	width: 100%;
 	/* height: 56px; */
 	padding: 0;
-	background: rgb(47, 133, 58);
+	background: rgb(112, 156, 96);
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 	z-index: 50;
 }
@@ -40,9 +40,9 @@
 
 .header nav a:hover,
 .header nav a:active {
-	background: rgba(0,0,0,0.2);
+	background: rgba(59, 138, 59,0.2);
 }
 
 .header nav a.active {
-	background: rgba(0,0,0,0.4);
+	background: rgba(59, 138, 59,0.4);
 }
