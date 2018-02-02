@@ -98,8 +98,27 @@ describe('GET /search/savedpins/:id', () => {
   });
 });
 
+describe('DELETE /search/savedpins', () => {
+  it('should remove all searchpins', (done) => {
+    request(app)
+      .delete('/search/savedpins')
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+
+        SavedPins.find().then((allPins) => {
+          expect(allPins.length).to.equal(0);
+          done();
+        });
+      });
+  });
+});
+
 describe('DELETE /search/savedpins/:id', () => {
-  it('should remove a searchpins', (done) => {
+
+  it('should remove a single searchpins', (done) => {
     const hexId = pin._id.toHexString();
 
     request(app)
@@ -120,18 +139,18 @@ describe('DELETE /search/savedpins/:id', () => {
       });
   });
 
-  it('should return 404 if todo not found', (done) => {
+  it('should return 404 if pin not found', (done) => {
     const hexId = new ObjectID().toHexString();
 
     request(app)
-      .delete(`/todos/${hexId}`)
+      .delete(`/search/savedpins/${hexId}`)
       .expect(404)
       .end(done);
   });
 
   it('should return 404 if object id is invalid', (done) => {
     request(app)
-      .delete('/todos/123abc')
+      .delete('/search/savedpins/123abc')
       .expect(404)
       .end(done);
   });

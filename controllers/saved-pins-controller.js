@@ -67,6 +67,22 @@ exports.postSavedPins = (appReq, appRes) => {
 };
 
 /**
+ * Function to DELETE all database
+ * @api DELETE /search/savedpins Delete all pins
+ * @apiSuccess 200
+ * @apiError 400 returns {error}
+ * @param {any} appReq
+ * @param {any} appRes
+ */
+exports.deleteSavedPins = (appReq, appRes) => {
+  SavedPins.remove({}).then(() => {
+    appRes.status(200).send();
+  }).catch((e) => {
+    appRes.status(400).send(e);
+  });
+};
+
+/**
  * Function to DELETE single saved pin from database
  * @api DELETE /search/savedpins/:id Delete single pin
  * @apiSuccess 200 {Pin} returns deleted pin.
@@ -92,4 +108,3 @@ exports.deleteSavedPinsById = (appReq, appRes) => {
     appRes.status(400).send(e);
   });
 };
-
