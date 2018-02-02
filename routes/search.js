@@ -17,4 +17,6 @@ router.get('/', (req, res) => {
   res.send('NOT IMPLEMENTED: Search View');
 });
 
+router.get('/savedpins', savedPinsController.getSavedPins);
+router.post('/savedpins', savedPinsController.postSavedPins);
 module.exports = router;
