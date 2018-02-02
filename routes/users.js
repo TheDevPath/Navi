@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const usersController = require('../controllers/users-controller');
-const {JWT_KEY} = require('../config');
+const { JWT_KEY } = require('../config');
 
 const router = express.Router();
 

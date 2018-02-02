@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
-const savedPinsSchema = new Schema({
+const savedPinsSchema = new mongoose.Schema({
   lat: {
     type: Number, min: -90, max: 90, required: true,
   },
