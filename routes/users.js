@@ -1,29 +1,16 @@
 const express = require('express');
+const usersController = require('../controllers/users-controller');
+const { verifyToken } = require('../controllers/utils-controller');
 
 const router = express.Router();
 
-// Middleware
-const authenticateUser = (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).send({
-      error: 'User is not authenticated',
-    });
-  }
+/**
+ * Users endpoints
+ */
 
-  next();
-};
-
-/*
-  TODO:
-  Setup API Routes
-*/
-// temporary hook to confirm base routing is working
-router.get('/', (req, res) => {
-  res.send('NOT IMPLEMENTED: Users View');
-});
-
-router.get('/current', authenticateUser, (req, res) => {
-  res.status(200).send({});
-});
+router.post('/register', usersController.registerUser);
+router.get('/user', verifyToken, usersController.getUser);
+router.post('/login', usersController.loginUser);
+router.get('/logout', usersController.logoutUser);
 
 module.exports = router;
