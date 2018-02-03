@@ -9,6 +9,7 @@ const savedPinsSchema = new mongoose.Schema({
   },
   place_id: { type: String, required: true },
   save_date: { type: Date, default: Date.now },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 
 module.exports = mongoose.model('SavedPins', savedPinsSchema);

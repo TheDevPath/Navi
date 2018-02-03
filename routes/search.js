@@ -6,6 +6,7 @@ const router = express.Router();
 const savedDirectionsController = require('../controllers/saved-directions-controller');
 const savedPinsController = require('../controllers/saved-pins-controller');
 const searchHistoryController = require('../controllers/search-history-controller');
+const { verifyToken } = require('../controllers/utils-controller');
 /* TODO - require specific functions needed for search from google-api-controller */
 
 /**
@@ -17,10 +18,10 @@ router.get('/', (req, res) => {
   res.send('NOT IMPLEMENTED: Search View');
 });
 
-router.get('/savedpins', savedPinsController.getSavedPins);
-router.get('/savedpins/:id', savedPinsController.getSavedPinsById);
-router.post('/savedpins', savedPinsController.postSavedPins);
-router.delete('/savedpins', savedPinsController.deleteSavedPins);
-router.delete('/savedpins/:id', savedPinsController.deleteSavedPinsById);
+router.get('/savedpins', verifyToken, savedPinsController.getSavedPins);
+router.get('/savedpins/:id', verifyToken, savedPinsController.getSavedPinsById);
+router.post('/savedpins', verifyToken, savedPinsController.postSavedPins);
+router.delete('/savedpins', verifyToken, savedPinsController.deleteSavedPins);
+router.delete('/savedpins/:id', verifyToken, savedPinsController.deleteSavedPinsById);
 
 module.exports = router;
