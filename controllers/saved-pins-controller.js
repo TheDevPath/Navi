@@ -10,7 +10,7 @@ const SavedPins = require('../models/saved-pins');
  * @apiError 500 {server error} Problem finding all saved pins.
  */
 exports.getSavedPins = (appReq, appRes) => {
-  SavedPins.find().then((savedPins) => {
+  SavedPins.find({ user: appReq.userId }).then((savedPins) => {
     appRes.send({ savedPins });
   }, (e) => {
     appRes.status(500).send(e);
@@ -32,8 +32,10 @@ exports.getSavedPinsById = (appReq, appRes) => {
   if (!ObjectID.isValid(params.id)) {
     return appRes.status(404).send();
   }
+
   SavedPins.findById(params.id).then((pin) => {
-    if (!pin) {
+    // expect db id to be unique but just in case verifiy user._id
+    if (!pin || appReq.userId !== pin.user) {
       return appRes.status(404).send();
     }
     return appRes.send({ pin });
@@ -58,6 +60,7 @@ exports.postSavedPins = (appReq, appRes) => {
     lat: appReq.body.lat,
     lng: appReq.body.lng,
     place_id: appReq.body.place_id,
+    user: appReq.userId, // authenticated user's id
   });
 
   savedPin.save().then((pin) => {
