@@ -39,3 +39,19 @@ exports.verifyToken = (req, res, next) => {
     next();
   });
 };
+
+/**
+ * @description Utility function for generating query string from an object with
+ *   key-value pairs for params needed for http request using native node https.
+ *
+ * @param {Object} key-value pairs for params needed for request to be parsed as
+ *   query string
+ */
+exports.convertToQueryString = (paramsObject) => {
+  const str = [];
+  const keys = Object.keys(paramsObject);
+  keys.forEach((element) => {
+    str.push(`${encodeURIComponent(element)}=${encodeURIComponent(paramsObject[element])}`);
+  });
+  return str.join('&');
+};
