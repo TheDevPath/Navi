@@ -95,7 +95,9 @@ Temporary Items
 !.vscode/extensions.json
 
 # MongoDB DB path
+
 data/*
 
 # secrets.json ***SHOULD NEVER BE PUSHED INTO GITHUB***
 secrets.json
+
