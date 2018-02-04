@@ -28,8 +28,7 @@ exports.registerUser = (appReq, appRes) => {
   /**
    *  Checks whether any of the fields are empty while submission.
    *  Checks whether the email address is of a valid format
-   *   
-   *  Checks whether password is of minimum 6 characters & that it has atleast one number & atleast one specail character.
+   *  Checks whether password is of minimum 6 characters & that it has atleast one number & atleast one specail character. 
    */
 
   if(!appReq.body.email || !appReq.body.name || !appReq.body.password){
