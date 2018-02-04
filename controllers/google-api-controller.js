@@ -94,7 +94,7 @@ exports.getStaticMap = (appReq, appRes) => {
 
     res.on('end', () => {
       const body = Buffer.concat(chunks);
-      appRes.type('png');
+      appRes.type(params.format.substr(0, 3)); // [png, gif, or jpg]
       appRes.send(body);
     });
   }).on('error', (e) => {
