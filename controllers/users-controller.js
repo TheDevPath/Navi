@@ -26,12 +26,32 @@ exports.registerUser = (appReq, appRes) => {
   });
 
   /**
-   * TODO
-   * 1. validate to ensure null values are passed for name,
-   *   email, or password.
-   * 2. verify email is valid i.e. '....'@'...'.'...'
-   * 3. validate for secure passwords and no easy to guess passwords
+   *  Checks whether any of the fields are empty while submission.
+   *  Checks whether the email address is of a valid format
+   *   
+   *  Checks whether password is of minimum 6 characters & that it has atleast one number & atleast one specail character.
    */
+
+  if(!appReq.body.email || !appReq.body.name || !appReq.body.password){
+    
+    if(!validEmail(appReq.body.email)) return appRes.status(400).send('Email is not of the valid format');
+    if(!validPassword(appReq.body.password)) return appRes.status(400)
+        .send('Password should have minimum length of 6 & it should have atleast one special character, atleast one speacial character');
+
+  }
+  else{
+    return appRes.status(400).send('One or more fields were left empty')
+  }
+
+  const validEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  } 
+
+  const validPassword = (password) => {
+    const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+    return re.test(String(password));   
+  }
 
   // encrypt password
   const HASHED_PASSWORD = bcrypt.hashSync(appReq.body.password, 8);
