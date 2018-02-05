@@ -1,12 +1,12 @@
 const User = require('../models/users');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const {JWT_KEY} = require('../config');
+const { JWT_KEY } = require('../config');
 
 /**
  * @description Handles user registeration
  *
- * @api {POST} /register
+ * @api {POST} /users/register
  * @apiSuccess 200 {auth: true, token: token} jsonwebtoken.
  * @apiError 409 {request error} Email already exists.
  * @apiError 500 {server error} Registeration failed.
@@ -62,7 +62,7 @@ exports.registerUser = (appReq, appRes) => {
  * @description Get users information by utilizing verifyToken to
  *  authenticate user informtion.
  *
- * @api {GET} /user
+ * @api {GET} /users/user
  * @apiSuccess 200 {_id: db._id, name: user_name, email: user_email} User info.
  * @apiError 400 {request error} User not found.
  * @apiError 500 {server error} Problem finding user.
@@ -84,7 +84,7 @@ exports.getUser = (appReq, appRes) => {
 /**
  * @description Handles user login
  *
- * @api {POST} /login
+ * @api {POST} /users/login
  * @apiSuccess 200 {auth: true, token: token} jsonwebtoken.
  * @apiError 400 {request error} User not found.
  * @apiError 401 {auth: false, token: null} Invalid password.
@@ -125,7 +125,8 @@ exports.loginUser = (appReq, appRes) => {
  * @description Handles logout request for backend testing purposes.
  *  NOTE - frontend should handle user logout by deleting cached token
  *
- * @api {GET} /logout
+ * @api {GET} /users/logout
+ * @apiSuccess 200 {auth: false, token: null} jsonwebtoken.
  */
 exports.logoutUser = (appReq, appRes) => {
   appRes.status(200).send({
