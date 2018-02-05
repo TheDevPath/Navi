@@ -48,6 +48,7 @@
         "body-parser": "^1.18.2",
         "express": "^4.16.2",
         "helmet": "^3.9.0",
+        "mongodb": "^3.0.2",
         "jsonwebtoken": "^8.1.1",
         "mongoose": "^5.0.1",
         "morgan": "^1.9.0"

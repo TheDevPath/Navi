@@ -7,6 +7,7 @@ const savedDirectionsSchema = new Schema({
   geocoded_waypoints: { type: [Schema.Types.Mixed], required: true },
   routes: { type: [Schema.Types.Mixed], required: true },
   save_date: { type: Date, default: Date.now },
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 
 module.exports = mongoose.model('SavedDirections', savedDirectionsSchema);

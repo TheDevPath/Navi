@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
-const savedPinsSchema = new Schema({
+const savedPinsSchema = new mongoose.Schema({
   lat: {
     type: Number, min: -90, max: 90, required: true,
   },
@@ -10,6 +9,7 @@ const savedPinsSchema = new Schema({
   },
   place_id: { type: String, required: true },
   save_date: { type: Date, default: Date.now },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 
 module.exports = mongoose.model('SavedPins', savedPinsSchema);
