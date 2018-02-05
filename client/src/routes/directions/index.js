@@ -6,7 +6,7 @@ export default class Directions extends Component {
     return (
       <div class={style.directions}>
         <h1>Directions</h1>
-        <p>This is the Directions component.</p>
+        <p>This is the Directions Route.</p>
       </div>
     );
   }
