@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
   res.send('NOT IMPLEMENTED: Map View');
 });
 
-// Geolocation api hook
 router.get('/geolocation', googleApiController.getGeolocation);
+router.post('/staticmap', googleApiController.getStaticMap);
 
 module.exports = router;
