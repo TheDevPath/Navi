@@ -1,3 +1,8 @@
 {
-    "extends": "airbnb"
+    "extends": "airbnb",
+    "plugins": [
+        "import",
+        "jsx-a11y",
+        "react"
+    ]
 }
