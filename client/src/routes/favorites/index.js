@@ -34,7 +34,7 @@ export default class Favorites extends Component {
                     <ul class={style.card__itemDetails}>
                       <li>
                         <p>Coordinates:</p>
-                        {favorite.coordinates}
+                        {favorite.coordinates} 
                       </li>
                       <li>
                         <p>Landmark:</p>
