@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import style from './css/style.css';
 
 export default class Favorites extends Component {
   /* dummy data */
@@ -11,10 +12,11 @@ export default class Favorites extends Component {
     render({ }, { favorites }) {
         return (
           <div>
-            <h4>Favorites</h4>
+          Why
+            <h4 class={style.card__header}>Favorites</h4>
             <ul>
               { favorites.map((favorite, i) => (
-                  <li key={i}>
+                  <li key={i} class={style.card__item}>
                     {favorite.name}
                   </li>
               ))}
