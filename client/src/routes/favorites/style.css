@@ -1,3 +1,13 @@
+/*  Change .favorites to html to set font size */
+/*  RGB was compiled to hex  */
+/*  Colors from green theme: ../../../../images/green-theme.png  */
+/*
+    @dark: #292429: rgb(41, 36, 41);
+    @mid: #fffacc: rgb(255, 250, 204);
+    @light: #f0ebf0: rgb(240, 235, 240);
+    @highlight: #3b8a3b: rgb(59, 138, 59);
+    @accent: #709c60: rgb(112, 156, 96);
+*/
 .favorites {
   font-size: 62.5%;
 }
