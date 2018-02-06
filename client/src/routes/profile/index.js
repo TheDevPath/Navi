@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import style from './style';
+import Favorites from '../favorites';
 
 export default class Profile extends Component {
 	state = {
@@ -41,6 +42,8 @@ export default class Profile extends Component {
 					{' '}
 					Clicked {count} times.
 				</p>
+
+				<Favorites/>
 			</div>
 		);
 	}
