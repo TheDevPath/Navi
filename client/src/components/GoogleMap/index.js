@@ -1,4 +1,4 @@
-import { Component } from 'preact';
+import { h, Component } from 'preact';
 const { GOOGLE_API_KEY } = require('../../../config');
 
 import Map, { GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
