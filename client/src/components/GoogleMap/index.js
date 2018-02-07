@@ -10,9 +10,20 @@ class MapContainer extends Component {
             showingInfoWindow: false,
             activeMarker: {},
             selectedPlace: {},
+            lat: null,
+            lng: null,
         }
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
+        this.geolocatonSuccess = this.geolocatonSuccess.bind(this);
+        navigator.geolocation.getCurrentPosition(this.geolocatonSuccess);
+    }
+
+    geolocatonSuccess(position) {
+        this.setState({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+        });
     }
 
     onMarkerClick = (props, marker, e) => {
@@ -39,14 +50,14 @@ class MapContainer extends Component {
                 onClick={this.onMapClicked}
                 zoom={13}
                 center={{
-                    lat: 48.8684921,
-                    lng: 2.3174882,
+                    lat: this.state.lat,
+                    lng: this.state.lng,
                 }}
             >
                 <Marker
                     onClick={this.onMarkerClick}
-                    name={'PWA Paris'}
-                    position={{lat: 48.8827176, lng: 2.3202777}}
+                    name={'Current location'}
+                    position={{lat: this.state.lat, lng: this.state.lng}}
                 />
 
                 <InfoWindow
