@@ -73,7 +73,7 @@ exports.registerUser = (appReq, appRes) => {
       });
 
       appRes.status(200).send({ auth: true, token });
-    },
+    }
   );
 };
 
@@ -96,7 +96,7 @@ exports.getUser = (appReq, appRes) => {
       if (!user) return appRes.status(400).send('No user found.');
 
       appRes.status(200).send(user);
-    },
+    }
   );
 };
 
@@ -119,7 +119,7 @@ exports.loginUser = (appReq, appRes) => {
 
     const passwordIsValid = bcrypt.compareSync(
       appReq.body.password,
-      user.password,
+      user.password
     );
 
     if (!passwordIsValid) {
