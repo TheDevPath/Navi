@@ -2,7 +2,8 @@
     "extends": "airbnb",
     "plugins": [
         "react",
-        "jsx-allly",
-        "Import"
+        "jsx-a11ly",
+        "Import",
+        "react-compat"
     ]
 }
