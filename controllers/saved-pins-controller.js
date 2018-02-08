@@ -35,7 +35,7 @@ exports.getSavedPinsById = (appReq, appRes) => {
 
   SavedPins.findById(params.id).then((pin) => {
     // expect db id to be unique but just in case verifiy user._id
-    if (!pin || appReq.userId !== pin.user) {
+    if (!pin || appReq.userId !== pin.user.toString()) {
       return appRes.status(404).send();
     }
     return appRes.send({ pin });
@@ -78,7 +78,7 @@ exports.postSavedPins = (appReq, appRes) => {
  * @apiError 500 {server error}
  */
 exports.deleteSavedPins = (appReq, appRes) => {
-  SavedPins.remove({}).then(() => {
+  SavedPins.remove({ user: appReq.userId }).then(() => {
     appRes.status(200).send();
   }).catch((e) => {
     appRes.status(500).send(e);

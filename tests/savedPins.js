@@ -4,28 +4,22 @@ const { ObjectID } = require('mongodb');
 
 const app = require('../app');
 const SavedPins = require('../models/saved-pins');
+const {
+  pins, populatePins, users, populateUsers,
+} = require('./seed/seed');
 
-const pin = new SavedPins({
-  _id: new ObjectID(),
-  lat: 1,
-  lng: 2,
-  place_id: 'testing',
-});
-
-beforeEach((done) => {
-  SavedPins.remove({}).then(() =>
-    SavedPins.insertMany(pin)).then(() =>
-    done());
-});
+beforeEach(populateUsers);
+beforeEach(populatePins);
 
 describe('POST /search/savedpins', () => {
   it('should create new saved pin', (done) => {
     request(app)
       .post('/search/savedpins')
-      .send(pin)
+      .set('x-access-token', users[0].tokens[0].token)
+      .send(pins[0])
       .expect(200)
       .expect((res) => {
-        expect(res.body.pin.lat).to.equal(pin.lat);
+        expect(res.body.pin.lat).to.equal(pins[0].lat);
       })
       .end((err, res) => {
         if (err) {
@@ -33,8 +27,9 @@ describe('POST /search/savedpins', () => {
         }
 
         SavedPins.find().then((savedPins) => {
-          expect(savedPins.length).to.equal(2);
-          expect(savedPins[0].lat).to.equal(pin.lat);
+          expect(savedPins.length).to.equal(pins.length + 1);
+          expect(savedPins[0].lat).to.equal(pins[0].lat);
+          expect(savedPins[0].user._id).to.equal(pins[0].user._id);
           done();
         }).catch(e => done(e));
       });
@@ -43,6 +38,7 @@ describe('POST /search/savedpins', () => {
   it('should not create savedPin with invalid body data', (done) => {
     request(app)
       .post('/search/savedpins')
+      .set('x-access-token', users[0].tokens[0].token)
       .send({})
       .expect(500)
       .end((err, res) => {
@@ -51,7 +47,7 @@ describe('POST /search/savedpins', () => {
         }
 
         SavedPins.find().then((savedPins) => {
-          expect(savedPins.length).to.equal(1);
+          expect(savedPins.length).to.equal(pins.length);
           done();
         }).catch(e => done(e));
       });
@@ -61,10 +57,12 @@ describe('POST /search/savedpins', () => {
 describe('GET /search/savedpins', () => {
   it('should return savedpins doc', (done) => {
     request(app)
-      .get(`/search/savedpins/${pin._id.toHexString()}`)
+      .get('/search/savedpins/')
+      .set('x-access-token', users[0].tokens[0].token)
       .expect(200)
       .expect((res) => {
-        expect(res.body.pin.lat).to.equal(pin.lat);
+        expect(res.body.savedPins[0].lat).to.equal(pins[0].lat);
+        expect(res.body.savedPins.length).to.equal(1);
       })
       .end(done);
   });
@@ -73,10 +71,11 @@ describe('GET /search/savedpins', () => {
 describe('GET /search/savedpins/:id', () => {
   it('should return savedpins doc', (done) => {
     request(app)
-      .get(`/search/savedpins/${pin._id.toHexString()}`)
+      .get(`/search/savedpins/${pins[0]._id.toHexString()}`)
+      .set('x-access-token', users[0].tokens[0].token)
       .expect(200)
       .expect((res) => {
-        expect(res.body.pin.lat).to.equal(pin.lat);
+        expect(res.body.pin.lat).to.equal(pins[0].lat);
       })
       .end(done);
   });
@@ -86,6 +85,7 @@ describe('GET /search/savedpins/:id', () => {
 
     request(app)
       .get(`/search/savedpins/${hexId}`)
+      .set('x-access-token', users[0].tokens[0].token)
       .expect(404)
       .end(done);
   });
@@ -93,6 +93,7 @@ describe('GET /search/savedpins/:id', () => {
   it('should return 404 for non-object ids', (done) => {
     request(app)
       .get('/search/savedpins/123abc')
+      .set('x-access-token', users[0].tokens[0].token)
       .expect(404)
       .end(done);
   });
@@ -102,6 +103,7 @@ describe('DELETE /search/savedpins', () => {
   it('should remove all searchpins', (done) => {
     request(app)
       .delete('/search/savedpins')
+      .set('x-access-token', users[0].tokens[0].token)
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -109,7 +111,7 @@ describe('DELETE /search/savedpins', () => {
         }
 
         SavedPins.find().then((allPins) => {
-          expect(allPins.length).to.equal(0);
+          expect(allPins.length).to.equal(pins.length - 1);
           done();
         });
       });
@@ -117,12 +119,12 @@ describe('DELETE /search/savedpins', () => {
 });
 
 describe('DELETE /search/savedpins/:id', () => {
-
   it('should remove a single searchpins', (done) => {
-    const hexId = pin._id.toHexString();
+    const hexId = pins[0]._id.toHexString();
 
     request(app)
       .delete(`/search/savedpins/${hexId}`)
+      .set('x-access-token', users[0].tokens[0].token)
       .expect(200)
       .expect((res) => {
         expect(res.body.pin._id).to.equal(hexId);
@@ -144,6 +146,7 @@ describe('DELETE /search/savedpins/:id', () => {
 
     request(app)
       .delete(`/search/savedpins/${hexId}`)
+      .set('x-access-token', users[0].tokens[0].token)
       .expect(404)
       .end(done);
   });
@@ -151,6 +154,7 @@ describe('DELETE /search/savedpins/:id', () => {
   it('should return 404 if object id is invalid', (done) => {
     request(app)
       .delete('/search/savedpins/123abc')
+      .set('x-access-token', users[0].tokens[0].token)
       .expect(404)
       .end(done);
   });
