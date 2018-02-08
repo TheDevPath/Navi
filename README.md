@@ -1,3 +1,15 @@
+# Getting Started
+See the Guide on how to contribute [here](https://github.com/TheDevPath/googleMaps-offline-navigator/blob/development/CONTRIBUTING.md#how-to-contribute) for instructions on how to fork and set up your repository.
+
+# Installing Dependencies
+In the root directory of your newly cloned project `npm install`
+
+When installation has completed `cd client` & run `npm install` again to install client dependencies
+
+When finished `cd ..` to return to the projects root directory and `npm run dev` will start the dev servers on localhost:8080 & localhost:8081 respectivly
+
+Note you also need to install and have running mongoDB - Directions can be found [here](https://docs.mongodb.com/manual/installation/)
+
 # googleMaps-offline-navigator
 Open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and google maps api
 
