@@ -44,6 +44,7 @@
         "preact-cli": "^2.0.1"
     },
     "dependencies": {
+        "google-maps-react": "^1.1.2",
         "preact": "^8.2.6",
         "preact-compat": "^3.17.0",
         "preact-jsx-chai": "^2.2.1",

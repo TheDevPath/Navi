@@ -1,5 +1,6 @@
 import { h, Component } from 'preact';
 import style from './style';
+import Favorites from '../../components/favorites';
 
 export default class Profile extends Component {
 	state = {
@@ -23,12 +24,9 @@ export default class Profile extends Component {
 		this.setState({ time: Date.now() });
 	};
 
-	increment = () => {
-		this.setState({ count: this.state.count+1 });
-	};
 
 	// Note: `user` comes from the URL, courtesy of our router
-	render({ user }, { time, count }) {
+	render({ user }, { time }) {
 		return (
 			<div class={style.profile}>
 				<h1>Profile: {user}</h1>
@@ -36,11 +34,7 @@ export default class Profile extends Component {
 
 				<div>Current time: {new Date(time).toLocaleString()}</div>
 
-				<p>
-					<button onClick={this.increment}>Click Me</button>
-					{' '}
-					Clicked {count} times.
-				</p>
+				<Favorites/>
 			</div>
 		);
 	}
