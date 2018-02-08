@@ -101,3 +101,66 @@ exports.getStaticMap = (appReq, appRes) => {
     appRes.send(e);
   });
 };
+
+/**
+ * Place Autocomplete API
+ * A Place Autocomplete request is an HTTP URL of the following form:
+ * https://maps.googleapis.com/maps/api/place/autocomplete/output?parameters
+ *
+ * Where output may be either of the following values:
+ *   - json (recommended) indicates output in JavaScript Object Notation (JSON)
+ *   - xml indicates output as XML
+ */
+
+/**
+ * @description Handles request for search autocompletion
+ *
+ * @param {string} appReq.body.output - Result output, json (default) or xml; expecting json.
+ * @param {string} appReq.body.input - The text string on which to search.
+ * @param {lat, lng} appReq.body.lat - (optional) The latitude for the point around which you
+ *   wish to retrieve place information.
+ * @param {lat, lng} appReq.body.lng - (optional) The longitude for the point around which you
+ *   wish to retrieve place information.
+ * @param {number} appReq.body.radius - (optional) The distance (in meters) within which
+ *   to return place results. Note that setting a radius biases results to the indicated
+ *   area, but may not fully restrict results to the specified area.
+ * @param {string} appReq.body.types - (optional) The types of place results to return. If
+ *   no type is specified, all types will be returned.
+ *   (https://developers.google.com/places/web-service/autocomplete#place_types)
+ * @param {boolean} appReq.body.strictbounds - (optional) Returns only those places that are
+ *   strictly within the region defined by location and radius. This is a restriction, rather
+ *   than a bias, meaning that results outside this region will not be returned even if they
+ *   match the user input.
+ */
+exports.autocomplete = (appReq, appRes) => {
+  const strictbounds = (appReq.body.strictbounds) ? 'strictbounds' : '';
+  const output = appReq.body.output || 'json';
+  const params = {
+    input: appReq.body.input,
+    key: GOOGLE_API_KEY,
+    location: `${appReq.body.lat},${appReq.body.lng}` || '',
+    radius: appReq.body.radius || '',
+    types: appReq.body.types || '',
+    strictbounds,
+  };
+  const BASE_URL = `https://maps.googleapis.com/maps/api/place/autocomplete/${output}?`;
+  const queryString = convertToQueryString(params);
+  const reqUrl = new URL(`${BASE_URL}${queryString}`);
+  console.log(params);
+  console.log(reqUrl);
+
+  http.get(reqUrl, (res) => {
+    const chunks = [];
+
+    res.on('data', (chunk) => {
+      chunks.push(chunk);
+    });
+
+    res.on('end', () => {
+      const body = Buffer.concat(chunks);
+      appRes.status(200).send(JSON.parse(body.toString()));
+    });
+  }).on('error', (e) => {
+    appRes.send(e);
+  });
+};
