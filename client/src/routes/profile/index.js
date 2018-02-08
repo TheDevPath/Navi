@@ -26,7 +26,7 @@ export default class Profile extends Component {
 
 
 	// Note: `user` comes from the URL, courtesy of our router
-	render({ user }, { time, count }) {
+	render({ user }, { time }) {
 		return (
 			<div class={style.profile}>
 				<h1>Profile: {user}</h1>
