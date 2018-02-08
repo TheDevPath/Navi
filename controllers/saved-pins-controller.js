@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: 0 */
 const { ObjectID } = require('mongodb');
 
 const SavedPins = require('../models/saved-pins');
@@ -33,7 +34,10 @@ exports.getSavedPinsById = (appReq, appRes) => {
     return appRes.status(404).send();
   }
 
-  SavedPins.findById(params.id).then((pin) => {
+  SavedPins.findOne({
+    _id: params.id,
+    user: appReq.userId,
+  }).then((pin) => {
     // expect db id to be unique but just in case verifiy user._id
     if (!pin || appReq.userId !== pin.user.toString()) {
       return appRes.status(404).send();

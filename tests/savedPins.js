@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: 0 */
 // api routes tests
 const request = require('supertest');
 const { ObjectID } = require('mongodb');
