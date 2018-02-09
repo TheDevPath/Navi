@@ -10,9 +10,7 @@ Skip this next part if you know what you are doing
 ---
 *Noob tip* 
 
-*If you can, "clone with `SSH` instead of clone with `HTTPS`. This means that, when you type in git remote add origin, you should use a link that looks like this: `git@github.com:*YOUR_USER_NAME/YOUR_REPO_NAME.git.*` 
-
-*Observe how that differs from* `https://github.com/YOUR_USER_NAME/YOUR_REPO_NAME.git`* 
+*If you can, "clone with `SSH` instead of clone with `HTTPS`. This means that, when you type in git remote add origin, you should use a link that looks like this: `git@github.com:*YOUR_USER_NAME/YOUR_REPO_NAME.git.*` Observe how that differs from* `https://github.com/YOUR_USER_NAME/YOUR_REPO_NAME.git`* 
 While the first creates a remote that uses `ssh` authentication, the latter uses `https`, so it'll always prompt you to enter your username and password to authenticate the connection. For more see this [link](https://gist.github.com/juemura/899241d73cf719de7f540fc68071bd7d)*
 ---
 # Get Google Maps API key
