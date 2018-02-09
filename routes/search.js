@@ -8,6 +8,7 @@ const savedPinsController = require('../controllers/saved-pins-controller');
 const searchHistoryController = require('../controllers/search-history-controller');
 const { verifyToken } = require('../controllers/utils-controller');
 /* TODO - require specific functions needed for search from google-api-controller */
+const { autocomplete } = require('../controllers/google-api-controller');
 
 /**
  * TODO - hook up url route end points to constroller functions
@@ -23,5 +24,6 @@ router.get('/savedpins/:id', verifyToken, savedPinsController.getSavedPinsById);
 router.post('/savedpins', verifyToken, savedPinsController.postSavedPins);
 router.delete('/savedpins', verifyToken, savedPinsController.deleteSavedPins);
 router.delete('/savedpins/:id', verifyToken, savedPinsController.deleteSavedPinsById);
+router.post('/autocomplete', autocomplete);
 
 module.exports = router;
