@@ -31,7 +31,7 @@ While the first creates a remote that uses `ssh` authentication, the latter uses
 
 - Open `secrets.json` and under googlemaps, paste your API key and save
 
-#Install mongodb
+# Install mongodb
 
 You also need to install and have running mongoDB - Directions can be found [here](https://docs.mongodb.com/manual/installation/)
 
