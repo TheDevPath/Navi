@@ -71,9 +71,9 @@ If you don't see your idea listed, and you think it fits into the goals of the p
 
 To start making a contribution:
 
-1. `fork` the project repository by clicking the **fork** button on GitHub.
+1. `fork` the project repository by clicking the **fork** button on GitHub.![fork](https://help.github.com/assets/images/help/repository/fork_button.jpg) 
 
-1. `clone` your forked repository:
+1. `clone` your forked repository (_noob tip: the actual command you type in is everything after the $_):
 
    ```shell
    $ git clone https://github.com/<YOUR-USERNAME>/googleMaps-offline-navigator
@@ -93,6 +93,7 @@ To start making a contribution:
    ```
 
 1. Create a new branch from the `development` branch:
+![branch](https://help.github.com/assets/images/help/branch/branch-selection-dropdown.png)
 
    **IMPORTANT:** Make sure you are on the `development` branch first.
 
@@ -120,9 +121,12 @@ To start making a contribution:
 
 1. Once the pull request is approved and merged, you can pull the changes from `upstream` to your local repository and delete your extra branch(es).
 
+1. Don't forget to check out more [about] this project  
+
 Happy contributing!
 
 [issues]: https://github.com/TheDevPath/googleMaps-offline-navigator/issues
 [pull-requests]: https://github.com/TheDevPath/googleMaps-offline-navigator/pulls
 [wiki]: https://github.com/TheDevPath/googleMaps-offline-navigator/wiki
 [code-of-conduct]: ./CODE_OF_CONDUCT.md
+[about]: https://github.com/TheDevPath/googleMaps-offline-navigator/blob/static-docs/README.md
