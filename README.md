@@ -19,14 +19,14 @@ While the first creates a remote that uses `ssh` authentication, the latter uses
 
 - In the config subdirectory you will find secrets-*example.json*. Rename this to *secrets.json*. 
 
-- Next go to the Google API Console to get a Google Maps API key
+- Next get a [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key)
 
-    - Create or select a project.
+    - Click on the button
 
-    - Click Continue to enable the Google Maps API.
+    - This will take you through the process
 
-    - On the Credentials page, get an API key. Note: If you have an existing API key, you may use that key.
-[Detailed instructions](https://developers.google.com/maps/documentation/android-api/signup)
+    - Note: If you have an existing API key, you may use that key.
+[Detailed instructions](https://developers.google.com/maps/documentation/javascript/get-api-key)
 
 - Open `secrets.json` and under googlemaps, paste your API key and save
 
