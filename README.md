@@ -17,6 +17,7 @@ While the first creates a remote that uses `ssh` authentication, the latter uses
 ---
 
 # Get Google Maps API key
+
 - In the config subdirectory you will find secrets-*example.json*. Rename this to *secrets.json*. 
 
 - Next go to the Google API Console to get a Google Maps API key
@@ -31,9 +32,11 @@ While the first creates a remote that uses `ssh` authentication, the latter uses
 - Open `secrets.json` and under googlemaps, paste your API key and save
 
 #Install mongodb
+
 You also need to install and have running mongoDB - Directions can be found [here](https://docs.mongodb.com/manual/installation/)
 
 # Update and run
+
 When installation has completed go to where you installed the project and run `npm install` again to install client dependencies. This will update the file package.json in the root of your project. 
 
 When finished, in the project's root directory type `npm run dev`. This will start the dev servers on `localhost:8080` & `localhost:8081` respectively
@@ -41,6 +44,7 @@ When finished, in the project's root directory type `npm run dev`. This will sta
 
 
 # About googleMaps-offline-navigator
+
 This is an open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and google maps api
 
 The idea for this project is to build a progressive web app utilizing the technologies learned in the Grow with Google Udacity Scholarship challenge.
