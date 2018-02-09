@@ -16,5 +16,6 @@ router.get('/', (req, res) => {
 
 router.get('/geolocation', googleApiController.getGeolocation);
 router.post('/staticmap', googleApiController.getStaticMap);
+router.post('/directions', googleApiController.directions);
 
 module.exports = router;
