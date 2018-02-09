@@ -21,6 +21,7 @@ describe('POST /search/savedpins', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body.pin.lat).to.equal(pins[0].lat);
+        expect(res.body.pin.lng).to.equal(pins[0].lng);
       })
       .end((err, res) => {
         if (err) {
@@ -30,6 +31,7 @@ describe('POST /search/savedpins', () => {
         SavedPins.find().then((savedPins) => {
           expect(savedPins.length).to.equal(pins.length + 1);
           expect(savedPins[0].lat).to.equal(pins[0].lat);
+          expect(savedPins[0].lng).to.equal(pins[0].lng);
           expect(savedPins[0].user._id).to.equal(pins[0].user._id);
           done();
         }).catch(e => done(e));
@@ -63,6 +65,7 @@ describe('GET /search/savedpins', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body.savedPins[0].lat).to.equal(pins[0].lat);
+        expect(res.body.savedPins[0].lng).to.equal(pins[0].lng);
         expect(res.body.savedPins.length).to.equal(1);
       })
       .end(done);
@@ -77,6 +80,7 @@ describe('GET /search/savedpins/:id', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body.pin.lat).to.equal(pins[0].lat);
+        expect(res.body.pin.lng).to.equal(pins[0].lng);
       })
       .end(done);
   });
