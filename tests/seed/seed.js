@@ -50,6 +50,14 @@ const populateUsers = (done) => {
   }).then(() => done());
 };
 
+const deleteTestUser = (done) => {
+  User.remove({
+    name: 'Taco Test',
+    email: 'test@testing.com',
+    password: 'passcode',
+  }).then(() => done());
+}
+
 module.exports = {
-  pins, populatePins, users, populateUsers,
+  pins, populatePins, users, populateUsers, deleteTestUser,
 };
