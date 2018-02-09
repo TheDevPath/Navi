@@ -16,7 +16,7 @@ const app = express();
  */
 
 // Setup MongoDB connection using the global promise library and then get connection
-mongoose.connect(DB_URL, { promiseLibrary: global.Promise }, error => {
+mongoose.connect(DB_URL, { promiseLibrary: global.Promise }, (error) => {
   if (error) {
     console.log(`MongoDB connection error: ${error}`);
 
@@ -39,7 +39,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Access, Authorization'
+    'Origin, X-Requested-With, Content-Type, Access, Authorization',
   );
 
   if (req.method === 'OPTIONS') {
@@ -63,7 +63,10 @@ app.use(morgan('dev'));
  */
 
 // API Routes
-app.use('/api', require('./routes/api'));
+app.use('/', require('./routes/index'));
+app.use('/map', require('./routes/map'));
+app.use('/search', require('./routes/search'));
+app.use('/users', require('./routes/users'));
 
 // TODO: Create additional routes as necessary
 

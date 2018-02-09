@@ -4,7 +4,6 @@ See the Guide on how to contribute [here](https://github.com/TheDevPath/googleMa
 # Installing Dependencies
 In the root directory of your newly cloned project `npm install`
 
-
 Skip this next part if you know what you are doing
 
 ---
@@ -40,7 +39,6 @@ You also need to install and have running mongoDB - Directions can be found [her
 When installation has completed go to where you installed the project and run `npm install` again to install client dependencies. This will update the file package.json in the root of your project. 
 
 When finished, in the project's root directory type `npm run dev`. This will start the dev servers on `localhost:8080` & `localhost:8081` respectively
-
 
 
 # About googleMaps-offline-navigator
