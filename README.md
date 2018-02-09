@@ -1,5 +1,5 @@
 # Getting Started
-See the Guide on how to contribute [here](https://github.com/TheDevPath/googleMaps-offline-navigator/blob/development/CONTRIBUTING.md#how-to-contribute) for instructions on how to fork and set up your repository.
+See the Guide on how to contribute [here][contribution] for instructions on how to fork and set up your repository.
 
 # Installing Dependencies
 In the root directory of your newly cloned project `npm install`
@@ -8,7 +8,7 @@ When installation has completed `cd client` & run `npm install` again to install
 
 When finished `cd ..` to return to the projects root directory and `npm run dev` will start the dev servers on localhost:8080 & localhost:8081 respectivly
 
-Note you also need to install and have running mongoDB - Directions can be found [here](https://docs.mongodb.com/manual/installation/)
+Note you also need to install and have running mongoDB - Directions can be found [here][mongodb]
 
 # googleMaps-offline-navigator
 Open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and google maps api
@@ -29,17 +29,13 @@ Pull requests are welcome!
 - [Where to get the files](#where-to-get-the-files)
 - [Key files included](#key-files-included)
 - [Requirements](#requirements)
-- [ToDo](#todo)
-
+- [TODO](#todo)
 
 ## Main Goal
-
 The main goal of the app is to provide the user with a map interface that they can use on their mobile device and that will continue to be useful in poor to no signal environments.
 
 ## Features
-
 * The interface will **display a map** of a designated area
-
 
 * **Users** will be able to:  
     * Search for a location
@@ -55,7 +51,6 @@ The main goal of the app is to provide the user with a map interface that they c
     * View list of dropped pins ('saved places')
     * View list of directions ('saved directions')
 
-
 * **The app** will:
     * Use the Google Maps API to:
         * Display the map
@@ -70,7 +65,6 @@ The main goal of the app is to provide the user with a map interface that they c
         * Saved places
         * Saved directions
 
-
 ### *About the application*
 * Node backend
 * React Frontend
@@ -79,7 +73,7 @@ The main goal of the app is to provide the user with a map interface that they c
 * [MIT License](../blob/master/LICENSE)
 
 ### *Where to get the files*
-* [This repository](https://github.com/TheDevPath/googleMaps-offline-navigator)
+* [This repository][files]
 
 ### *Key files included*
 * Files
@@ -87,5 +81,9 @@ The main goal of the app is to provide the user with a map interface that they c
 ## *Requirements*
 * Requirements
 
-## *ToDo*
+## *TODO*
 * Improvements
+
+[contribution]: https://github.com/TheDevPath/googleMaps-offline-navigator/blob/development/CONTRIBUTING.md#how-to-contribute
+[mongodb]:  https://docs.mongodb.com/manual/installation/
+[files]:    https://github.com/TheDevPath/googleMaps-offline-navigator

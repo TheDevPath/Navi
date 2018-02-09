@@ -5,8 +5,8 @@
 
 ### Summary of solution:
 1. 
-2. 
-3. 
+1. 
+1. 
 
 ### Can this issue be closed?
 
