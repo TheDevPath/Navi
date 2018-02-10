@@ -13,3 +13,4 @@ const savedPinsSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('SavedPins', savedPinsSchema);
+
