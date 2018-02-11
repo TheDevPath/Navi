@@ -19,7 +19,6 @@ export default class SigninForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.target);
-
     fetch('/api/form-submit-url', {
       method: 'POST',
       body: data,

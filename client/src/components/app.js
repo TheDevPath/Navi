@@ -7,6 +7,7 @@ import Profile from '../routes/profile';
 import Directions from '../routes/directions';
 import Pins from '../routes/pins';
 import Maps from '../routes/maps';
+import Signin from '../routes/signin';
 // import Home from 'async!../routes/home';
 // import Profile from 'async!../routes/profile';
 
