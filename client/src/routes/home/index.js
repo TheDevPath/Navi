@@ -7,8 +7,6 @@ export default class Home extends Component {
 		return (
 			<div class={style.home}>
 			<MapContainer />
-				<h1>Home</h1>
-				<p>This is the Home component.</p>
 			</div>
 		);
 	}
