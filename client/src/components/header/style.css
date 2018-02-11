@@ -11,7 +11,7 @@
 }
 
 .header h1 {
-	/* float: left; */
+	float: left;
 	margin: 0;
 	padding: 0 15px;
 	font-size: 24px;
