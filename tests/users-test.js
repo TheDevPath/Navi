@@ -1,14 +1,21 @@
 // api routes tests
 const request = require('supertest');
 const app = require('../app');
+const server = require('../server');
+const config = require('../config');
+
+// /Use for server requests
+const respond = request.agent(server.listen(config.PORT));
+
 
 const {
-  users, populateUsers, deleteTestUser,
+  users, populateUsers, deleteTestUser, stopServer,
 } = require('./seed/seed');
 
 
 beforeEach(populateUsers);
 afterEach(deleteTestUser);
+afterEach(stopServer);
 
 describe('API Routes', () => {
   describe('GET /users/user', () => {
@@ -44,10 +51,9 @@ describe('API Routes', () => {
   // invalid email and try to create
   // invalid password and try to create
   describe('POST users/register', () => {
-    it('succesfully creates a new user', async () => {
+    it('succesfully creates a new user', () => {
       try {
-        await request(app)
-          .get('users/register')
+        respond.get('users/register')
           .send({
             name: 'Taco Test',
             email: 'test@testing.com',
@@ -56,7 +62,7 @@ describe('API Routes', () => {
           .expect(200)
           .expect((res) => {
             expect(res.body.auth).to.be(true);
-          })
+          });
       } catch (err) {
         throw err;
       }

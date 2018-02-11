@@ -1,6 +1,7 @@
 const { ObjectID } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const { JWT_KEY } = require('../../config');
+const server = require('../../server');
 
 const User = require('../../models/users');
 const SavedPins = require('../../models/saved-pins');
@@ -56,8 +57,13 @@ const deleteTestUser = (done) => {
     email: 'test@testing.com',
     password: 'passcode',
   }).then(() => done());
-}
+};
+
+const stopServer = (done) => {
+  server.close();
+  done();
+};
 
 module.exports = {
-  pins, populatePins, users, populateUsers, deleteTestUser,
+  pins, populatePins, users, populateUsers, deleteTestUser, stopServer,
 };
