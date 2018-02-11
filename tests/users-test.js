@@ -67,6 +67,22 @@ describe('API Routes', () => {
         throw err;
       }
     });
+    it('User already exists', () => {
+      try {
+        respond.get('users/register')
+          .send({
+            name: users[0].name,
+            email: users[0].email,
+            password: users[0].password,
+          })
+          .expect(409)
+          .expect((res) => {
+            expect(res.body).to.equal('Email already in use.');
+          });
+      } catch (err) {
+        throw err;
+      }
+    });
 
   });
 
