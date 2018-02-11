@@ -1,10 +1,12 @@
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
-
 import GoogleMap from './GoogleMap';
 import Header from './header';
 import Home from '../routes/home';
 import Profile from '../routes/profile';
+import Signin from '../routes/signin';
+
+
 // import Home from 'async!../routes/home';
 // import Profile from 'async!../routes/profile';
 
@@ -26,6 +28,7 @@ export default class App extends Component {
 					<GoogleMap path="/showMap" />
 					<Profile path="/profile/" user="me" />
 					<Profile path="/profile/:user" />
+					<Signin appName="E-map" path="/signin/" />
 				</Router>
 			</div>
 		);
