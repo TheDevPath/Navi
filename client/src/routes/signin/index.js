@@ -6,19 +6,19 @@ import SigninForm from '../../components/signinForm';
 
 export default class Signin extends Component {
 
-	render() {
-		return (
-			<div class={style.main}>
-				<div class={style.signin}>
-					<div class={style.logo}>
-						<img src='../assets/icons/google_maps_2014.png'/>
-						<h3>Welcome to {this.props.appName}, login</h3>
-					</div>
-					<SigninForm />
-				</div>
-			</div>
-		);
-	}
+    render() {
+        return (
+            <div class={style.main}>
+                <div class={style.signin}>
+                    <div class={style.logo}>
+                        <img src='../assets/icons/google_maps_2014.png'/>
+                        <h3>Welcome to {this.props.appName}, login</h3>
+                    </div>
+                    <SigninForm />
+                </div>
+            </div>
+        );
+    }
 }
 
 Signin.propTypes = {
