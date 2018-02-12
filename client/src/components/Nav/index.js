@@ -4,7 +4,7 @@ import 'preact-material-components/List/style.css';
 import 'preact-material-components/Menu/style.css';
 import 'preact-material-components/Button/style.css';
 
-export default class MenuPage extends Component {
+export default class Nav extends Component {
 	render(){
 		return (
 			<div>
