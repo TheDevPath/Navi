@@ -1,5 +1,5 @@
-import {h, Component} from 'preact';
-import {Router} from 'preact-router';
+import { h, Component } from 'preact';
+import { Router } from 'preact-router';
 import GoogleMap from './GoogleMap';
 import Header from './header';
 import Home from '../routes/home';
