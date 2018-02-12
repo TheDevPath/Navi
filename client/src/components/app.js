@@ -8,6 +8,10 @@ import Directions from '../routes/directions';
 import Pins from '../routes/pins';
 import Maps from '../routes/maps';
 import Signin from '../routes/signin';
+import ForgotPassword from '../routes/forgot-password';
+import Register from '../routes/register';
+import ResetPassword from '../routes/reset-password';
+
 // import Home from 'async!../routes/home';
 // import Profile from 'async!../routes/profile';
 
@@ -33,6 +37,9 @@ export default class App extends Component {
 					<Directions path="/directions" />
 					<Pins path="/pins" />
 					<Maps path="/maps" />
+					<Register path="/register" />
+					<ForgotPassword path="forgot-password"/>
+					<ResetPassword path="reset-password"/>
 				</Router>
 			</div>
 		);
