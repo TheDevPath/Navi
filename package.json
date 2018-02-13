@@ -40,6 +40,7 @@
         "eslint-plugin-import": "^2.8.0",
         "mocha": "^5.0.0",
         "nodemon": "^1.14.11",
+        "preact-jsx-chai": "^2.2.1",
         "superagent": "^3.8.2",
         "supertest": "^3.0.0"
     },
