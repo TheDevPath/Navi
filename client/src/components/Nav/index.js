@@ -1,13 +1,16 @@
 import {h, Component} from 'preact';
+import style from './style.css';
 import {Menu, Button} from 'preact-material-components';
 import 'preact-material-components/List/style.css';
 import 'preact-material-components/Menu/style.css';
 import 'preact-material-components/Button/style.css';
 
+import Logo from '../Logo';
+
 export default class Nav extends Component {
 	render(){
 		return (
-			<div>
+			<div class={style.nav}>
 				<Menu.Anchor>
 					<Button
 						onClick={e => {
