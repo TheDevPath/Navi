@@ -1,6 +1,7 @@
-/* global google */
 import { h, Component } from 'preact';
 import PropTypes from 'prop-types';
+
+const { GOOGLE_API_KEY } = require('../../../config');
 
 export default class SearchAutocomplete extends Component {
     static propTypes = {
@@ -14,33 +15,52 @@ export default class SearchAutocomplete extends Component {
         
         super(props);
         this.autocomplete = null;
-        this.event = null;
+        this.onSelected = this.onSelected.bind(this);
       }
 
     componentDidMount() {
-        
+      this.loadScript();      
+      }
+
+      loadScript(){        
+        this.script = document.createElement('script')
+        this.script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`
+        this.script.async = 1
+        this.script.defer = 1
+        this.script.onload = () => this.initAutocomplete()
+      // this.script.onerror = () => this.initAuthcompleteFailed()
+        document.body.appendChild(this.script);
+      }
+      
+      initAutocomplete () {                
         const { types=['(cities)'], componentRestrictions, bounds, } = this.props;
         const config = {
           types,
           bounds,
         };
     
-        if (componentRestrictions) {
+        if (componentRestrictions) 
           config.componentRestrictions = componentRestrictions;
-        }
     
-        this.autocomplete = new google.maps.places.Autocomplete(this.refs.searchInput, config);
+        this.autocomplete = new google.maps.places.Autocomplete(this._input, config);
     
-        this.event = this.autocomplete.addListener('place_changed', this.onSelected.bind(this));
-      }
-      
+        this.autocomplete.addListener('place_changed', this.onSelected);
+      } 
+    
+
     componentWillUnmount() {
-        this.event.remove();
+      document.body.removeChild(this.script)
+      this.autocomplete.removeListener('place_changed')
       }
     
       onSelected() {
         if (this.props.onPlaceSelected) {
-          this.props.onPlaceSelected(this.autocomplete.getPlace());
+         
+          var place = this.autocomplete.getPlace();
+          this.props.onPlaceSelected(place);
+
+          //ToDo: Remove this and add to state as required.
+          console.log(place);
         }
       }
 
@@ -49,10 +69,10 @@ export default class SearchAutocomplete extends Component {
     
         return (
           <input
-          ref={searchInput => this.searchInput = searchInput} 
-           // ref="searchInput"
+          ref={(c) => this._input = c}
             {...rest}
           />
         );
       }
 }
+
