@@ -43,7 +43,8 @@
         "ignore-styles": "^5.0.1",
         "mocha": "^5.0.0",
         "preact-cli": "^2.0.1",
-        "preact-jsx-chai": "^2.2.1"
+        "preact-jsx-chai": "^2.2.1",
+        "preact-material-components": "^1.3.5"
     },
     "dependencies": {
         "google-maps-react": "^1.1.2",
