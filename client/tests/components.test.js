@@ -6,11 +6,11 @@ import assertJsx from 'preact-jsx-chai';
 chai.use(assertJsx);
 
 ///Tests
-import Header from '../src/components/header';
+import Nav from '../src/components/Nav';
 
-describe('Header', () => {
+describe('Nav', () => {
 	it('passes', () => {
-		expect(<Header />, 'Why not work?').to.contain(<h1>There and Back Again!</h1>);
+		expect(<Nav />, 'Nav').to.contain('Home');
 	});
 });
 
