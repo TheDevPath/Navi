@@ -5,7 +5,6 @@ import Favorites from '../../components/favorites';
 export default class Profile extends Component {
 	state = {
 		time: Date.now(),
-		count: 10
 	};
 
 	// gets called when this route is navigated to
@@ -24,16 +23,13 @@ export default class Profile extends Component {
 		this.setState({ time: Date.now() });
 	};
 
-
 	// Note: `user` comes from the URL, courtesy of our router
 	render({ user }, { time }) {
 		return (
 			<div class={style.profile}>
 				<h1>Profile: {user}</h1>
 				<p>This is the user profile for a user named { user }.</p>
-
 				<div>Current time: {new Date(time).toLocaleString()}</div>
-
 				<Favorites/>
 			</div>
 		);
