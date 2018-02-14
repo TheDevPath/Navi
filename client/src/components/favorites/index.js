@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import style from './style.css';
+import style from './style';
 
 export default class Favorites extends Component {
   /* dummy data */

@@ -6,8 +6,7 @@ export default class Maps extends Component {
   render() {
     return (
       <div class={style.maps}>
-        <h1>Maps</h1>
-          <MapContainer />
+        <MapContainer />
       </div>
     );
   }

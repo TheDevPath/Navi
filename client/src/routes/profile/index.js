@@ -1,10 +1,11 @@
 import { h, Component } from 'preact';
 import style from './style';
 import Favorites from '../../components/favorites';
+import SearchAutocomplete from '../../components/search';
 
 export default class Profile extends Component {
 	state = {
-		time: Date.now(),
+		time: Date.now()
 	};
 
 	// gets called when this route is navigated to
@@ -30,6 +31,11 @@ export default class Profile extends Component {
 				<h1>Profile: {user}</h1>
 				<p>This is the user profile for a user named { user }.</p>
 				<div>Current time: {new Date(time).toLocaleString()}</div>
+				<SearchAutocomplete style={{width: '80%'}}
+    												onPlaceSelected={(place) => {
+      											console.log(place);
+    			}}
+				/><button type="submit">Search</button>
 				<Favorites/>
 			</div>
 		);
