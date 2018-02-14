@@ -10,10 +10,7 @@ export default class Register extends Component {
         return (
             <div class={style.main}>
                 <div class={style.register}>
-                    <div class={style.logo}>
-                        <img src='../assets/icons/google_maps_2014.png'/>
-                        <h3>Join {this.props.appName}</h3>
-                    </div>
+
                     <RegisterForm />
                 </div>
             </div>
