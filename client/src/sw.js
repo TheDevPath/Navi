@@ -1,6 +1,9 @@
-var CACHE_NAME = 'mapE_v1';
-var urlsToCache = [
+const CACHE_VERSION = 1;
+
+const CACHE_NAME = `mapE_v${CACHE_VERSION}`;
+const urlsToCache = [
   '/',
+  '/bundle.js',
   '/index.js',
   '/sw.js',
   '/style/index.css',
@@ -19,9 +22,27 @@ self.addEventListener('install', function(event) {
       .then(function(cache) {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
+      }).catch(function(err) {
+          console.log('Cache install failed: ', err);
       })
   );
 });
+
+self.addEventListener('activate', event => {
+    // delete any caches that aren't CACHE_NAME
+    // which will get rid of previous caches
+    event.waitUntil(
+      caches.keys().then(keys => Promise.all(
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      )).then(() => {
+        console.log(`${CACHE_NAME} is now ready to handle fetches!`);
+      })
+    );
+  });
 
 self.addEventListener('fetch', function(event) {
     event.respondWith(
@@ -36,7 +57,7 @@ self.addEventListener('fetch', function(event) {
           // can only be consumed once. Since we are consuming this
           // once by cache and once by the browser for fetch, we need
           // to clone the response.
-          var fetchRequest = event.request.clone();
+          const fetchRequest = event.request.clone();
   
           return fetch(fetchRequest).then(
             function(response) {
@@ -49,7 +70,7 @@ self.addEventListener('fetch', function(event) {
               // and because we want the browser to consume the response
               // as well as the cache consuming the response, we need
               // to clone it so we have two streams.
-              var responseToCache = response.clone();
+              const responseToCache = response.clone();
   
               caches.open(CACHE_NAME)
                 .then(function(cache) {
