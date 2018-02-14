@@ -1,4 +1,6 @@
 import { h, Component } from 'preact';
+import { Link } from 'preact-router/match';
+
 import style from './style.css';
 import {Button, Label} from 'preact-material-components';
 import 'preact-material-components/Button/style.css';
@@ -35,9 +37,9 @@ export default class SigninForm extends Component {
                           <TextField label="Enter your password" id="password" name="password" type="password" />
                           <br />
                           <Button id="loginBtn">Login!</Button>
-                          <Button id="registerBtn">Register</Button>
-                          <Button id="resetBtn">Reset password</Button>
-                       </form>
+                          <p><Link activeClassName={style.active} href="/register">register</Link></p>
+                          <p><Link activeClassName={style.active} href="/forgot-password">forgot password?</Link></p>
+                      </form>
                    </div>
               </div>
       </Elevation>
