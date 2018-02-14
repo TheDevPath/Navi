@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import style from './style';
 import PropTypes from 'prop-types';
-import RegisterForm from '../../components/registerForm';
+import RegisterForm from '../../components/RegisterForm';
 
 
 export default class Register extends Component {
