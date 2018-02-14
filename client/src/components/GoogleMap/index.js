@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
-import L from 'leaflet';
 import leafletStyle from '../../../node_modules/leaflet/dist/leaflet.css';
+import L from '../../js/leaflet-tileLayer-pouchdb-cached';
 
 // // TODO - remove this module from dependencies
 // import Map, { GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
@@ -10,7 +10,11 @@ import leafletStyle from '../../../node_modules/leaflet/dist/leaflet.css';
  */
 const OSM_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const OSM_ATTRIB = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
-const TILE_LAYER = new L.TileLayer(OSM_URL, {attribution: OSM_ATTRIB});
+const TILE_LAYER = new L.TileLayer(OSM_URL, {
+    attribution: OSM_ATTRIB,
+    useCache: true,
+    crossOrigin: true,
+});
 
 // redirect marker icon path to assets directory
 L.Icon.Default.imagePath = '../../assets/icons/leaflet/';

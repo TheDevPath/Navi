@@ -1,4 +1,4 @@
-const CACHE_VERSION = 1;
+const CACHE_VERSION = 2;
 
 const CACHE_NAME = `mapE_v${CACHE_VERSION}`;
 const urlsToCache = [
