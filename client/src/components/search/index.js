@@ -68,10 +68,7 @@ export default class SearchAutocomplete extends Component {
         const {onPlaceSelected, types, componentRestrictions, bounds, ...rest} = this.props;
     
         return (
-          <input
-          ref={(c) => this._input = c}
-            {...rest}
-          />
+            <input ref={(c) => this._input = c} {...rest} />
         );
       }
 }
