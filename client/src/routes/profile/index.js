@@ -31,11 +31,11 @@ export default class Profile extends Component {
 				<h1>Profile: {user}</h1>
 				<p>This is the user profile for a user named { user }.</p>
 				<div>Current time: {new Date(time).toLocaleString()}</div>
-				<SearchAutocomplete style={{width: '90%'}}
+				<SearchAutocomplete style={{width: '80%'}}
     												onPlaceSelected={(place) => {
       											console.log(place);
-    		}}
-	/>
+    			}}
+				/><button type="submit">Search</button>
 				<Favorites/>
 			</div>
 		);
