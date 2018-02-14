@@ -33,10 +33,11 @@ export default class SigninForm extends Component {
                       <form onSubmit={this.handleSubmit}>
                           <TextField label="Enter your email" id="email" name="email" type="email" /> <br /><br />
                           <TextField label="Enter your password" id="password" name="password" type="password" />
-                          <TextField label="Re-enter password" id="passwordConfirm" name="passwordConfirm" type="password" />
+                          <br />
+                          <TextField label="Confirm password" id="passwordConfirm" name="passwordConfirm" type="password" />
                           <br />
                           <Button id="registerBtn">Register</Button>
-                          <Button id="loginBtn">Have an account?</Button>
+                          <Button id="loginBtn">Already signed up? Login</Button>
                        </form>
                    </div>
               </div>
