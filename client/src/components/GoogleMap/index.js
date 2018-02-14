@@ -1,78 +1,72 @@
 import { h, Component } from 'preact';
-const { GOOGLE_API_KEY } = require('../../../config');
+import L from 'leaflet';
+import leafletStyle from '../../../node_modules/leaflet/dist/leaflet.css';
 
-import Map, { GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
+// // TODO - remove this module from dependencies
+// import Map, { GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 
-class MapContainer extends Component {
+/**
+ * TIle layer configuration and attribution constants
+ */
+const OSM_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const OSM_ATTRIB = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
+const TILE_LAYER = new L.TileLayer(OSM_URL, {attribution: OSM_ATTRIB});
+
+// redirect marker icon path to assets directory
+L.Icon.Default.imagePath = '../../assets/icons/leaflet/';
+
+export default class MapContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showingInfoWindow: false,
-            activeMarker: {},
-            selectedPlace: {},
+            map: null,
             lat: null,
             lng: null,
+            watchID: null,
         }
-        this.onMarkerClick = this.onMarkerClick.bind(this);
-        this.onMapClicked = this.onMapClicked.bind(this);
-        this.geolocatonSuccess = this.geolocatonSuccess.bind(this);
-        navigator.geolocation.getCurrentPosition(this.geolocatonSuccess);
-    }
+        this.initMap = this.initMap.bind(this);
+      }
 
-    geolocatonSuccess(position) {
+      componentDidMount() {
+        // continuously track users position
+        const watchID = navigator.geolocation.watchPosition(this.initMap);
         this.setState({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
+            watchID: watchID,
         });
-    }
+      }
+    
+      initMap(position) {
+        const map = new L.Map('map');
 
-    onMarkerClick = (props, marker, e) => {
         this.setState({
-            selectedPlace: props,
-            activeMarker: marker,
-            showingInfoWindow: true
+            map: map,
+            lat: position.coords.latitude || 51.3,
+            lng: position.coords.longitude || 0.7,
         });
-    };
-
-    onMapClicked = (props) => {
-        if (this.state.showingInfoWindow) {
-            this.setState({
-                showingInfoWindow: false,
-                activeMarker: null
-            })
-        }
-    };
+    
+        map.setView(L.latLng(this.state.lat, this.state.lng), 15);
+        map.addLayer(TILE_LAYER);
+    
+        L.marker([this.state.lat, this.state.lng])
+          .addTo(map).bindPopup('Current Location').openPopup();
+      }
 
     render() {
+        const styles = {
+            leaflet: leafletStyle,
+            height: 500,  // HAVE TO SET HEIGHT TO RENDER MAP
+        }
         return (
-            <Map
-                google={this.props.google}
-                onClick={this.onMapClicked}
-                zoom={13}
-                center={{
-                    lat: this.state.lat,
-                    lng: this.state.lng,
-                }}
-            >
-                <Marker
-                    onClick={this.onMarkerClick}
-                    name={'Current location'}
-                    position={{lat: this.state.lat, lng: this.state.lng}}
-                />
-
-                <InfoWindow
-                    marker={this.state.activeMarker}
-                    visible={this.state.showingInfoWindow}
-                >
-                    <h1>
-                        {this.state.selectedPlace.name}
-                    </h1>
-                </InfoWindow>
-            </Map>
+            <div id="map" style={styles}/>
         )
     };
+
+    componentWillUnmount() {
+        console.log('begin - componentWillUnmount() ', this.state.map);
+        // stop watching user position when map is unmounted
+        navigator.geolocation.clearWatch(this.state.watchID);
+        this.state.map.remove();
+        console.log('begin - componentWillUnmount() ', this.state.map);
+    }
 }
 
-export default GoogleApiWrapper({
-    apiKey: GOOGLE_API_KEY,
-})(MapContainer)
