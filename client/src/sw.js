@@ -11,10 +11,6 @@ const urlsToCache = [
   '/assets/icons/leaflet/marker-shadow.png',
 ];
 
-/**
- * TODO - create a skeleton.html for root to control root html file?
- */
-
 self.addEventListener('install', function(event) {
   // Perform install steps
   event.waitUntil(
