@@ -7,6 +7,7 @@ import Logo from './Logo';
 import Home from '../routes/home';
 import Profile from '../routes/profile';
 import Directions from '../routes/directions';
+import Places from '../routes/places';
 import Pins from '../routes/pins';
 import Maps from '../routes/maps';
 import Signin from '../routes/signin';
@@ -42,7 +43,7 @@ export default class App extends Component {
 					<Signin path="/signin" />
 					<Signin path="/forgot-password"/>
 					<Signin path="/reset-password"/>
-
+					<Places path="/places" />
 					<Directions path="/directions" />
 					<Pins path="/pins" />
 					<Maps path="/maps" />
