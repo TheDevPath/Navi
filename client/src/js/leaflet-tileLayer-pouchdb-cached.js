@@ -2,7 +2,7 @@
  * Modified version of https://github.com/MazeMap/Leaflet.TileLayer.PouchDBCached
  */
 const L = require('leaflet');
-const PouchDB = require('pouchdb-browser');
+import PouchDB from 'pouchdb-browser';
 
 L.TileLayer.addInitHook(function() {
 
@@ -13,8 +13,11 @@ L.TileLayer.addInitHook(function() {
 	}
 
 	this._db = new PouchDB('offline-tiles');
+	console.log('pouch adapter: ', this._db.adapter);  // TODO - remove
 	this._canvas = document.createElement('canvas');
-
+	console.log('leaflet addInitHook - canvas: ', this._canvas);  // TODO - remove
+	console.log('\tcanvas - getContext: ',
+	  this._canvas.getContext, this._canvas.getContext('2d'));  // TODO - remove
 	if (!(this._canvas.getContext && this._canvas.getContext('2d'))) {
 		// HTML5 canvas is needed to pack the tiles as base64 data. If
 		//   the browser doesn't support canvas, the code will forcefully
@@ -65,8 +68,11 @@ L.TileLayer.include({
 		tile.alt = '';
 
 		var tileUrl = this.getTileUrl(coords);
+		console.log('\tleaflet createTile() - tileURL: ', tileUrl);  // TODO - remove
+		console.log(`\tcache files: ${this.options.useCache}; valid canvas: ${this.options._canvas}`);  // TODO - remove
 
 		if (this.options.useCache && this._canvas) {
+			console.log('\tleaflet createTile() - attempt to cache tile: ', this.options.useCache);  // TODO - remove
 			this._db.get(tileUrl, {revs_info: true}, this._onCacheLookup(tile, tileUrl, done));
 		} else {
 			// Fall back to standard behaviour
@@ -80,15 +86,17 @@ L.TileLayer.include({
 	// Returns a callback (closure over tile/key/originalSrc) to be run when the DB
 	//   backend is finished with a fetch operation.
 	_onCacheLookup: function(tile, tileUrl, done) {
+		console.log('leaflet _onCacheLookup - processing');  // TODO - remove
 		return function(err, data) {
 			if (data) {
+				console.log('\tleaflet _onCacheLookup() - attempting to get cache: ', data);  // TODO - remove
 				this.fire('tilecachehit', {
 					tile: tile,
 					url: tileUrl
 				});
 				if (Date.now() > data.timestamp + this.options.cacheMaxAge && !this.options.useOnlyCache) {
 					// Tile is too old, try to refresh it
-					//console.log('Tile is too old: ', tileUrl);
+					console.log('\t_onCacheLookup() - Tile is too old: ', tileUrl);
 
 					if (this.options.saveToCache) {
 						tile.onload = L.bind(this._saveTile, this, tile, tileUrl, data._revs_info[0].rev, done);
@@ -102,7 +110,7 @@ L.TileLayer.include({
 					}
 				} else {
 					// Serve tile from cached data
-					//console.log('Tile is cached: ', tileUrl);
+					console.log('\t_onCacheLookup() - Tile is cached: ', tileUrl);
 					tile.onload = L.bind(this._tileOnLoad, this, done, tile);
 					tile.src = data.dataUrl;    // data.dataUrl is already a base64-encoded PNG image.
 				}
@@ -113,12 +121,12 @@ L.TileLayer.include({
 				});
 				if (this.options.useOnlyCache) {
 					// Offline, not cached
-// 					console.log('Tile not in cache', tileUrl);
+					console.log('\t_onCacheLookup() - Tile not in cache', tileUrl);
 					tile.onload = L.Util.falseFn;
 					tile.src = L.Util.emptyImageUrl;
 				} else {
 					//Online, not cached, request the tile normally
-// 					console.log('Requesting tile normally', tileUrl);
+					console.log('\t_onCacheLookup(), no cache - requesting tile normally:', tileUrl);
 					if (this.options.saveToCache) {
 						tile.onload = L.bind(this._saveTile, this, tile, tileUrl, null, done);
 					} else {
@@ -136,6 +144,7 @@ L.TileLayer.include({
 	// The handler will delete the document from pouchDB if an existing revision is passed.
 	//   This will keep just the latest valid copy of the image in the cache.
 	_saveTile: function(tile, tileUrl, existingRevision, done) {
+		console.log('leaflet _saveTile() - processing: ', tileUrl);  // TODO - remove
 		if (this._canvas === null) return;
 		this._canvas.width  = tile.naturalWidth  || tile.width;
 		this._canvas.height = tile.naturalHeight || tile.height;
@@ -143,23 +152,26 @@ L.TileLayer.include({
 		var context = this._canvas.getContext('2d');
 		context.drawImage(tile, 0, 0);
 
-		var dataUrl;
+		var tileBlob;
+		const tileFileName = tileUrl.substr(7);
 		try {
-			dataUrl = this._canvas.toDataURL(this.options.cacheFormat);
+			this._canvas.toBlob((blob) => {
+				if (existingRevision) {
+					this._db.remove(tileUrl, existingRevision);
+				}
+				this._db.putAttachment(tileUrl, tileFileName, blob, 'image/png')
+				  .then(function(response) {
+						console.log('\tleaflet _saveTile() - pouchdb.put response: ', response);  // TODO - remove
+						if (done) { done(); }
+					}).catch(function(err) {
+						console.log('\tleaflet _saveTile() - pouchdb.put error: ', err);  // TODO - remove
+					});
+			}, this.options.cacheFormat);
 		} catch(err) {
+			console.log('\tleaflet _saveTile() - tile cache error: ', tileUrl);  // TODO - remove
 			this.fire('tilecacheerror', { tile: tile, error: err });
 			return done();
 		}
-		var doc = {dataUrl: dataUrl, timestamp: Date.now()};
-
-		if (existingRevision) {
-			this._db.remove(tileUrl, existingRevision);
-		}
-		/// FIXME: There is a deprecation warning about parameters in the
-		///   this._db.put() call.
-		this._db.put(doc, tileUrl, doc.timestamp);
-
-		if (done) { done(); }
 	},
 
 	// 🍂section PouchDB tile caching options
@@ -167,6 +179,7 @@ L.TileLayer.include({
 	// Starts seeding the cache given a bounding box and the minimum/maximum zoom levels
 	// Use with care! This can spawn thousands of requests and flood tileservers!
 	seed: function(bbox, minZoom, maxZoom) {
+		console.log('leaflet seed() - processing: ', bbox);  // TODO - remove
 		if (!this.options.useCache) return;
 		if (minZoom > maxZoom) return;
 		if (!this._map) return;
@@ -200,6 +213,7 @@ L.TileLayer.include({
 			maxZoom: maxZoom,
 			queueLength: queue.length
 		}
+		console.log('\tleaflet seedData: ', seedData);  // TODO - remove
 		this.fire('seedstart', seedData);
 		var tile = this._createTile();
 		tile._layer = this;
@@ -208,12 +222,14 @@ L.TileLayer.include({
 	},
 
 	_createTile: function () {
+		console.log('leaflet _creacteTile()');  // TODO - remove
 		return document.createElement('img');
 	},
 
 	// Modified L.TileLayer.getTileUrl, this will use the zoom given by the parameter coords
 	//  instead of the maps current zoomlevel.
 	_getTileUrl: function (coords) {
+		console.log('leaflet _getTileUrl() - processing: ', coords);  // TODO - remove
 		var zoom = coords.z;
 		if (this.options.zoomReverse) {
 			zoom = this.options.maxZoom - zoom;
@@ -232,6 +248,8 @@ L.TileLayer.include({
 	//   asynchronously recursively call itself when the tile has
 	//   finished loading.
 	_seedOneTile: function(tile, remaining, seedData) {
+		console.log('leaflet _seedOneTile() - processing: ', tile);  // TODO - remove
+		console.log('\tleaflet seed remaining: ', remaining);  // TODO - remove
 		if (!remaining.length) {
 			this.fire('seedend', seedData);
 			return;
