@@ -153,37 +153,35 @@ L.TileLayer.include({
 		var context = this._canvas.getContext('2d');
 		context.drawImage(tile, 0, 0);
 
+		var dataUrl;
 		try {
-			this._canvas.toBlob((blob) => {
-				if (existingRevision) {
-					this._db.remove(tileUrl, existingRevision);
-				}
-
-				const doc = {
-					_id: tileUrl,
-					timestamp: Date.now(),
-					_attachments: {
-						tileUrl: {
-							'content_type': 'image/png',
-							'data': blob,
-						},
-					},
-				};
-
-				this._db.put(doc)
-				  .then(function(response) {
-						if (done) { done(); }
-					})
-					.catch(function(err) {
-						console.log(err);
-						this.fire('tilecacheerror', { tile: tile, error: err });
-						return done();
-					});
-			}, this.options.cacheFormat);
+			dataUrl = this._canvas.toDataURL(this.options.cacheFormat);
 		} catch(err) {
 			this.fire('tilecacheerror', { tile: tile, error: err });
 			return done();
 		}
+
+		var doc = {_id: tileUrl, dataUrl: dataUrl, timestamp: Date.now()};
+	    if (existingRevision) {
+	      this._db.get(tileUrl).then(function(doc) {
+	          return this._db.put({
+	              _id: doc._id,
+	              _rev: doc._rev,
+	              dataUrl: dataUrl,
+	              timestamp: Date.now()
+	          });
+	      }.bind(this)).then(function(response) {
+	        //console.log('_saveTile update: ', response);
+	      });
+	    } else {
+	      this._db.put(doc).then( function(doc) {
+	        //console.log('_saveTile insert: ', doc);
+	      });
+	    }
+
+	    if (done) {
+	      done();
+	    }
 	},
 
 	// 🍂section PouchDB tile caching options
@@ -234,8 +232,7 @@ L.TileLayer.include({
 	},
 
 	_createTile: function () {
-		console.log('leaflet _creacteTile()');  // TODO - remove
-		return document.createElement('img');
+		return new Image();
 	},
 
 	// Modified L.TileLayer.getTileUrl, this will use the zoom given by the parameter coords
@@ -260,8 +257,6 @@ L.TileLayer.include({
 	//   asynchronously recursively call itself when the tile has
 	//   finished loading.
 	_seedOneTile: function(tile, remaining, seedData) {
-		console.log('leaflet _seedOneTile() - processing: ', tile);  // TODO - remove
-		console.log('\tleaflet seed remaining: ', remaining);  // TODO - remove
 		if (!remaining.length) {
 			this.fire('seedend', seedData);
 			return;
@@ -278,9 +273,12 @@ L.TileLayer.include({
 
 		this._db.get(url, function(err, data) {
 			if (!data) {
-				/// FIXME: Do something on tile error!!
-				tile.onload = function(ev) {
-					this._saveTile(tile, url, null); //(ev)
+				tile.onload = function(e) {
+					this._saveTile(tile, url, null);
+					this._seedOneTile(tile, remaining, seedData);
+				}.bind(this);
+				tile.onerror = function(e) {
+					// Could not load tile, let's continue anyways.
 					this._seedOneTile(tile, remaining, seedData);
 				}.bind(this);
 				tile.crossOrigin = 'Anonymous';
@@ -289,7 +287,6 @@ L.TileLayer.include({
 				this._seedOneTile(tile, remaining, seedData);
 			}
 		}.bind(this));
-
 	}
 
 });
