@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 import Match from 'preact-router/match';
 import GoogleMap from './GoogleMap';
+import PlacesMap from './PlacesMap';
 import Nav from './Nav';
 import Logo from './Logo';
 import Home from '../routes/home';
