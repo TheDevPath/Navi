@@ -13,11 +13,7 @@ L.TileLayer.addInitHook(function() {
 	}
 
 	this._db = new PouchDB('offline-tiles');
-	console.log('pouch adapter: ', this._db.adapter);  // TODO - remove
 	this._canvas = document.createElement('canvas');
-	console.log('leaflet addInitHook - canvas: ', this._canvas);  // TODO - remove
-	console.log('\tcanvas - getContext: ',
-	  this._canvas.getContext, this._canvas.getContext('2d'));  // TODO - remove
 	if (!(this._canvas.getContext && this._canvas.getContext('2d'))) {
 		// HTML5 canvas is needed to pack the tiles as base64 data. If
 		//   the browser doesn't support canvas, the code will forcefully
@@ -68,12 +64,17 @@ L.TileLayer.include({
 		tile.alt = '';
 
 		var tileUrl = this.getTileUrl(coords);
-		console.log('\tleaflet createTile() - tileURL: ', tileUrl);  // TODO - remove
-		console.log(`\tcache files: ${this.options.useCache}; valid canvas: ${this.options._canvas}`);  // TODO - remove
 
+		// if available get cached tile image
 		if (this.options.useCache && this._canvas) {
-			console.log('\tleaflet createTile() - attempt to cache tile: ', this.options.useCache);  // TODO - remove
-			this._db.get(tileUrl, {revs_info: true}, this._onCacheLookup(tile, tileUrl, done));
+			this._db.get(tileUrl,
+				{
+					rev: true,
+					attachments: true,
+					binary: true,  // return attachment data as Blobs instead of as base64-encoded strings
+				},
+				this._onCacheLookup(tile, tileUrl, done)
+			);
 		} else {
 			// Fall back to standard behaviour
 			tile.onload = L.bind(this._tileOnLoad, this, done, tile);
@@ -87,34 +88,35 @@ L.TileLayer.include({
 	//   backend is finished with a fetch operation.
 	_onCacheLookup: function(tile, tileUrl, done) {
 		console.log('leaflet _onCacheLookup - processing');  // TODO - remove
-		return function(err, data) {
-			if (data) {
-				console.log('\tleaflet _onCacheLookup() - attempting to get cache: ', data);  // TODO - remove
+		return function(err, doc) {
+			// attempt to load cached tile image
+			if (doc) {
+				console.log('\tleaflet _onCacheLookup() - attempting to get cache: ', doc);  // TODO - remove
 				this.fire('tilecachehit', {
 					tile: tile,
 					url: tileUrl
 				});
-				if (Date.now() > data.timestamp + this.options.cacheMaxAge && !this.options.useOnlyCache) {
+				if (Date.now() > doc.timestamp + this.options.cacheMaxAge && !this.options.useOnlyCache) {
 					// Tile is too old, try to refresh it
 					console.log('\t_onCacheLookup() - Tile is too old: ', tileUrl);
 
 					if (this.options.saveToCache) {
-						tile.onload = L.bind(this._saveTile, this, tile, tileUrl, data._revs_info[0].rev, done);
+						tile.onload = L.bind(this._saveTile, this, tile, tileUrl, doc._revs_info[0].rev, done);
 					}
 					tile.crossOrigin = 'Anonymous';
 					tile.src = tileUrl;
 					tile.onerror = function(ev) {
 						// If the tile is too old but couldn't be fetched from the network,
 						//   serve the one still in cache.
-						this.src = data.dataUrl;
+						this.src = doc.dataUrl;
 					}
 				} else {
 					// Serve tile from cached data
 					console.log('\t_onCacheLookup() - Tile is cached: ', tileUrl);
 					tile.onload = L.bind(this._tileOnLoad, this, done, tile);
-					tile.src = data.dataUrl;    // data.dataUrl is already a base64-encoded PNG image.
+					tile.src = doc.dataUrl;    // data.dataUrl is already a base64-encoded PNG image.
 				}
-			} else {
+			} else {  // not tile image exists
 				this.fire('tilecachemiss', {
 					tile: tile,
 					url: tileUrl
@@ -144,7 +146,6 @@ L.TileLayer.include({
 	// The handler will delete the document from pouchDB if an existing revision is passed.
 	//   This will keep just the latest valid copy of the image in the cache.
 	_saveTile: function(tile, tileUrl, existingRevision, done) {
-		console.log('leaflet _saveTile() - processing: ', tileUrl);  // TODO - remove
 		if (this._canvas === null) return;
 		this._canvas.width  = tile.naturalWidth  || tile.width;
 		this._canvas.height = tile.naturalHeight || tile.height;
@@ -152,23 +153,34 @@ L.TileLayer.include({
 		var context = this._canvas.getContext('2d');
 		context.drawImage(tile, 0, 0);
 
-		var tileBlob;
-		const tileFileName = tileUrl.substr(7);
 		try {
 			this._canvas.toBlob((blob) => {
 				if (existingRevision) {
 					this._db.remove(tileUrl, existingRevision);
 				}
-				this._db.putAttachment(tileUrl, tileFileName, blob, 'image/png')
+
+				const doc = {
+					_id: tileUrl,
+					timestamp: Date.now(),
+					_attachments: {
+						tileUrl: {
+							'content_type': 'image/png',
+							'data': blob,
+						},
+					},
+				};
+
+				this._db.put(doc)
 				  .then(function(response) {
-						console.log('\tleaflet _saveTile() - pouchdb.put response: ', response);  // TODO - remove
 						if (done) { done(); }
-					}).catch(function(err) {
-						console.log('\tleaflet _saveTile() - pouchdb.put error: ', err);  // TODO - remove
+					})
+					.catch(function(err) {
+						console.log(err);
+						this.fire('tilecacheerror', { tile: tile, error: err });
+						return done();
 					});
 			}, this.options.cacheFormat);
 		} catch(err) {
-			console.log('\tleaflet _saveTile() - tile cache error: ', tileUrl);  // TODO - remove
 			this.fire('tilecacheerror', { tile: tile, error: err });
 			return done();
 		}
