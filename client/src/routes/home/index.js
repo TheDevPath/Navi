@@ -1,6 +1,9 @@
 import { h, Component } from 'preact';
 import style from './style';
+// import MapContainer from '../../components/GoogleMap';
+import MapContainer from '../../components/LeafletOsmMap';  // use leaflet.js for now
 import SearchAutocomplete from '../../components/search';
+
 
 export default class Home extends Component {
 	render() {
