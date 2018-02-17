@@ -32,6 +32,13 @@ export default class MapContainer extends Component {
       }
 
       componentDidMount() {
+        // initialize map container if null
+        if (!this.state.map) {
+            this.setState({
+                map: new L.Map('map'),
+            });
+        }
+
         // continuously track users position
         const watchID = navigator.geolocation.watchPosition(this.initMap);
         this.setState({
@@ -40,19 +47,21 @@ export default class MapContainer extends Component {
       }
     
       initMap(position) {
-        const map = new L.Map('map');
+        // don't initialize map if it already has OSM tile layer
+        if (this.state.map.hasLayer(TILE_LAYER)) {
+            return;
+        }
 
         this.setState({
-            map: map,
             lat: position.coords.latitude || 51.3,
             lng: position.coords.longitude || 0.7,
         });
     
-        map.setView(L.latLng(this.state.lat, this.state.lng), 15);
-        map.addLayer(TILE_LAYER);
+        this.state.map.setView(L.latLng(this.state.lat, this.state.lng), 15);
+        this.state.map.addLayer(TILE_LAYER);
     
         L.marker([this.state.lat, this.state.lng])
-          .addTo(map).bindPopup('Current Location').openPopup();
+          .addTo(this.state.map).bindPopup('Current Location').openPopup();
       }
 
     render() {
