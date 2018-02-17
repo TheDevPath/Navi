@@ -1,5 +1,5 @@
 import {h, Component} from 'preact';
-import style from './style.css';
+import style from './style';
 import {Menu, Button} from 'preact-material-components';
 import 'preact-material-components/List/style.css';
 import 'preact-material-components/Menu/style.css';
@@ -27,6 +27,7 @@ export default class Nav extends Component {
 						<a href="/"><Menu.Item>Home</Menu.Item></a>
 						<a href="/profile"><Menu.Item>Profile</Menu.Item></a>
 						<a href="/directions"><Menu.Item>Directions</Menu.Item></a>
+						<a href="/places"><Menu.Item>Places</Menu.Item></a>						
 						<a href="/pins"><Menu.Item>Pins</Menu.Item></a>
 						<a href="/maps"><Menu.Item>Maps</Menu.Item></a>
 						<a href="/signin"><Menu.Item>Sign in</Menu.Item></a>

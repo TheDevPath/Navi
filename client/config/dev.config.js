@@ -2,5 +2,5 @@ const SECRETS = require('../../config/secrets.json'); // nodejs will auto read j
 
 module.exports = {
     GOOGLE_API_KEY: SECRETS.google_maps.api_key,
-    APP_NAME: 'E-map'
+    APP_NAME: 'Map-e'
 };
