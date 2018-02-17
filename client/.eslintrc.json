@@ -1,0 +1,9 @@
+{
+    "extends": "airbnb",
+    "plugins": [
+        "react",
+        "jsx-a11ly",
+        "Import",
+        "react-compat"
+    ]
+}
