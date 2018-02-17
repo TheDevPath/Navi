@@ -29,7 +29,7 @@ export default class App extends Component {
 			<div id="app">
 				<Nav />
 				<Match path="/">
-					{ ({ matches, path, url }) => !matches && (
+					{ ({ matches, path, url }) => matches && (
 						<Logo />
 					) }
 				</Match>
