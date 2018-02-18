@@ -15,7 +15,6 @@ class PlacesContainer extends Component {
       lat: null,
       lng: null,
     }
-    let places = [];
     this.onMarkerClick = this.onMarkerClick.bind(this);
     this.onMapClicked = this.onMapClicked.bind(this);
     this.geolocatonSuccess = this.geolocatonSuccess.bind(this);
