@@ -7,11 +7,8 @@ export default class Home extends Component {
 		return (
 			<div class={style.home}>
 				<p>What Can Map-e find for you today!</p>
-				<SearchAutocomplete style={{width: '80%'}}
-    												onPlaceSelected={(place) => {
-      											console.log(place);
-    			}}
-				/><button type="submit">Search</button>
+				<SearchAutocomplete />
+				<button type="submit">Search</button>
 				<a href="/maps"><button>Map</button></a>
 				<a href="/directions"><button>Directions</button></a>
 				<a href="/places"><button>Places</button></a>				
