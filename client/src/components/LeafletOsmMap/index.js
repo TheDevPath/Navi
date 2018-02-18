@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import leafletStyle from '../../../node_modules/leaflet/dist/leaflet.css';
+import '../../../node_modules/leaflet/dist/leaflet.css';
 import L from '../../js/leaflet-tileLayer-pouchdb-cached';
 
 // // TODO - remove this module from dependencies
@@ -66,7 +66,6 @@ export default class MapContainer extends Component {
 
     render() {
         const styles = {
-            leaflet: leafletStyle,
             height: 500,  // HAVE TO SET HEIGHT TO RENDER MAP
         }
         return (
