@@ -1,31 +1,48 @@
 import { h, Component } from 'preact';
-import PropTypes from 'prop-types';
 import style from './style';
-import Map, { GoogleApiWrapper, Marker, InfoWindow, Listing } from 'google-maps-react';
-
+import GoogleApiComponent from 'google-maps-react/dist/GoogleApiComponent';
 const { GOOGLE_API_KEY } = require('../../../config');
 
 class SearchAutocomplete extends Component {
-    static propTypes = {
-      onPlaceSelected: PropTypes.func,
-      types: PropTypes.array,
-      componentRestrictions: PropTypes.object,
-      bounds: PropTypes.object,
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentLocation: {
+        lat: null,
+        lng: null
+      }
     }
-
-    constructor(props) {
-      super(props);
-      this.complete = null;
-      this.autocomplete = this.autocomplete.bind(this);
+    this.complete = null;
+    if (navigator && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const coords = pos.coords;
+        this.setState({
+          currentLocation: {
+            lat: coords.latitude,
+            lng: coords.longitude
+          }
+        })
+      })
     }
+    this.loadMap = this.loadMap.bind(this);
+  }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentLocation !== this.state.currentLocation) {
+      this.loadMap();
+    }
+  }
 
-    autocomplete(mapProps, map) {
-      const {google} = mapProps;
+  loadMap() {
+    if(this.props && this.props.google) {
+      const {google} = this.props;
+      const maps = google.maps;
+      const input = this._input;
+      const {lat, lng} = this.state.currentLocation;
       let defaultBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(-33.8902, 151.1759),
-        new google.maps.LatLng(-33.8474, 151.2631));
-      let input = this._input;
+            new google.maps.LatLng(lat, lng),
+            new google.maps.LatLng(lat, lng));
       let options = {
         bounds: defaultBounds,
         types: ['(cities)']
@@ -36,21 +53,17 @@ class SearchAutocomplete extends Component {
         console.log(place);
       })
     }
-      
-    render() {
-      return (
-        <div>
-          <input class={style.search} ref={(c) => this._input = c}/>
-          <div class={style.hide}>
-            <Map google={this.props.google}
-              onReady={this.autocomplete}>
-            </Map>
-          </div>
-        </div>  
-      );
-    }
+  }
+    
+  render() {
+    return (
+      <div>
+        <input class={style.search} ref={(input) => this._input = input}/>
+      </div>  
+    );
+  }
 }
 
-export default GoogleApiWrapper({
+export default GoogleApiComponent({
   apiKey: GOOGLE_API_KEY,
 })(SearchAutocomplete)
