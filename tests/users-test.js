@@ -51,9 +51,9 @@ describe('API Routes', () => {
   // invalid email and try to create
   // invalid password and try to create
   describe('POST users/register', () => {
-    it('succesfully creates a new user', () => {
+    it('succesfully creates a new user', async () => {
       try {
-        respond.get('users/register')
+        await respond.get('users/register')
           .send({
             name: 'Taco Test',
             email: 'test@testing.com',
@@ -67,9 +67,9 @@ describe('API Routes', () => {
         throw err;
       }
     });
-    it('User already exists', () => {
+    it('User already exists', async () => {
       try {
-        respond.get('users/register')
+        await respond.get('users/register')
           .send({
             name: users[0].name,
             email: users[0].email,
