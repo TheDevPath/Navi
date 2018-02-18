@@ -19,7 +19,7 @@ While the first creates a remote that uses `ssh` authentication, the latter uses
 
 # Get Google Maps API key
 
-- In the config subdirectory you will find secrets-*example.json*. Rename this to *secrets.json*. 
+- In the config subdirectory you will find secrets-*example.json. *Copy it's contents to a new file called secrets.json in the same directory*.
 
 - Next get a [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key)
 
