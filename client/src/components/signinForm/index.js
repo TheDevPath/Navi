@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
 
-import style from './style.css';
+import style from './style';
 import {Button, Label} from 'preact-material-components';
 import 'preact-material-components/Button/style.css';
 
