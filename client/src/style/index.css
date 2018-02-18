@@ -18,3 +18,10 @@ html, body {
 #app {
 	height: 100%;
 }
+
+span {
+    display: inline-block;
+}
+img {
+    width: 50%;
+}
