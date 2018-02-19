@@ -25,5 +25,9 @@ router.post('/savedpins', verifyToken, savedPinsController.postSavedPins);
 router.delete('/savedpins', verifyToken, savedPinsController.deleteSavedPins);
 router.delete('/savedpins/:id', verifyToken, savedPinsController.deleteSavedPinsById);
 router.post('/autocomplete', autocomplete);
+router.get('/history', verifyToken, searchHistoryController.getSearchHistory);
+router.get('/history/recent/:num', verifyToken, searchHistoryController.getRecent);
+router.post('/history/:query', verifyToken, searchHistoryController.postQuery);
+router.delete('/history', verifyToken, searchHistoryController.deleteSearchHistory);
 
 module.exports = router;
