@@ -2,7 +2,7 @@ module.exports = function(config, env, helpers) {
 	if (!env.production) {
 		config.devServer.proxy = [
 			{
-				path: '/api/**',
+				path: '/**',
 				target: 'http://localhost:8081'
 			}
 		];
