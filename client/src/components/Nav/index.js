@@ -25,11 +25,10 @@ export default class Nav extends Component {
 						}}
 					>
 						<a href="/"><Menu.Item>Home</Menu.Item></a>
-						<a href="/profile"><Menu.Item>Profile</Menu.Item></a>
+						<a href="/maps"><Menu.Item>Maps</Menu.Item></a>
 						<a href="/directions"><Menu.Item>Directions</Menu.Item></a>
 						<a href="/places"><Menu.Item>Places</Menu.Item></a>						
-						<a href="/pins"><Menu.Item>Pins</Menu.Item></a>
-						<a href="/maps"><Menu.Item>Maps</Menu.Item></a>
+						<a href="/profile"><Menu.Item>Profile</Menu.Item></a>
 						<a href="/signin"><Menu.Item>Sign in</Menu.Item></a>
 					</Menu>
 				</Menu.Anchor>
