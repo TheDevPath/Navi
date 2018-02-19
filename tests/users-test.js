@@ -17,9 +17,9 @@ beforeEach(populateUsers);
 afterEach(deleteTestUser);
 afterEach(stopServer);
 
-describe('API Routes', () => {
-  describe('GET /users/user', () => {
-    it('does not send a user if not logged in', async () => {
+describe('API Routes', function(){
+  describe('GET /users/user', function(){
+    it('does not send a user if not logged in', async function(){
       try {
         const res = await request(app)
           .get('/users/user')
@@ -30,7 +30,7 @@ describe('API Routes', () => {
         throw error;
       }
     });
-    it('Sends the requested user when they exist', async () => {
+    it('Sends the requested user when they exist', async function(){
       try {
         await request(app)
           .get('/users/user')
@@ -50,8 +50,8 @@ describe('API Routes', () => {
   // valid email and password, but exists already
   // invalid email and try to create
   // invalid password and try to create
-  describe('POST users/register', () => {
-    it('succesfully creates a new user', async () => {
+  describe('POST users/register', function(){
+    it('succesfully creates a new user', async function(){
       try {
         await respond.get('users/register')
           .send({
@@ -67,7 +67,7 @@ describe('API Routes', () => {
         throw err;
       }
     });
-    it('User already exists', async () => {
+    it('User already exists', async function(){
       try {
         await respond.get('users/register')
           .send({
