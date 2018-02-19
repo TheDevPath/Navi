@@ -1,15 +1,19 @@
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 import Match from 'preact-router/match';
+
+// import components
 import GoogleMap from './GoogleMap';
 import PlacesMap from './PlacesMap';
 import Nav from './Nav';
 import Logo from './Logo';
+import Pins from './Pins';
+
+// import routes
 import Home from '../routes/home';
 import Profile from '../routes/profile';
 import Directions from '../routes/directions';
 import Places from '../routes/places';
-import Pins from '../routes/pins';
 import Maps from '../routes/maps';
 import Signin from '../routes/signin';
 import Register from '../routes/register';
@@ -39,7 +43,6 @@ export default class App extends Component {
 					<Home path="/" />
 					<Profile path="/profile/" user="me" />
 					<Profile path="/profile/:user" />
-
 					<Register path="/register" />
 					<Signin path="/signin" />
 					<Signin path="/forgot-password"/>
