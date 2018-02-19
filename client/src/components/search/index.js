@@ -1,75 +1,69 @@
 import { h, Component } from 'preact';
-import PropTypes from 'prop-types';
-
+import style from './style';
+import GoogleApiComponent from 'google-maps-react/dist/GoogleApiComponent';
 const { GOOGLE_API_KEY } = require('../../../config');
 
-export default class SearchAutocomplete extends Component {
-    static propTypes = {
-        onPlaceSelected: PropTypes.func,
-    types: PropTypes.array,
-    componentRestrictions: PropTypes.object,
-    bounds: PropTypes.object,
+class SearchAutocomplete extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentLocation: {
+        lat: null,
+        lng: null
+      }
     }
+    this.complete = null;
+    if (navigator && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const coords = pos.coords;
+        this.setState({
+          currentLocation: {
+            lat: coords.latitude,
+            lng: coords.longitude
+          }
+        })
+      })
+    }
+    this.loadMap = this.loadMap.bind(this);
+  }
 
-    constructor(props) {
-        
-        super(props);
-        this.autocomplete = null;
-        this.onSelected = this.onSelected.bind(this);
-      }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentLocation !== this.state.currentLocation) {
+      this.loadMap();
+    }
+  }
 
-    componentDidMount() {
-      this.loadScript();      
-      }
-
-      loadScript(){        
-        this.script = document.createElement('script')
-        this.script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`
-        this.script.async = 1
-        this.script.defer = 1
-        this.script.onload = () => this.initAutocomplete()
-      // this.script.onerror = () => this.initAuthcompleteFailed()
-        document.body.appendChild(this.script);
-      }
-      
-      initAutocomplete () {                
-        const { types=['(cities)'], componentRestrictions, bounds, } = this.props;
-        const config = {
-          types,
-          bounds,
-        };
+  loadMap() {
+    if(this.props && this.props.google) {
+      const {google} = this.props;
+      const maps = google.maps;
+      const input = this._input;
+      const {lat, lng} = this.state.currentLocation;
+      let defaultBounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(lat, lng),
+            new google.maps.LatLng(lat, lng));
+      let options = {
+        bounds: defaultBounds,
+        types: ['(cities)']
+      };
+      this.complete = new google.maps.places.Autocomplete(input, options);
+      this.complete.addListener('place_changed', () => {
+        let place = this.complete.getPlace();
+        console.log(place);
+      })
+    }
+  }
     
-        if (componentRestrictions) 
-          config.componentRestrictions = componentRestrictions;
-    
-        this.autocomplete = new google.maps.places.Autocomplete(this._input, config);
-    
-        this.autocomplete.addListener('place_changed', this.onSelected);
-      } 
-    
-
-    componentWillUnmount() {
-      document.body.removeChild(this.script)
-      this.autocomplete.removeListener('place_changed')
-      }
-    
-      onSelected() {
-        if (this.props.onPlaceSelected) {
-         
-          var place = this.autocomplete.getPlace();
-          this.props.onPlaceSelected(place);
-
-          //ToDo: Remove this and add to state as required.
-          console.log(place);
-        }
-      }
-
-      render() {
-        const {onPlaceSelected, types, componentRestrictions, bounds, ...rest} = this.props;
-    
-        return (
-            <input ref={(c) => this._input = c} {...rest} />
-        );
-      }
+  render() {
+    return (
+      <div>
+        <input class={style.search} ref={(input) => this._input = input}/>
+      </div>  
+    );
+  }
 }
 
+export default GoogleApiComponent({
+  apiKey: GOOGLE_API_KEY,
+})(SearchAutocomplete)

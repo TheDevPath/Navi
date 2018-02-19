@@ -166,12 +166,20 @@ L.TileLayer.include({
 	              timestamp: Date.now()
 	          });
 	      }.bind(this)).then(function(response) {
-	        console.log('_saveTile update: ', response);
+	        console.log('_saveTile update existing rev: ', response);
 	      });
 	    } else {
 	      this._db.put(doc).then( function(doc) {
-	        console.log('_saveTile insert: ', doc);
-	      });
+	        console.log('_saveTile insert new doc: ', doc);
+	      }).catch(function(err) {
+					/**
+					 * TODO - don't try to cache tiles when offline
+					 */
+					// handle conflicts from trying to cache already existing cached tile
+					if (err.name === 'conflict') {
+						console.log('_saveTile cached tile already exists: ', tileUrl);
+					}
+				});
 	    }
 
 	    if (done) {
