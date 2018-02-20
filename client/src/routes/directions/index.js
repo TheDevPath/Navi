@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
 import style from "./style";
-import MapContainer from '../../components/GoogleMap';
+import MapPane from '../../components/LeafletOsmMap/MapPane';
 
 /**
  * Leaflet related imports: leaflet, pouchdb module, and routing machine module
@@ -15,7 +15,7 @@ import Routing from '../../../node_modules/leaflet-routing-machine/src/index.js'
  */
 const OSM_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const OSM_ATTRIB = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
-const TILE_LAYER = new L.TileLayer(OSM_URL, {
+const OSM_TILE_LAYER = new L.TileLayer(OSM_URL, {
     attribution: OSM_ATTRIB,
     useCache: true,
     crossOrigin: true,
@@ -32,7 +32,6 @@ export default class Directions extends Component {
         // lat: null,
         // lng: null,
         // watchID: null,
-        screenHeight: screen.height * 0.95,
         airport: {
           lat: 38.8512462,
           lng: -77.0424202,
@@ -49,11 +48,7 @@ export default class Directions extends Component {
 
   componentDidMount() {
     const map = L.map('map');
-    L.tileLayer(OSM_URL, {
-        attribution: OSM_ATTRIB,
-        useCache: true,
-        crossOrigin: true,
-    }).addTo(map);
+    map.addLayer(OSM_TILE_LAYER);
 
     Routing.control({
         waypoints: [
@@ -67,12 +62,9 @@ export default class Directions extends Component {
   }
 
   render() {
-    const styles = {
-      height: this.state.screenHeight,
-    }
     return (
       <div class={style.directions}>
-        <MapContainer height={screen.height * 0.95}/>
+        <MapPane height={screen.height * 0.95}/>
       </div>
     );
   }
