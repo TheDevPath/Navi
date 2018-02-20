@@ -1,12 +1,7 @@
 // api routes tests
 const request = require('supertest');
+const chai = require('chai');
 const app = require('../app');
-const server = require('../server');
-const config = require('../config');
-
-// /Use for server requests
-const respond = request.agent(server.listen(config.PORT));
-
 
 const {
   users, populateUsers, deleteTestUser, stopServer,
@@ -17,28 +12,28 @@ beforeEach(populateUsers);
 afterEach(deleteTestUser);
 afterEach(stopServer);
 
-describe('API Routes', function(){
-  describe('GET /users/user', function(){
-    it('does not send a user if not logged in', async function(){
+describe('API Routes', () => {
+  describe('GET /users/user', () => {
+    it('does not send a user if not logged in', (done) => {
       try {
-        const res = await request(app)
+        request(app)
           .get('/users/user')
           .expect(401);
-
-        expect(res).to.be.an('object');
+        done();
       } catch (error) {
         throw error;
       }
     });
-    it('Sends the requested user when they exist', async function(){
+    it('Sends the requested user when they exist', (done) => {
       try {
-        await request(app)
+        request(app)
           .get('/users/user')
           .set('x-access-token', users[0].tokens[0].token)
           .expect(200)
           .expect((res) => {
             expect(res.body._id).to.equal(`${users[0]._id}`);
           });
+        done();
       } catch (err) {
         throw err;
       }
@@ -46,14 +41,15 @@ describe('API Routes', function(){
   });
   // /register- POST
   // valid email, password, and doesn't exist already
-  // /User will need to be deleted after test?
   // valid email and password, but exists already
   // invalid email and try to create
   // invalid password and try to create
-  describe('POST users/register', function(){
-    it('succesfully creates a new user', async function(){
+  describe('POST users/register', () => {
+    it('succesfully creates a new user', (done) => {
       try {
-        await respond.get('users/register')
+        request(app)
+          .post('/users/register')
+          .type('form')
           .send({
             name: 'Taco Test',
             email: 'test@testing.com',
@@ -63,13 +59,17 @@ describe('API Routes', function(){
           .expect((res) => {
             expect(res.body.auth).to.be(true);
           });
+        done();
       } catch (err) {
-        throw err;
+        done(err);
       }
     });
-    it('User already exists', async function(){
+
+
+    it('User already exists', (done) => {
       try {
-        await respond.get('users/register')
+        request(app)
+          .post('/users/register')
           .send({
             name: users[0].name,
             email: users[0].email,
@@ -79,12 +79,13 @@ describe('API Routes', function(){
           .expect((res) => {
             expect(res.body).to.equal('Email already in use.');
           });
+        done();
       } catch (err) {
-        throw err;
+        done(err);
       }
     });
-
   });
+
 
   // /login - POST
   // apiSuccess 200 { auth: true, token: token } jsonwebtoken.

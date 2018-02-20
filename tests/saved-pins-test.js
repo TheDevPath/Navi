@@ -12,8 +12,8 @@ const {
 beforeEach(populateUsers);
 beforeEach(populatePins);
 
-describe('POST /search/savedpins', function(){
-  it('should create new saved pin', function(done) {
+describe('POST /search/savedpins', () => {
+  it('should create new saved pin', (done) => {
     request(app)
       .post('/search/savedpins')
       .set('x-access-token', users[0].tokens[0].token)
@@ -38,7 +38,7 @@ describe('POST /search/savedpins', function(){
       });
   });
 
-  it('should not create savedPin with invalid body data', function(done){
+  it('should not create savedPin with invalid body data', (done) => {
     request(app)
       .post('/search/savedpins')
       .set('x-access-token', users[0].tokens[0].token)
@@ -57,7 +57,7 @@ describe('POST /search/savedpins', function(){
   });
 });
 
-describe('GET /search/savedpins', function(){
+describe('GET /search/savedpins', () => {
   it('should return savedpins doc', (done) => {
     request(app)
       .get('/search/savedpins/')
@@ -72,7 +72,7 @@ describe('GET /search/savedpins', function(){
   });
 });
 
-describe('GET /search/savedpins/:id', function(){
+describe('GET /search/savedpins/:id', () => {
   it('should return savedpins doc', (done) => {
     request(app)
       .get(`/search/savedpins/${pins[0]._id.toHexString()}`)
@@ -85,7 +85,7 @@ describe('GET /search/savedpins/:id', function(){
       .end(done);
   });
 
-  it('should return 404 if savedpins not found', function(done){
+  it('should return 404 if savedpins not found', (done) => {
     const hexId = new ObjectID().toHexString();
 
     request(app)
@@ -95,7 +95,7 @@ describe('GET /search/savedpins/:id', function(){
       .end(done);
   });
 
-  it('should return 404 for non-object ids', function(done){
+  it('should return 404 for non-object ids', (done) => {
     request(app)
       .get('/search/savedpins/123abc')
       .set('x-access-token', users[0].tokens[0].token)
@@ -104,7 +104,7 @@ describe('GET /search/savedpins/:id', function(){
   });
 });
 
-describe('DELETE /search/savedpins', function(){
+describe('DELETE /search/savedpins', () => {
   it('should remove all searchpins', (done) => {
     request(app)
       .delete('/search/savedpins')
@@ -123,7 +123,7 @@ describe('DELETE /search/savedpins', function(){
   });
 });
 
-describe('DELETE /search/savedpins/:id', function(){
+describe('DELETE /search/savedpins/:id', () => {
   it('should remove a single searchpins', (done) => {
     const hexId = pins[0]._id.toHexString();
 
@@ -146,7 +146,7 @@ describe('DELETE /search/savedpins/:id', function(){
       });
   });
 
-  it('should return 404 if pin not found', function(done){
+  it('should return 404 if pin not found', (done) => {
     const hexId = new ObjectID().toHexString();
 
     request(app)
@@ -156,7 +156,7 @@ describe('DELETE /search/savedpins/:id', function(){
       .end(done);
   });
 
-  it('should return 404 if object id is invalid', function(done){
+  it('should return 404 if object id is invalid', (done) => {
     request(app)
       .delete('/search/savedpins/123abc')
       .set('x-access-token', users[0].tokens[0].token)
