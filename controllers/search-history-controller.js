@@ -37,7 +37,7 @@ exports.getRecent = (appReq, appRes) => {
   }
 
   SearchHistory.find({ user: appReq.userId })
-    .sort({save_data: 'desc'})
+    .sort({save_date: 'desc'})
     .then((result) => {
       const searchHistory = result.slice(0, num);
       appRes.send({ searchHistory });
@@ -61,22 +61,27 @@ exports.postQuery = (appReq, appRes) => {
     user: appReq.userId
   }
 
-  SearchHistory.find(saveQuery, (err, searchHistory) => {
-    if (err) {
-      return appRes.status(500).send(err);
-    }
+  const update = {
+    lastModified: true,
+    $currentDate : {
+      save_date: {$type: 'date'},
+    },
+  }
 
-    if (searchHistory.length) {
-      return appRes.status(200).send({searchHistory});
-    }
-    
-    new SearchHistory(saveQuery).save()
-      .then((searchHistory) => {
-        return appRes.status(200).send({searchHistory});
-      }, (err) => {
+  const options = {
+    new: true, // return modified doc instead of original
+    upsert: true, // create if doesn't exist
+
+  }
+
+  SearchHistory.findOneAndUpdate(saveQuery, update, options,
+    (err, searchHistory) => {
+      if (err) {
         return appRes.status(500).send(err);
-      });
-  });
+      }
+
+      return appRes.status(200).send({searchHistory});
+    });
 };
 
 /**
@@ -90,6 +95,9 @@ exports.deleteSearchHistory = (appReq, appRes) => {
   SearchHistory.remove({ user: appReq.userId }).then(() => {
     appRes.status(200).send({ success: true });
   }).catch((err) => {
-    appRes.status(500).send(err);
+    appRes.status(500).send({
+      error: err,
+      success: false,
+    });
   });
 };
