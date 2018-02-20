@@ -4,7 +4,6 @@ import style from './style';
 
 import Button from 'preact-material-components/Button';
 import 'preact-material-components/Button/style.css';
-import Label from 'preact-material-components/Label';
 
 import Elevation from 'preact-material-components/Elevation';
 import 'preact-material-components/Elevation/style.css';
