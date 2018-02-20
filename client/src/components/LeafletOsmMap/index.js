@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import L from '../../js/leaflet-tileLayer-pouchdb-cached';
 
+
 // // TODO - remove this module from dependencies
 // import Map, { GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 
@@ -27,7 +28,7 @@ export default class MapContainer extends Component {
             lat: null,
             lng: null,
             watchID: null,
-            screenHeight: screen.height * 0.90,
+            screenHeight: screen.height * 0.95,
         }
         this.initMap = this.initMap.bind(this);
       }
