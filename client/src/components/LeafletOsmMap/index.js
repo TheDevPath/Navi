@@ -27,6 +27,7 @@ export default class MapContainer extends Component {
             lat: null,
             lng: null,
             watchID: null,
+            screenHeight: screen.height * 0.90,
         }
         this.initMap = this.initMap.bind(this);
       }
@@ -66,7 +67,7 @@ export default class MapContainer extends Component {
 
     render() {
         const styles = {
-            height: 500,  // HAVE TO SET HEIGHT TO RENDER MAP
+            height: this.state.screenHeight,  // HAVE TO SET HEIGHT TO RENDER MAP
         }
         return (
             <div id="map" style={styles}/>
