@@ -11,23 +11,44 @@ const { verifyToken } = require('../controllers/utils-controller');
 const { autocomplete } = require('../controllers/google-api-controller');
 
 /**
- * TODO - hook up url route end points to constroller functions
+ * @description Handle requests to search main end point
+ * 
+ * @api {GET} /search
+ * @return {success: false, error: err} Not a valid end point
  */
-
-// temporary hook to confirm base routing is working
 router.get('/', (req, res) => {
-  res.send('NOT IMPLEMENTED: Search View');
+  res.status(404).send({
+    success: false,
+    error: 'Not a valid end point!',
+  });
 });
 
+/**
+ * Saved pins end points
+ */
 router.get('/savedpins', verifyToken, savedPinsController.getSavedPins);
 router.get('/savedpins/:id', verifyToken, savedPinsController.getSavedPinsById);
 router.post('/savedpins', verifyToken, savedPinsController.postSavedPins);
 router.delete('/savedpins', verifyToken, savedPinsController.deleteSavedPins);
 router.delete('/savedpins/:id', verifyToken, savedPinsController.deleteSavedPinsById);
-router.post('/autocomplete', autocomplete);
+
+// TODO - delete: will most likely do search autocomplete from frontend
+// router.post('/autocomplete', autocomplete);
+
+/**
+ * Saved search history end points
+ */
 router.get('/history', verifyToken, searchHistoryController.getSearchHistory);
 router.get('/history/recent/:num', verifyToken, searchHistoryController.getRecent);
-router.post('/history/:query', verifyToken, searchHistoryController.postQuery);
+router.post('/history/:query', verifyToken, searchHistoryController.saveQuery);
 router.delete('/history', verifyToken, searchHistoryController.deleteSearchHistory);
+
+/**
+ * Saved directions end points
+ */
+router.get('/directions', verifyToken, savedDirectionsController.getSavedDirections);
+router.get('/directions/recent/:num', verifyToken, savedDirectionsController.getRecentDirections);
+router.post('/directions', verifyToken, savedDirectionsController.saveDirections);
+router.delete('/directions', verifyToken, savedDirectionsController.deleteSavedDirections);
 
 module.exports = router;

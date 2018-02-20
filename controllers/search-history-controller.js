@@ -55,7 +55,7 @@ exports.getRecent = (appReq, appRes) => {
  *
  * @param {string} appReq.params.query - the string query to save
  */
-exports.postQuery = (appReq, appRes) => {
+exports.saveQuery = (appReq, appRes) => {
   const saveQuery = {
     query: appReq.params.query,
     user: appReq.userId
