@@ -1,12 +1,11 @@
 import { h, Component } from "preact";
 import style from "./style";
+import MapContainer from '../../components/LeafletOsmMap';
 
-export default class Directions extends Component {
+export default class Directions extends MapContainer {
   render() {
     return (
-      <div class={style.directions}>
-        <h1>Directions</h1>
-        <p>This is the Directions Route.</p>
+      <div id='map' class={style.directions}>
       </div>
     );
   }

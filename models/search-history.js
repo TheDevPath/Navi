@@ -8,4 +8,3 @@ const searchHistorySchema = new Schema({
 });
 
 module.exports = mongoose.model('SearchHistory', searchHistorySchema);
-
