@@ -42,7 +42,7 @@ const populatePins = (done) => {
   SavedPins.remove({}).then(() => SavedPins.insertMany(pins)).then(() => done());
 };
 
-const populateUsers = (done) => {
+const populateUsers = function (done) {
   User.remove({}).then(() => {
     const userOne = new User(users[0]).save();
     const userTwo = new User(users[1]).save();
@@ -51,7 +51,7 @@ const populateUsers = (done) => {
   }).then(() => done());
 };
 
-const deleteTestUser = (done) => {
+const deleteTestUser = function (done) {
   User.remove({
     name: 'Taco Test',
     email: 'test@testing.com',

@@ -1,6 +1,5 @@
 // api routes tests
 const request = require('supertest');
-const chai = require('chai');
 const app = require('../app');
 
 const {
@@ -41,9 +40,7 @@ describe('API Routes', () => {
   });
   // /register- POST
   // valid email, password, and doesn't exist already
-  // valid email and password, but exists already
-  // invalid email and try to create
-  // invalid password and try to create
+  
   describe('POST users/register', () => {
     it('succesfully creates a new user', (done) => {
       try {
@@ -65,7 +62,7 @@ describe('API Routes', () => {
       }
     });
 
-
+// valid email and password, but exists already
     it('User already exists', (done) => {
       try {
         request(app)
@@ -84,6 +81,47 @@ describe('API Routes', () => {
         done(err);
       }
     });
+  // invalid email and try to create
+    it('Wont create user with invalid email', (done) => {
+      try {
+        request(app)
+          .post('/users/register')
+          .type('form')
+          .send({
+            name: 'Taco Test',
+            email: 'badtestemail',
+            password: 'passcode',
+          })
+          .expect(400)
+          .expect((res) => {
+            expect(res.body).to.equal('Email is not of the valid format');
+          });
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+  // invalid password and try to create
+    it('Wont create user with invalid password', (done) => {
+      try {
+        request(app)
+          .post('/users/register')
+          .type('form')
+          .send({
+            name: 'Taco Test',
+            email: 'testing@test.com',
+            password: '0',
+          })
+          .expect(400)
+          .expect((res) => {
+            expect(res.body).to.equal('Password should have minimum length of 6 & it should have atleast one letter, one number, and one special character');
+          });
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
+
   });
 
 
