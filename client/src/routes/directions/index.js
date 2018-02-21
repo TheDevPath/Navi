@@ -50,7 +50,7 @@ export default class Directions extends Component {
     const map = L.map('map');
     map.addLayer(OSM_TILE_LAYER);
 
-    Routing.control({
+    const control = Routing.control({
         waypoints: [
             L.latLng(this.state.whiteHouse.lat,
               this.state.whiteHouse.lng),
@@ -59,6 +59,27 @@ export default class Directions extends Component {
         ],
         routeWhileDragging: true,
     }).addTo(map);
+
+    map.on('click', function(event) {
+      const container = L.DomUtil.create('div');
+      const startBtn = createButton('Start Here', container);
+      const destBtn = createButton('End Here', container);
+
+      L.popup()
+        .setContent(container)
+        .setLatLng(event.latlng)
+        .openOn(map);
+
+      L.DomEvent.on(startBtn, 'click', function() {
+        control.spliceWaypoints(0, 1, event.latlng);
+        map.closePopup();
+      });
+
+      L.DomEvent.on(destBtn, 'click', function() {
+        control.spliceWaypoints(control.getWaypoints().length - 1, 1, event.latlng);
+        map.closePopup();
+      });
+    });
   }
 
   render() {
@@ -68,4 +89,11 @@ export default class Directions extends Component {
       </div>
     );
   }
+}
+
+function createButton(label, container) {
+  const btn = L.DomUtil.create('button', '', container);
+  btn.setAttribute('type', 'button');
+  btn.innerHTML = label;
+  return btn;
 }
