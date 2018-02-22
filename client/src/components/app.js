@@ -7,7 +7,7 @@ import GoogleMap from './GoogleMap';
 import PlacesMap from './PlacesMap';
 import Nav from './Nav';
 import Logo from './Logo';
-import Pins from './Pins';
+import Pins from './pins';
 
 // import routes
 import Home from '../routes/home';
