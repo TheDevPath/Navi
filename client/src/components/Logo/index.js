@@ -1,9 +1,5 @@
 import {h, Component} from 'preact';
 import style from './style';
-import {Menu, Button} from 'preact-material-components';
-import 'preact-material-components/List/style.css';
-import 'preact-material-components/Menu/style.css';
-import 'preact-material-components/Button/style.css';
 
 const { APP_NAME } = require('../../../config');
 

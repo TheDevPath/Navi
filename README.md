@@ -38,7 +38,7 @@ You also need to install and have running mongoDB - Directions can be found [her
 
 # Update and run
 
-When installation has completed go to where you installed the project and run `npm install` again to install the root and client dependencies. This will update the file package.json in the root of your project. 
+When update has completed go to where you installed the project and run `npm install` again to install dependencies in the root and client directories. This will update the project with any new packages added to the file package.json in your project. 
 
 When finished, in the project's root directory type `npm run dev`. This will start the dev servers on `localhost:8080` & `localhost:8081` respectively
 

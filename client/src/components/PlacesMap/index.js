@@ -87,26 +87,32 @@ class PlacesContainer extends Component {
       />
     );
 
+    const {lat} = this.state;
+
     return (
-      <Map
-        google={this.props.google}
-        zoom={14}
-        center={{
-          lat: this.state.lat,
-          lng: this.state.lng,
-        }}
-        onClick={this.fetchPlaces}
-      >
-        {markers}
-        <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}
-          >
-          <h1>
-            {this.state.selectedPlace.name}
-          </h1>
-        </InfoWindow>
-      </Map>
+      <div>
+        {lat &&
+        <Map
+          google={this.props.google}
+          zoom={14}
+          center={{
+            lat: this.state.lat,
+            lng: this.state.lng,
+          }}
+          onReady={this.fetchPlaces}
+        >
+          {markers}
+          <InfoWindow
+            marker={this.state.activeMarker}
+            visible={this.state.showingInfoWindow}
+            >
+            <h1>
+              {this.state.selectedPlace.name}
+            </h1>
+          </InfoWindow>
+        </Map>}
+      </div>
+      
     );
   }
 }
