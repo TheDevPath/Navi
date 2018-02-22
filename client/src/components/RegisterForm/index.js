@@ -1,27 +1,31 @@
 import { h, Component } from 'preact';
 import { Link } from 'preact-router/match';
-import PropTypes from 'prop-types';
 import style from './style';
+import {handleRegisterSubmit} from "../../js/auth-helpers";
 
-import Button from 'preact-material-components/Button';
+import {Button, Elevation, TextField} from 'preact-material-components';
 import 'preact-material-components/Button/style.css';
 import 'preact-material-components/Theme/style.css';
-
-import Elevation from 'preact-material-components/Elevation';
 import 'preact-material-components/Elevation/style.css';
-
-import TextField from 'preact-material-components/TextField';
 import 'preact-material-components/TextField/style.css';
-import ResetPasswordForm from "../ResetPasswordForm";
 
 export default class RegisterForm extends Component {
+	constructor() {
+		super();
+		this.handleRegisterSubmit = handleRegisterSubmit.bind(this);
+	}
+
 	render() {
 		return (
 			<Elevation z={2}>
+				<div id="message_area"/>
 				<div class={style['register-form']}>
 					<div class='mdc-form-field mdc-form-field--align-end'>
 						<h1>Join</h1>
-						<form action="/">
+						<form onSubmit={this.handleRegisterSubmit}>
+							<div>
+								<TextField label="Name" name="name"/>
+							</div>
 							<div>
 								<TextField label="Email" name="email"/>
 							</div>
@@ -42,8 +46,4 @@ export default class RegisterForm extends Component {
 			</Elevation>
 		);
 	}
-}
-
-ResetPasswordForm.propTypes = {
-	appName: PropTypes.string,
 }

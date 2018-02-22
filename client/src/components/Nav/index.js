@@ -1,8 +1,8 @@
 import {h, Component} from 'preact';
+import {get_sign_in_out} from "../../js/auth-helpers";
 import style from './style';
 
-import Menu from 'preact-material-components/Menu';
-import Button from 'preact-material-components/Button';
+import { Menu, Button } from 'preact-material-components';
 
 import 'preact-material-components/List/style.css';
 import 'preact-material-components/Menu/style.css';
@@ -32,7 +32,7 @@ export default class Nav extends Component {
 						<a href="/directions"><Menu.Item>Directions</Menu.Item></a>
 						<a href="/places"><Menu.Item>Places</Menu.Item></a>						
 						<a href="/profile"><Menu.Item>Profile</Menu.Item></a>
-						<a href="/signin"><Menu.Item>Sign in</Menu.Item></a>
+						<div id="sign_in_out">{get_sign_in_out()}</div>
 					</Menu>
 				</Menu.Anchor>
 			</div>
