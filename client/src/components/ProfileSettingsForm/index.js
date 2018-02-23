@@ -9,7 +9,7 @@ export default class ProfileSettingsForm extends Component {
         <div class={style.profileSettingsForm}>
             <span id={style.profileSettinsFormTitle}>Account Settings</span>
 
-            <p>features to be accounced</p>
+            <p>features to be announced</p>
 
         </div>
         );
