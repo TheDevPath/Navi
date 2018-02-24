@@ -1,5 +1,4 @@
 const express = require('express');
-
 const router = express.Router();
 
 // require controller modules
@@ -7,8 +6,7 @@ const savedDirectionsController = require('../controllers/saved-directions-contr
 const savedPinsController = require('../controllers/saved-pins-controller');
 const searchHistoryController = require('../controllers/search-history-controller');
 const { verifyToken } = require('../controllers/utils-controller');
-/* TODO - require specific functions needed for search from google-api-controller */
-const { autocomplete } = require('../controllers/google-api-controller');
+const { autocomplete, placeDetails } = require('../controllers/google-api-controller');
 
 /**
  * @description Handle requests to search main end point
@@ -32,8 +30,11 @@ router.post('/savedpins', verifyToken, savedPinsController.postSavedPins);
 router.delete('/savedpins', verifyToken, savedPinsController.deleteSavedPins);
 router.delete('/savedpins/:id', verifyToken, savedPinsController.deleteSavedPinsById);
 
-// TODO - delete: will most likely do search autocomplete from frontend
-// router.post('/autocomplete', autocomplete);
+/**
+ * Search and Places query endpoints
+ */
+router.get('/places/:id', placeDetails);
+router.post('/autocomplete', autocomplete);
 
 /**
  * Saved search history end points
