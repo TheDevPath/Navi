@@ -1,4 +1,4 @@
-import { h , Component } from 'preact';
+import { h , Component, cloneElement } from 'preact';
 import style from './style';
 
 export default class Search extends Component {
@@ -6,6 +6,7 @@ export default class Search extends Component {
     super(props);
     this.state = {
       value: '',
+      predictions: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -24,11 +25,17 @@ export default class Search extends Component {
   }
 
   render() {
+    // pass props to children components
+    const childWithProps = this.props.children.map((child) => {
+      return cloneElement(child, {
+        predictions: this.state.predictions,
+      });
+    });
     return (
       <div class={style.autocomplete}>
         <input type='search' placeholder='Search for a place or address' class={style.search}
           onChange={this.handleSubmit} onInput={this.handleChange}/>
-        {this.props.children}
+        {childWithProps}
       </div>
     );
   }
