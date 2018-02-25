@@ -16,6 +16,7 @@ import Directions from '../routes/directions';
 import Places from '../routes/places';
 import Maps from '../routes/maps';
 import Signin from '../routes/signin';
+import SignOut from '../routes/signout';
 import Register from '../routes/register';
 
 // import Home from 'async!../routes/home';
@@ -47,6 +48,7 @@ export default class App extends Component {
 					<Signin path="/signin" />
 					<Signin path="/forgot-password"/>
 					<Signin path="/reset-password"/>
+					<SignOut path="/signout"/>
 					<Places path="/places" />
 					<Directions path="/directions" />
 					<Pins path="/pins" />
