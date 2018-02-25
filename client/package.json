@@ -57,6 +57,7 @@
         "preact-compat": "^3.17.0",
         "preact-render-to-string": "^3.7.0",
         "preact-router": "^2.5.7",
-        "prop-types": "^15.6.0"
+        "prop-types": "^15.6.0",
+        "universal-cookie": "^2.1.2"
     }
 }

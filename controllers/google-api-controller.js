@@ -172,11 +172,19 @@ exports.autocomplete = (appReq, appRes) => {
     res.on('end', () => {
       const body = Buffer.concat(chunks);
       const queryResult = JSON.parse(body.toString());
+<<<<<<< HEAD
       const outcome = processAutocomplete(queryResult);
       const result = {
         status: queryResult.status,
         predictions: outcome.descriptions,
         placeIds: outcome.placeIds,
+=======
+      const predictions = processAutocomplete(queryResult);
+      console.log('processAutocomplete(): ', predictions);
+      const result = {
+        status: queryResult.status,
+        predictions,
+>>>>>>> development
       };
       appRes.status(200).send(result);
     });
