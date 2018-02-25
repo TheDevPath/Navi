@@ -1,7 +1,11 @@
 const http = require('https');
 const { URL } = require('url');
 const { GOOGLE_API_KEY } = require('../config');
-const { convertToQueryString } = require('./utils-controller');
+const { convertToQueryString, processAutocomplete } = require('./utils-controller');
+// const googleMapsClient = require('@google/maps').createClient({
+//   key: GOOGLE_API_KEY,
+//   Promise: Promise, // allow for using promises instead of callbacks
+// });  // docs: https://googlemaps.github.io/google-maps-services-js/docs/
 
 /**
  * Geolocation API access
@@ -165,10 +169,62 @@ exports.autocomplete = (appReq, appRes) => {
 
     res.on('end', () => {
       const body = Buffer.concat(chunks);
-      appRes.status(200).send(JSON.parse(body.toString()));
+      const queryResult = JSON.parse(body.toString());
+      const predictions = processAutocomplete(queryResult);
+      console.log('processAutocomplete(): ', predictions);
+      const result = {
+        status: queryResult.status,
+        predictions,
+      };
+      appRes.status(200).send(result);
     });
-  }).on('error', (e) => {
-    appRes.send(e);
+  }).on('error', (err) => {
+    appRes.send(err);
+  });
+};
+
+/**
+ * Place Details API
+ * A Place Details request is an HTTP URL of the following form:
+ * https://maps.googleapis.com/maps/api/place/details/output?parameters
+ *
+ * Where output may be either of the following values:
+ *   - json (recommended) indicates output in JavaScript Object Notation (JSON)
+ *   - xml indicates output as XML
+ */
+/**
+ * @description Handles request for getting details for given place_id.
+ *
+ * @api {GET} /search/places/:id
+ * @apiSuccess 200 {JSON} Potential search queries.
+ * @apiError 400 {request error} Google api request error.
+ *
+ * @param {string} appReq.params.id - The unique google place_id identifier for a place.
+ */
+exports.placeDetails = (appReq, appRes) => {
+  const strictbounds = (appReq.body.strictbounds) ? 'strictbounds' : '';
+  const params = {
+    placeid: appReq.params.id, //'placeid' is required for google api request
+    key: GOOGLE_API_KEY,
+  };
+  const BASE_URL = 'https://maps.googleapis.com/maps/api/place/details/json?';
+  const queryString = convertToQueryString(params);
+  const reqUrl = new URL(`${BASE_URL}${queryString}`);
+
+  http.get(reqUrl, (res) => {
+    const chunks = [];
+
+    res.on('data', (chunk) => {
+      chunks.push(chunk);
+    });
+
+    res.on('end', () => {
+      const body = Buffer.concat(chunks);
+      const queryResult = JSON.parse(body.toString());
+      appRes.status(200).send(queryResult);
+    });
+  }).on('error', (err) => {
+    appRes.send(err);
   });
 };
 
