@@ -1,6 +1,10 @@
 import {h, Component} from 'preact';
+import {Link} from 'preact-router/match';
+import PropTypes from 'prop-types';
 import style from './style';
 import {handleRegisterSubmit, clearForms} from "../../js/utilities";
+
+import ResetPasswordForm from "../ResetPasswordForm";
 
 export default class RegisterForm extends Component {
   constructor() {
@@ -14,23 +18,30 @@ export default class RegisterForm extends Component {
 
   render() {
     return (
-      <div>
-        <div id="message_area"/>
-        <div class={style['register-form']}>
+      <div class={style['register-form']}>
+        <div>
           <h1>Join</h1>
+          <div id="message_area"/>
           <form onSubmit={this.handleRegisterSubmit}>
-            <div>Name: <input name="name" type="text" value=""/></div>
-            <div>Email: <input name="email" type="text" value=""/></div>
-            <div>Password: <input name="password" type="password" value=""/></div>
-            <div>Confirm Password: <input name="confirm_password" type="password" value=""/></div>
-            <div>
-              <button>Join!</button>
-            </div>
-            <p><a href="/signin">sign in</a></p>
-            <p><a href="/forgot-password">forgot password?</a></p>
+            <span>Name:</span><input type="text" name="name" value=""/><br/>
+            <span>Email: </span><input type="text" name="email" value=""/><br/>
+            <br/>
+            <span>New password: </span><input type="password" name="password" value=""/><br/>
+            <span>Confirm password: </span><input type="password" name="confirm_password" value=""/><br/>
+
+            <input type="submit" value="Join!"/>
           </form>
         </div>
-      </div>
-    );
+        <p>
+          <Link activeClassName={style.active} href="/signin">sign in</Link>
+        </p>
+        <p>
+          <Link activeClassName={style.active} href="/forgot-password">forgot password?</Link>
+        </p>
+      </div>);
   }
+}
+
+ResetPasswordForm.propTypes = {
+  appName: PropTypes.string
 }
