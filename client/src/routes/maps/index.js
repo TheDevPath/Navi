@@ -1,13 +1,16 @@
 import { h, Component } from "preact";
 import style from "./style";
 import MapContainer from '../../components/LeafletOsmMap';
-import GoogleApiComponent from '../../components/search';
+import Search from '../../components/AppSearch'
+import UnorderedList from '../../components/UnorderList';
 
 export default class Maps extends Component {
   render() {
     return (
       <div class={style.maps}>
-        <GoogleApiComponent />
+        <Search>
+          <UnorderedList />
+        </Search>
         <MapContainer />
       </div>
     );
