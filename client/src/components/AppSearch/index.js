@@ -1,5 +1,7 @@
 import { h , Component, cloneElement } from 'preact';
 import style from './style';
+import axios from 'axios';
+import {API_SERVER} from '../../../config';
 
 export default class Search extends Component {
   constructor(props) {
@@ -7,6 +9,7 @@ export default class Search extends Component {
     this.state = {
       value: '',
       predictions: [],
+      placeIDs: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -15,8 +18,18 @@ export default class Search extends Component {
 
   handleChange(event) {
     this.setState({value: event.target.value});
-    console.log('Search.handleChange(): ', this.state.value);
     // process autocomplete request and update list
+    axios.post(`${API_SERVER}/search/autocomplete`, {
+      input: this.state.value,
+    }).then((response) => {
+      const status = response.data.status;
+      const predictions = response.data.predictions;
+      const placeIds = response.data.placeIds;
+      this.setState({
+        predictions,
+        placeIds,
+      });
+    });
   }
 
   handleSubmit(event) {
@@ -31,12 +44,13 @@ export default class Search extends Component {
         predictions: this.state.predictions,
       });
     });
+    
     return (
-      <div class={style.autocomplete}>
+      <form class={style.autocomplete} onSubmit={this.handleSubmit}>
         <input type='search' placeholder='Search for a place or address' class={style.search}
-          onChange={this.handleSubmit} onInput={this.handleChange}/>
+          onInput={this.handleChange}/>
         {childWithProps}
-      </div>
+      </form>
     );
   }
 }

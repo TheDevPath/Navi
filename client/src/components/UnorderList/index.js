@@ -17,6 +17,6 @@ export default class UnorderedList extends Component {
   }
 }
 
-UnorderedList.defaultProps = {
-  predictions: ['White House', 'U.S. Capitol', 'Google', 'New York City'],
-}
+// UnorderedList.defaultProps = {
+//   predictions: ['White House', 'U.S. Capitol', 'Google', 'New York City'],
+// }
