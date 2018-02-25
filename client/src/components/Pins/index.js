@@ -6,7 +6,7 @@ export default class Pins extends Component {
     return (
       <div class={style.pins}>
         <h1>Pins</h1>
-        <p>This is the Pins Route.</p>
+        <p>This is the Pins Component.</p>
       </div>
     );
   }
