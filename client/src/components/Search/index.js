@@ -33,6 +33,7 @@ export default class Search extends Component {
   }
 
   handleSubmit(event) {
+    // TODO - hookup to map instance and add marker for given location
     alert('A query was submitted: ', this.state.value);
     event.preventDefault();
   }
