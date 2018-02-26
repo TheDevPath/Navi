@@ -81,7 +81,6 @@ export default class LeafletOSMMap extends Component {
       mapCenter: event.latlng,
       userMarker: userMarker,
     });
-    console.log('onLocationFound() - check state.map: ', this.state.map);
   }
 
   /**
@@ -120,7 +119,6 @@ export default class LeafletOSMMap extends Component {
     });
 
     droppedPin.bindPopup(container);
-    console.log('onLocationFound() - check state.map: ', this.state.map);
   }
 
   render() {
@@ -132,12 +130,11 @@ export default class LeafletOSMMap extends Component {
   }
 
   componentWillUnmount() {
-    console.log('begin - componentWillUnmount() ', this.state.map);
-    // stop watching user position when map is unmounted
+    // TODO - add feature for tracking user's moving position, probably
+    // only needed for directions mode.
     // map.stopWatch();
     this.state.map.remove();
     this.setState({map: null});
-    console.log('end - componentWillUnmount() ', this.state.map);
   }
 }
 
