@@ -1,0 +1,11 @@
+.fullscreen {
+	height: inherit;
+	width: inherit;
+	display: block;
+}
+
+.search {
+	position: fixed;
+	width: 80vw;
+	top: 5vw;
+}

@@ -46,7 +46,7 @@ export default class Search extends Component {
     });
     
     return (
-      <form class={style.autocomplete} onSubmit={this.handleSubmit}>
+      <form class={style.form} onSubmit={this.handleSubmit}>
         <input type='search' placeholder='Search for a place or address' class={style.search}
           onInput={this.handleChange}/>
         {childWithProps}

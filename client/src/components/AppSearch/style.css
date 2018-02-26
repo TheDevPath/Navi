@@ -1,10 +1,16 @@
-.autocomplete {
+.form {
   width: 100%;
+  background-color: transparent;
+  z-index: 1000;
+  display: block;
+  position: fixed;
 }
 
 .search {
-  width: 100%;
+  width: 80vw;
   text-align: center;
   height: 5vh;
   background-color: aliceblue;
+  display: inherit;
+  margin: auto;
 }
