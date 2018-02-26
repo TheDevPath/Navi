@@ -69,13 +69,13 @@ exports.convertToQueryString = (paramsObject) => {
  *   - placeID: if prediction is a place else ''
  */
 exports.processAutocomplete = (queryResult) => {
-  const suggestions = [];
+  const descriptions = [];
+  const placeIds = [];
   queryResult.predictions.forEach((result) => {
     const description = result.description;
     const placeId = result.place_id || '';
-    suggestions.push({
-      description, placeId,
-    });
+    descriptions.push(description);
+    placeIds.push(placeId);
   });
-  return suggestions;
+  return {descriptions, placeIds};
 };
