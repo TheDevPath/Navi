@@ -26,84 +26,125 @@ const OSM_TILE_LAYER = new L.TileLayer(OSM_URL, {
 // redirect marker icon path to assets directory
 L.Icon.Default.imagePath = '../../assets/icons/leaflet/';
 
-export default class Directions extends Component {
+export default class Explorer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        // map: null,
-        // lat: null,
-        // lng: null,
-        // watchID: null,
-        airport: {
-          lat: 38.8512462,
-          lng: -77.0424202,
-          address: 'Ronald Reagan Washington National Airport, Arlington, VA 22202',
-        },
-        whiteHouse: {
-          address: '1600 Pennsylvania Ave NW, Washington, DC 20500',
-          lat: 38.8976094,
-          lng: -77.0389236,
-        }
+      map: null,
+      mapCenter: null,
+      userMarker: null,
     }
-    // this.initMap = this.initMap.bind(this);
+    this.onLocationFound = this.onLocationFound.bind(this);
+    this.onLocationError = this.onLocationError.bind(this);
+    this.onMapClick = this.onMapClick.bind(this);
   }
 
   componentDidMount() {
-    const map = L.map('map', {
-      zoomControl: false,
-    });
-
+    // initialize map container if null
+    if (!this.state.map) {
+      this.setState({
+          map: L.map('map', {
+            zoomControl: false,
+            zoom: 16,
+          }),
+      });
+    }
     // add zoom to bottom left
-    const zoomControl = L.control.zoom().setPosition('bottomleft').addTo(map);
+    const zoomControl = L.control.zoom().setPosition('bottomleft').addTo(this.state.map);
 
-    map.addLayer(OSM_TILE_LAYER);
+    this.state.map.addLayer(OSM_TILE_LAYER);
 
-    const control = Routing.control({
-        waypoints: [
-            L.latLng(this.state.whiteHouse.lat,
-              this.state.whiteHouse.lng),
-            L.latLng(this.state.airport.lat,
-              this.state.airport.lng),
-        ],
-        routeWhileDragging: true,
-    }).addTo(map);
-
-    map.on('click', function(event) {
-      const container = L.DomUtil.create('div');
-      const startBtn = createButton('Start Here', container);
-      const destBtn = createButton('End Here', container);
-
-      L.popup()
-        .setContent(container)
-        .setLatLng(event.latlng)
-        .openOn(map);
-
-      L.DomEvent.on(startBtn, 'click', function() {
-        control.spliceWaypoints(0, 1, event.latlng);
-        map.closePopup();
-      });
-
-      L.DomEvent.on(destBtn, 'click', function() {
-        control.spliceWaypoints(control.getWaypoints().length - 1, 1, event.latlng);
-        map.closePopup();
-      });
+    // attempt to get user's current location via device
+    this.state.map.locate({
+      setView: true,
+      enableHighAccuracy: true,
+      maxZoom: 16,
     });
+
+    // configure map events
+    this.state.map.on('locationfound', this.onLocationFound);
+    this.state.map.on('locationerror', this.onLocationError);
+    this.state.map.on('click', this.onMapClick);
+  }
+
+  /**
+   * Handle leaflet map get device location event
+   * @param {*} event 
+   */
+  onLocationFound(event) {
+    const userMarker = L.circleMarker(event.latlng, {
+      radius: 8,
+      weight: 3,
+      fillColor: 'red',
+    }).addTo(this.state.map)
+      .bindPopup('You Are Here');
+
+    this.setState({
+      mapCenter: event.latlng,
+      userMarker: userMarker,
+    });
+    console.log('onLocationFound() - check state.map: ', this.state.map);
+  }
+
+  /**
+   * Handle leaflet map get device location failure
+   * @param {*} event 
+   */
+  onLocationError(event) {
+    // TODO - dummy message for now if don't have permission to get user
+    // user location. Next step is to notify and request permission again.
+    alert(event.message);
+  }
+
+  /**
+   * On map click event, add a marker to the map at the clicked location.
+   *
+   * @param {*} event 
+   */
+  onMapClick(event) {
+    const droppedPin = L.marker(event.latlng, {
+      draggable: true,
+      autoPan: true,
+    }).addTo(this.state.map);
+
+    const container = L.DomUtil.create('div');
+    const saveBtn = createButton('Save', container);
+    const deleteBtn = createButton('Remove', container);
+  
+    L.DomEvent.on(saveBtn, 'click', function() {
+      // TODO - save marker location to db if possible or queue to
+      // save when backend server is available
+      alert(`Save marker at: ${event.latlng}!`);
+    });
+  
+    L.DomEvent.on(deleteBtn, 'click', function() {
+      droppedPin.remove();
+    });
+
+    droppedPin.bindPopup(container);
+    console.log('onLocationFound() - check state.map: ', this.state.map);
   }
 
   render() {
     return (
       <div class={style.fullscreen}>
-        <Search>
-          <SearchResults />
-        </Search>
-        <MapPane height={screen.height}/>
+        <MapPane height={screen.height * 0.95}/>
       </div>
     );
+  }
+
+  componentWillUnmount() {
+    console.log('begin - componentWillUnmount() ', this.state.map);
+    // stop watching user position when map is unmounted
+    // map.stopWatch();
+    this.state.map.remove();
+    this.setState({map: null});
+    console.log('end - componentWillUnmount() ', this.state.map);
   }
 }
 
 function createButton(label, container) {
-  const btn = L.DomUtil.create('button', '', container);
+  var btn = L.DomUtil.create('button', '', container);
   btn.setAttribute('type', 'button');
   btn.innerHTML = label;
   return btn;
