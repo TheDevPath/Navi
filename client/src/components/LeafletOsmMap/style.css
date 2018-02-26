@@ -1,4 +1,5 @@
-#map {
-    widows: 100vh;
-    position: sticky;
+.fullscreen {
+	height: inherit;
+	width: inherit;
+	display: block;
 }
