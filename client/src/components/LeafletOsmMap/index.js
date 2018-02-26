@@ -1,6 +1,8 @@
 import { h, Component } from "preact";
 import style from "./style";
 import MapPane from './MapPane';
+import Search from '../../components/Search';
+import SearchResults from '../../components/SearchResults';
 
 /**
  * Leaflet related imports: leaflet, pouchdb module, and routing machine module
@@ -56,7 +58,6 @@ export default class LeafletOSMMap extends Component {
     this.state.map.locate({
       setView: true,
       enableHighAccuracy: true,
-      maxZoom: 16,
     });
 
     // configure map events
@@ -70,6 +71,7 @@ export default class LeafletOSMMap extends Component {
    * @param {*} event 
    */
   onLocationFound(event) {
+    this.state.map.setZoom(16);
     const userMarker = L.circleMarker(event.latlng, {
       radius: 8,
       weight: 3,
@@ -124,6 +126,9 @@ export default class LeafletOSMMap extends Component {
   render() {
     return (
       <div class={style.fullscreen}>
+        <Search>
+          <SearchResults />
+        </Search>
         <MapPane height={screen.height * 0.95}/>
       </div>
     );
