@@ -127,7 +127,9 @@ exports.getStaticMap = (appReq, appRes) => {
  * @description Handles request for search autocompletion
  *
  * @api {POST} /search/autocomplete
- * @apiSuccess 200 {JSON} Potential search queries.
+ * @apiSuccess 200 {JSON} With two root elements:
+ *   - status: a string identifier of the request outcome
+ *   - predictions: an array query predictions
  * @apiError 400 {request error} Google api request error.
  *
  * @param {string} appReq.body.input - The text string on which to search.
@@ -170,11 +172,11 @@ exports.autocomplete = (appReq, appRes) => {
     res.on('end', () => {
       const body = Buffer.concat(chunks);
       const queryResult = JSON.parse(body.toString());
-      const predictions = processAutocomplete(queryResult);
-      console.log('processAutocomplete(): ', predictions);
+      const outcome = processAutocomplete(queryResult);
       const result = {
         status: queryResult.status,
-        predictions,
+        predictions: outcome.descriptions,
+        placeIds: outcome.placeIds,
       };
       appRes.status(200).send(result);
     });

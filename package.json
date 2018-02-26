@@ -24,7 +24,8 @@
         "Peter Matthews (https://github.com/pjdmatts)",
         "John Kwening (https://github.com/jkwening)",
         "Vasanth (https://github.com/Vasanthkesavan)",
-        "Travis Haley (https://github.com/Mallek"
+        "Travis Haley (https://github.com/Mallek",
+        "Eddie Ford (https://github.com/seckboy)"
     ],
     "license": "MIT",
     "bugs": {
@@ -44,6 +45,7 @@
         "supertest": "^3.0.0"
     },
     "dependencies": {
+        "@google/maps": "^0.4.5",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.18.2",
         "express": "^4.16.2",

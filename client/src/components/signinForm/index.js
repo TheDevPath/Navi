@@ -1,48 +1,33 @@
-import { h, Component } from 'preact';
-import { Link } from 'preact-router/match';
-import style from './style';
-
-import Button from 'preact-material-components/Button';
-import 'preact-material-components/Button/style.css';
-
-import Elevation from 'preact-material-components/Elevation';
-import 'preact-material-components/Elevation/style.css';
-
-import TextField from 'preact-material-components/TextField';
-import 'preact-material-components/TextField/style.css';
-
+import {h, Component} from 'preact';
+import style from './style.css';
+import {handleSigninSubmit, clearForms} from "../../js/utilities";
 
 export default class SigninForm extends Component {
   constructor() {
     super();
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSigninSubmit = handleSigninSubmit.bind(this);
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    const data = new FormData(event.target);
-    fetch('/api/form-submit-url', {
-      method: 'POST',
-      body: data,
-    });
+  componentDidMount() {
+    clearForms();
   }
 
   render() {
-      return (
-          <Elevation z={2}>
-              <div class={style.form}>
-                  <div class='mdc-form-field mdc-form-field--align-end'>
-                      <form onSubmit={this.handleSubmit}>
-                          <TextField label="Enter your email" id="email" name="email" type="email" /> <br /><br />
-                          <TextField label="Enter your password" id="password" name="password" type="password" />
-                          <br />
-                          <Button id="loginBtn">Login!</Button>
-                          <p><Link activeClassName={style.active} href="/register">register</Link></p>
-                          <p><Link activeClassName={style.active} href="/forgot-password">forgot password?</Link></p>
-                      </form>
-                   </div>
-              </div>
-      </Elevation>
-      );
+    return (
+      <div>
+        <div id="message_area"/>
+        <div class={style.form}>
+          <form onSubmit={this.handleSigninSubmit}>
+            <div>Email: <input id="email" name="email" type="text"/></div>
+            <div>Password: <input id="password" name="password" type="password"/></div>
+            <div>
+              <button>Login!</button>
+            </div>
+            <p><a href="/register">register</a></p>
+            <p><a href="/forgot-password">forgot password?</a></p>
+          </form>
+        </div>
+      </div>
+    );
   }
 }
