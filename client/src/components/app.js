@@ -34,7 +34,6 @@ export default class App extends Component {
 	render() {
 		return (
 			<div id="app">
-				<Nav />
 				<Match path="/">
 					{ ({ matches, path, url }) => matches && (
 						<Logo />
