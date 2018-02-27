@@ -1,6 +1,6 @@
 {
-  "name": "client",
-  "short_name": "client",
+  "name": "navi",
+  "short_name": "navi",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
