@@ -1,49 +1,47 @@
-import { h, Component } from 'preact';
-import { Link } from 'preact-router/match';
+import {h, Component} from 'preact';
+import {Link} from 'preact-router/match';
 import PropTypes from 'prop-types';
 import style from './style';
+import {handleRegisterSubmit, clearForms} from "../../js/utilities";
 
-import Button from 'preact-material-components/Button';
-import 'preact-material-components/Button/style.css';
-import 'preact-material-components/Theme/style.css';
-
-import Elevation from 'preact-material-components/Elevation';
-import 'preact-material-components/Elevation/style.css';
-
-import TextField from 'preact-material-components/TextField';
-import 'preact-material-components/TextField/style.css';
 import ResetPasswordForm from "../ResetPasswordForm";
 
 export default class RegisterForm extends Component {
-	render() {
-		return (
-			<Elevation z={2}>
-				<div class={style['register-form']}>
-					<div class='mdc-form-field mdc-form-field--align-end'>
-						<h1>Join</h1>
-						<form action="/">
-							<div>
-								<TextField label="Email" name="email"/>
-							</div>
-							<div>
-								<TextField label="Password" name="password" type="password"/>
-							</div>
-							<div>
-								<TextField label="Confirm Password" name="confirm_password" type="password"/>
-							</div>
-							<Button unelevated className="mdc-theme--primary-bg">
-								Join
-							</Button>
-						</form>
-					</div>
-					<p><Link activeClassName={style.active} href="/signin">sign in</Link></p>
-					<p><Link activeClassName={style.active} href="/forgot-password">forgot password?</Link></p>
-				</div>
-			</Elevation>
-		);
-	}
+  constructor() {
+    super();
+    this.handleRegisterSubmit = handleRegisterSubmit.bind(this);
+  }
+
+  componentWillMount = () => {
+    clearForms();
+  }
+
+  render() {
+    return (
+      <div class={style['register-form']}>
+        <div>
+          <h1>Join</h1>
+          <div id="message_area"/>
+          <form onSubmit={this.handleRegisterSubmit}>
+            <span>Name:</span><input type="text" name="name" value=""/><br/>
+            <span>Email: </span><input type="text" name="email" value=""/><br/>
+            <br/>
+            <span>New password: </span><input type="password" name="password" value=""/><br/>
+            <span>Confirm password: </span><input type="password" name="confirm_password" value=""/><br/>
+
+            <input type="submit" value="Join!"/>
+          </form>
+        </div>
+        <p>
+          <Link activeClassName={style.active} href="/signin">sign in</Link>
+        </p>
+        <p>
+          <Link activeClassName={style.active} href="/forgot-password">forgot password?</Link>
+        </p>
+      </div>);
+  }
 }
 
 ResetPasswordForm.propTypes = {
-	appName: PropTypes.string,
+  appName: PropTypes.string
 }

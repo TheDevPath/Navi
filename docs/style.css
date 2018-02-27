@@ -1,3 +1,7 @@
-#logo {
+.logo {
   width: 100px;
+}
+
+.txt-cntr{
+	text-align: center;
 }

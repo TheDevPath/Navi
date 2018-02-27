@@ -50,31 +50,34 @@ exports.registerUser = (appReq, appRes) => {
         .send('There was a problem registering the user.');
     }
     if (result > 0) return appRes.status(409).send('Email already in use.');
+
+    // encrypt password
+    const HASHED_PASSWORD = bcrypt.hashSync(appReq.body.password, 8);
+
+    //This is inside User.count so that it does not run before the User.count check finishes
+    User.create(
+      {
+        name: appReq.body.name,
+        email: appReq.body.email,
+        password: HASHED_PASSWORD,
+      },
+      (err, user) => {
+        if (err) {
+          return appRes.status(500)
+            .send('There was a problem registering the user.');
+        }
+
+        // create token
+        const token = jwt.sign({id: user._id}, JWT_KEY, {
+          expiresIn: 86400, // expires in 24 hours
+        });
+
+        appRes.status(200).send({auth: true, token});
+      },
+    );
+
+
   });
-
-  // encrypt password
-  const HASHED_PASSWORD = bcrypt.hashSync(appReq.body.password, 8);
-
-  User.create(
-    {
-      name: appReq.body.name,
-      email: appReq.body.email,
-      password: HASHED_PASSWORD,
-    },
-    (err, user) => {
-      if (err) {
-        return appRes.status(500)
-          .send('There was a problem registering the user.');
-      }
-
-      // create token
-      const token = jwt.sign({ id: user._id }, JWT_KEY, {
-        expiresIn: 86400, // expires in 24 hours
-      });
-
-      appRes.status(200).send({ auth: true, token });
-    },
-  );
 };
 
 /**

@@ -27,7 +27,7 @@ class PlacesContainer extends Component {
     this.setState({
       lat: position.coords.latitude,
       lng: position.coords.longitude,
-    });
+    });    
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -47,10 +47,12 @@ class PlacesContainer extends Component {
     }
   };
 
+ 
+
   fetchPlaces(mapProps, map) {
     const {google} = mapProps;
-    console.log(mapProps);
-    let curr = new google.maps.LatLng(this.state.lat,this.state.lng);
+    //let curr = new google.maps.LatLng(this.state.lat,this.state.lng);
+    let curr = map.center;
     let request = {
       location: curr,
       radius: '2000',
@@ -62,7 +64,7 @@ class PlacesContainer extends Component {
         for (var i = 0; i < results.length; i++) {
           var place = results[i];
           addToArr(place);
-          // console.log(place);
+          //console.log(place);
         }
       }
     });
@@ -87,30 +89,41 @@ class PlacesContainer extends Component {
       />
     );
 
+    const {lat} = this.state;
+
     return (
-      <Map
-        google={this.props.google}
-        zoom={14}
-        center={{
-          lat: this.state.lat,
-          lng: this.state.lng,
-        }}
-        onClick={this.fetchPlaces}
-      >
-        {markers}
-        <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}
-          >
-          <h1>
-            {this.state.selectedPlace.name}
-          </h1>
-        </InfoWindow>
-      </Map>
+      <div>
+        {lat &&
+        <Map
+          google={this.props.google}
+          zoom={14}
+          initialCenter= {{
+            lat: this.state.lat,
+            lng: this.state.lng
+          }}
+          
+          centerAroundCurrentLocation={true}
+          onReady={this.fetchPlaces}
+          clickableIcons = {true}
+          onDragend={this.fetchPlaces} 
+        >
+          {markers}
+          <InfoWindow
+            marker={this.state.activeMarker}
+            visible={this.state.showingInfoWindow}
+            >
+            <h1>
+              {this.state.selectedPlace.name}
+            </h1>
+          </InfoWindow>
+        </Map>}
+      </div>
+      
     );
   }
 }
 
 export default GoogleApiWrapper({
   apiKey: GOOGLE_API_KEY,
+  version: "3.30"
 })(PlacesContainer)
