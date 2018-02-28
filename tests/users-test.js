@@ -14,28 +14,29 @@ afterEach(stopServer);
 describe('/Users API Routes', () => {
   describe('GET /users/user', () => {
     it('does not send a user if not logged in', (done) => {
-      try {
-        request(app)
-          .get('/users/user')
-          .expect(401);
-        done();
-      } catch (error) {
-        throw error;
-      }
+      request(app)
+        .get('/users/user')
+        .expect(401)
+        .then(() => {
+          done();
+        })
+        .catch((err) => {
+          done(err);
+        },
+        );
     });
     it('Sends the requested user when they exist', (done) => {
-      try {
-        request(app)
-          .get('/users/user')
-          .set('x-access-token', users[0].tokens[0].token)
-          .expect(200)
-          .expect((res) => {
-            expect(res.body._id).to.equal(`${users[0]._id}`);
-          });
-        done();
-      } catch (err) {
-        throw err;
-      }
+      request(app)
+        .get('/users/user')
+        .set('x-access-token', users[0].tokens[0].token)
+        .expect(200)
+        .then((res) => {
+          expect(res.body._id).to.equal(`${users[0]._id}`);
+          done();
+        })
+        .catch((err) => {
+          done(err);
+        });
     });
   });
   // /register- POST
@@ -43,10 +44,24 @@ describe('/Users API Routes', () => {
 
   describe('POST users/register', () => {
     it('succesfully creates a new user', (done) => {
+      request(app)
+        .post('/users/register')
+        .send({
+          name: 'Taco Test',
+          email: 'test@testing.com',
+          password: 'passcode!1',
+        })
+        .expect(200)
+        .then((res) => {
+          expect(res.body.auth).to.equal(true);
+        })
+        .catch((err) => {
+          done(err);
+        });
+      // /
       try {
         request(app)
           .post('/users/register')
-          .type('form')
           .send({
             name: 'Taco Test',
             email: 'test@testing.com',
