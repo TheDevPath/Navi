@@ -54,27 +54,11 @@ describe('/Users API Routes', () => {
         .expect(200)
         .then((res) => {
           expect(res.body.auth).to.equal(true);
+          done();
         })
         .catch((err) => {
           done(err);
         });
-      // /
-      try {
-        request(app)
-          .post('/users/register')
-          .send({
-            name: 'Taco Test',
-            email: 'test@testing.com',
-            password: 'passcode',
-          })
-          .expect(200)
-          .expect((res) => {
-            expect(res.body.auth).to.be(true);
-          });
-        done();
-      } catch (err) {
-        done(err);
-      }
     });
 
     // valid email and password, but exists already
