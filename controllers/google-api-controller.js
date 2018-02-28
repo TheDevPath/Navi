@@ -334,3 +334,68 @@ exports.directions = (appReq, appRes) => {
     appRes.send(e);
   });
 };
+
+/**
+ * Geocoding API
+ * A Google Maps Geocoding request is an HTTP URL of the following form:
+ * https://maps.googleapis.com/maps/api/geocode/outputFormat?parameters
+ *
+ * Where output may be either of the following values:
+ *   - json (recommended) indicates output in JavaScript Object Notation (JSON)
+ *   - xml indicates output as XML
+ */
+
+/**
+ * @description Handles request for processing converting addresses into
+ *   geographic lat/lng coordinates or reverse if applicable.
+ *   Note - unpredicatable when used with latlng input type; recommend using for
+ *   retrieving latlng only i.e. use address input type.
+ *
+ * @api {POST} /map/geocode
+ * @apiSuccess 200 {JSON} With two root elements:
+ *   - status: a string identifier of the request outcome
+ *   - result: an array objects
+ *     reference: https://developers.google.com/maps/documentation/geocoding/intro#Results
+ * @apiError 400 {request error} Google api request error.
+ *
+ * @param {string} appReq.body.input The street address or lat/lng you want
+ *  to geocode.
+ * @param {string} appReq.body.type ['address'(default), 'latlng'] Input type
+ *  passed for geocode request.
+ */
+exports.geocode = (appReq, appRes) => {
+  const type = appReq.body.type || 'address';
+  const params = {
+    key: GOOGLE_API_KEY,
+  };
+  if (appReq.body.input && (type === 'address')) {
+    params['address'] = appReq.body.input;
+  } else if (appReq.body.input && (type === 'latlng')) {
+    params['latlng'] = appReq.body.input;
+  } else {
+    return appRes.status(404).send({
+      success: false,
+      error: 'Invalid request, check passed params!',
+    });
+  }
+  const BASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?';
+  const queryString = convertToQueryString(params);
+  const reqUrl = new URL(`${BASE_URL}${queryString}`);
+  console.log(reqUrl);
+
+  http.get(reqUrl, (res) => {
+    const chunks = [];
+
+    res.on('data', (chunk) => {
+      chunks.push(chunk);
+    });
+
+    res.on('end', () => {
+      const body = Buffer.concat(chunks);
+      const queryResult = JSON.parse(body.toString());
+      appRes.status(200).send(queryResult); 
+    });
+  }).on('error', (err) => {
+    appReq.send(err);
+  });
+};
