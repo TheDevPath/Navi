@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 // require controller modules
@@ -6,11 +7,11 @@ const savedDirectionsController = require('../controllers/saved-directions-contr
 const savedPinsController = require('../controllers/saved-pins-controller');
 const searchHistoryController = require('../controllers/search-history-controller');
 const { verifyToken } = require('../controllers/utils-controller');
-const { autocomplete, placeDetails } = require('../controllers/google-api-controller');
+const { autocomplete, placeDetails, textSearch } = require('../controllers/google-api-controller');
 
 /**
  * @description Handle requests to search main end point
- * 
+ *
  * @api {GET} /search
  * @return {success: false, error: err} Not a valid end point
  */
@@ -35,7 +36,8 @@ router.delete('/savedpins/:id', verifyToken, savedPinsController.deleteSavedPins
  */
 router.get('/places/:id', placeDetails);
 router.post('/autocomplete', autocomplete);
-
+router.get('/textSearch', textSearch);
+router.post('/textSearch', textSearch);
 /**
  * Saved search history end points
  */
