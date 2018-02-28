@@ -1,6 +1,7 @@
 const { ObjectID } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const { JWT_KEY } = require('../../config');
+const server = require('../../server');
 
 const User = require('../../models/users');
 const SavedPins = require('../../models/saved-pins');
@@ -41,7 +42,7 @@ const populatePins = (done) => {
   SavedPins.remove({}).then(() => SavedPins.insertMany(pins)).then(() => done());
 };
 
-const populateUsers = (done) => {
+const populateUsers = function (done) {
   User.remove({}).then(() => {
     const userOne = new User(users[0]).save();
     const userTwo = new User(users[1]).save();
@@ -50,6 +51,19 @@ const populateUsers = (done) => {
   }).then(() => done());
 };
 
+const deleteTestUser = function (done) {
+  User.remove({
+    name: 'Taco Test',
+    email: 'test@testing.com',
+    password: 'passcode',
+  }).then(() => done());
+};
+
+const stopServer = (done) => {
+  server.close();
+  done();
+};
+
 module.exports = {
-  pins, populatePins, users, populateUsers,
+  pins, populatePins, users, populateUsers, deleteTestUser, stopServer,
 };
