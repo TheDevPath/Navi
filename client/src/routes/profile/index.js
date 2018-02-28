@@ -1,5 +1,7 @@
 import {h, Component} from 'preact';
 import style from './style';
+
+import Logo from '../../components/Logo';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileEditForm from '../../components/ProfileEditForm';
 import ProfileSettingsForm from '../../components/ProfileSettingsForm';
@@ -14,6 +16,7 @@ export default class Profile extends Component {
     render({ user }, { time }) {
         return (
             <div class={style.profile}>
+                <Logo />
                 <ProfileCard user={user}/>
                 <ProfileEditForm user={user} />
                 <ProfileSettingsForm user={user} />

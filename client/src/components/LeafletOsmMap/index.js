@@ -129,7 +129,7 @@ export default class LeafletOSMMap extends Component {
         <Search>
           <SearchResults />
         </Search>
-        <MapPane height={screen.height * 0.95}/>
+        <MapPane height={screen.height}/>
       </div>
     );
   }
