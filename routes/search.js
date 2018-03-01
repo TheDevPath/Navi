@@ -36,8 +36,8 @@ router.delete('/savedpins/:id', verifyToken, savedPinsController.deleteSavedPins
  */
 router.get('/places/:id', placeDetails);
 router.post('/autocomplete', autocomplete);
-router.get('/textSearch', textSearch);
-router.post('/textSearch', textSearch);
+router.get('/textsearch', textSearch);
+router.post('/textsearch', textSearch);
 /**
  * Saved search history end points
  */

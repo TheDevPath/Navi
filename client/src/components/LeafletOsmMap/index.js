@@ -123,10 +123,11 @@ export default class LeafletOSMMap extends Component {
     droppedPin.bindPopup(container);
   }
 
+
   render() {
     return (
       <div class={style.fullscreen}>
-        <Search>
+        <Search position={this.state.mapCenter} map={this.state.map}>
           <SearchResults />
         </Search>
         <MapPane height={screen.height}/>

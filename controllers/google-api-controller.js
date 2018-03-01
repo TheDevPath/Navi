@@ -446,12 +446,7 @@ exports.textSearch = (appReq, appRes) => {
     res.on('end', () => {
       const body = Buffer.concat(chunks);
       const queryResult = JSON.parse(body.toString());
-      /* const outcome = processAutocomplete(queryResult);
-  const result = {
-  status: queryResult.status,
-  predictions: outcome.descriptions,
-  placeIds: outcome.placeIds,
-  }; */
+
       appRes.status(200).send(queryResult);
     });
   }).on('error', (err) => {

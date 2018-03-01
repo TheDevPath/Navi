@@ -10,7 +10,7 @@ export default class UnorderedList extends Component {
     return (
       <ul>
         {this.props.predictions.map((prediction, index) => {
-          return <div key={index}>{prediction}</div>
+          return <div key={index} onClick={this.props.onClicked.bind(null,prediction)} >{prediction}</div>
         })}
       </ul>
     )
