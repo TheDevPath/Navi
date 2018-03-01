@@ -22,7 +22,13 @@ const users = [{
   name: 'user',
   email: 'user@example.com',
   password: 'userTwoPass2!',
-}];
+}, {
+  // /This user is for creating new test users only
+  name: 'Taco Test',
+  email: 'test@testing.com',
+  password: 'passcode!1',
+},
+];
 
 const pins = [{
   _id: new ObjectID(),

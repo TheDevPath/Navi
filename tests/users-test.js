@@ -47,9 +47,9 @@ describe('/Users API Routes', () => {
       request(app)
         .post('/users/register')
         .send({
-          name: 'Taco Test',
-          email: 'test@testing.com',
-          password: 'passcode!1',
+          name: users[2].name,
+          email: users[2].email,
+          password: users[2].password,
         })
         .expect(200)
         .then((res) => {
@@ -84,7 +84,7 @@ describe('/Users API Routes', () => {
       request(app)
         .post('/users/register')
         .send({
-          name: 'Taco Test',
+          name: users[2].name,
           email: 'badtestemail',
           password: 'passcode',
         })
@@ -102,7 +102,7 @@ describe('/Users API Routes', () => {
       request(app)
         .post('/users/register')
         .send({
-          name: 'Taco Test',
+          name: users[2].name,
           email: 'testing@test.com',
           password: '0',
         })
@@ -123,21 +123,29 @@ describe('/Users API Routes', () => {
   describe('POST /users/login', () => {
     it('Successfully logs the user in', (done) => {
       request(app)
-        .post('/users/login')
-        .set('x-access-token', users[0].tokens[0].token)
+        .post('/users/register')
         .send({
-          name: users[0].name,
-          email: users[0].email,
-          password: users[0].password,
-        })
-        .expect(200)
-        .then((res) => {
-          expect(res.body.auth).to.equal(true);
-          expect(res.body.token).to.equal(users[0].tokens.token);
-          done();
-        })
-        .catch((err) => {
-          done(err);
+          name: users[2].name,
+          email: users[2].email,
+          password: users[2].password,
+        }).then((res) => {
+          request(app)
+            .post('/users/login')
+            .set('x-access-token', res.body.token)
+            .send({
+              name: users[2].name,
+              email: users[2].email,
+              password: users[2].password,
+            })
+            .expect(200)
+            .then((finalRes) => {
+              expect(finalRes.body.auth).to.equal(true);
+              expect(finalRes.body.token).to.equal(res.body.token);
+              done();
+            })
+            .catch((err) => {
+              done(err);
+            });
         });
     });
     // apiError 400 { request error } User not found.
