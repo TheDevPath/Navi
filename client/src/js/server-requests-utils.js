@@ -28,6 +28,7 @@ const BASE_ENDPOINTS = {
   userLogin: '/users/login',
   userLogout: '/users/logout',
   userRegister: '/users/register',
+  textsearch: '/search/textsearch',
 }
 
 /**

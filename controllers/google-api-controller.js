@@ -206,7 +206,7 @@ exports.autocomplete = (appReq, appRes) => {
 exports.placeDetails = (appReq, appRes) => {
   const strictbounds = (appReq.body.strictbounds) ? 'strictbounds' : '';
   const params = {
-    placeid: appReq.params.id, //'placeid' is required for google api request
+    placeid: appReq.params.id, // 'placeid' is required for google api request
     key: GOOGLE_API_KEY,
   };
   const BASE_URL = 'https://maps.googleapis.com/maps/api/place/details/json?';
@@ -369,9 +369,9 @@ exports.geocode = (appReq, appRes) => {
     key: GOOGLE_API_KEY,
   };
   if (appReq.body.input && (type === 'address')) {
-    params['address'] = appReq.body.input;
+    params.address = appReq.body.input;
   } else if (appReq.body.input && (type === 'latlng')) {
-    params['latlng'] = appReq.body.input;
+    params.latlng = appReq.body.input;
   } else {
     return appRes.status(404).send({
       success: false,
@@ -393,9 +393,63 @@ exports.geocode = (appReq, appRes) => {
     res.on('end', () => {
       const body = Buffer.concat(chunks);
       const queryResult = JSON.parse(body.toString());
-      appRes.status(200).send(queryResult); 
+      appRes.status(200).send(queryResult);
     });
   }).on('error', (err) => {
     appReq.send(err);
+  });
+};
+
+/**
+* TextSearch API
+* A Text Search request is an HTTP URL of the following form:
+* https://maps.googleapis.com/maps/api/place/textsearch/output?parameters
+*
+* Where output may be either of the following values:
+* - json (recommended) indicates output in JavaScript Object Notation (JSON)
+* - xml indicates output as XML
+*/
+/**
+* @description Handles request for search input query to get back search results and its geocode details
+*
+* @api {POST} /search/textSearch
+* @apiSuccess 200 {JSON} With two root elements:
+* - status: a string identifier of the request outcome
+* - predictions: an array query predictions
+* @apiError 400 {request error} Google api request error.
+*
+* @param {string} appReq.body.input - The text string on which to search.
+* @param {lat, lng} appReq.body.lat - The latitude for the point around which you
+* wish to retrieve place information.
+* @param {lat, lng} appReq.body.lng - The longitude for the point around which you
+* wish to retrieve place information.
+*
+*/
+exports.textSearch = (appReq, appRes) => {
+  const strictbounds = (appReq.body.strictbounds) ? 'strictbounds' : '';
+  const params = {
+    input: appReq.body.input,
+    key: GOOGLE_API_KEY,
+    location: `${appReq.body.lat},${appReq.body.lng}` || '',
+    radius: appReq.body.radius || '',
+    types: appReq.body.types || '',
+    strictbounds,
+  };
+  const BASE_URL = 'https://maps.googleapis.com/maps/api/place/textsearch/json?';
+  const queryString = convertToQueryString(params);
+  const reqUrl = new URL(`${BASE_URL}${queryString}`);
+  http.get(reqUrl, (res) => {
+    const chunks = [];
+    res.on('data', (chunk) => {
+      chunks.push(chunk);
+    });
+    res.on('end', () => {
+      const body = Buffer.concat(chunks);
+      const queryResult = JSON.parse(body.toString());
+
+      appRes.status(200).send(queryResult);
+    });
+  }).on('error', (err) => {
+    appRes.send(err);
   });
 };
