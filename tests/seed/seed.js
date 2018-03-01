@@ -12,7 +12,7 @@ const users = [{
   _id: userOneId,
   name: 'mallek',
   email: 'mallek@example.com',
-  password: 'userOnePass',
+  password: 'userOnePass1!',
   tokens: [{
     access: 'auth',
     token: jwt.sign({ id: userOneId }, JWT_KEY).toString(),
@@ -21,7 +21,7 @@ const users = [{
   _id: userTwoId,
   name: 'user',
   email: 'user@example.com',
-  password: 'userTwoPass',
+  password: 'userTwoPass2!',
 }];
 
 const pins = [{
@@ -53,9 +53,7 @@ const populateUsers = function (done) {
 
 const deleteTestUser = function (done) {
   User.remove({
-    name: 'Taco Test',
     email: 'test@testing.com',
-    password: 'passcode',
   }).then(() => done());
 };
 
