@@ -69,12 +69,12 @@ export default class Search extends Component {
     
     }
 
-    handleSelection(data,event) {
-      // TODO - hookup to map instance and add marker for given location
-      //      - get geolocation details based on prediction
-      console.log(data);
-      
-      }
+  handleSelection(data,event) {
+    // TODO - hookup to map instance and add marker for given location
+    //      - get geolocation details based on prediction
+    console.log(data);
+
+    }
 
   render() {
     // pass props to children components
