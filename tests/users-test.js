@@ -132,7 +132,8 @@ describe('/Users API Routes', () => {
         })
         .expect(200)
         .then((res) => {
-          expect(res.body).to.equal({ auth: true, token: users[0].tokens.token });
+          expect(res.body.auth).to.equal(true);
+          expect(res.body.token).to.equal(users[0].tokens.token);
           done();
         })
         .catch((err) => {
@@ -153,7 +154,6 @@ describe('/Users API Routes', () => {
           expect(res.text).to.equal('No user found.');
           done();
         })
-
         .catch((err) => {
           done(err);
         });
