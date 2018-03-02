@@ -415,7 +415,8 @@ exports.geocode = (appReq, appRes) => {
 * @api {POST} /search/textSearch
 * @apiSuccess 200 {JSON} With two root elements:
 * - status: a string identifier of the request outcome
-* - predictions: an array query predictions
+* - results: An array, each element of the results array
+* contains a single result from the specified area (location and radius)
 * @apiError 400 {request error} Google api request error.
 *
 * @param {string} appReq.body.input - The text string on which to search.

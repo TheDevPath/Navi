@@ -3,7 +3,7 @@ import style from './style';
 import axios from 'axios';
 import {API_SERVER} from '../../../config';
 const OK_Status = 'OK';
-
+let marker;
 export default class Search extends Component {
   constructor(props) {
     super(props);
@@ -44,12 +44,11 @@ export default class Search extends Component {
       }).then((response) => { 
         if(response.data.status == OK_Status)
         {
-          let [searchResult] = response.data.results;
+          const [searchResult] = response.data.results;
           this.onPlaceFound(searchResult);
         }          
         else
-          alert(response.data.status);
-      
+          alert(response.data.status);      
       });
       
   }
@@ -59,21 +58,19 @@ export default class Search extends Component {
    *
    * @param {*} placeDetail 
    */
+  
   onPlaceFound(placeDetail) {
     this.props.map.setZoom(16);
     const location = placeDetail.geometry.location;
-    const userMarker = L.marker(location).addTo(this.props.map)
+    
+    if (marker) 
+      this.props.map.removeLayer(marker); 
+    
+    marker = L.marker(location).addTo(this.props.map)
     .bindPopup(`<b>${placeDetail.name} </b>${placeDetail.formatted_address}`);
     this.props.map.setView(location, 16);
-    //ToDO : add to state , this location should be separate to user location
+    //ToDO : add to parent state , this location should be separate to user location
     
-    }
-
-  handleSelection(data,event) {
-    // TODO - hookup to map instance and add marker for given location
-    //      - get geolocation details based on prediction
-    console.log(data);
-
     }
 
   render() {
@@ -81,7 +78,7 @@ export default class Search extends Component {
     const childWithProps = this.props.children.map((child) => {
       return cloneElement(child, {
         predictions: this.state.predictions,
-        onClicked: this.handleSelection
+        onClicked: this.onPlaceFound
       });
     });
     
