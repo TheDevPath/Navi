@@ -14,3 +14,10 @@ describe('Nav', () => {
 	});
 });
 
+import SigninForm from '../src/components/SigninForm';
+
+describe('SigninForm', () => {
+	it('<SigninForm/> should contain "Login!"', () => {
+		expect(<SigninForm />, '<SigninForm/> should contain "Login!"').to.contain('Login!');
+	});
+});

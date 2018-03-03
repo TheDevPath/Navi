@@ -1,38 +1,46 @@
 import {h, Component} from 'preact';
-import style from './style';
-import {Menu, Button} from 'preact-material-components';
-import 'preact-material-components/List/style.css';
-import 'preact-material-components/Menu/style.css';
-import 'preact-material-components/Button/style.css';
-
-import Logo from '../Logo';
+import style from './style.css';
+import {populateSignInOut} from "../../js/utilities";
 
 export default class Nav extends Component {
-	render(){
-		return (
-			<div class={style.nav}>
-				<Menu.Anchor>
-					<Button
-						onClick={e => {
-							this.menu.MDComponent.open = true;
-						}}
-					>
-						&#9776;
-					</Button>
-					<Menu
-						ref={menu => {
-							this.menu = menu;
-						}}
-					>
-						<a href="/"><Menu.Item>Home</Menu.Item></a>
-						<a href="/profile"><Menu.Item>Profile</Menu.Item></a>
-						<a href="/directions"><Menu.Item>Directions</Menu.Item></a>
-						<a href="/pins"><Menu.Item>Pins</Menu.Item></a>
-						<a href="/maps"><Menu.Item>Maps</Menu.Item></a>
-						<a href="/signin"><Menu.Item>Sign in</Menu.Item></a>
-					</Menu>
-				</Menu.Anchor>
-			</div>
-		);
-	}
+
+  componentDidMount() {
+    let navIcon = document.getElementsByClassName(style.navIcon)[0];
+    let linkContainer = document.getElementsByClassName(style.linkContainer)[0];
+    linkContainer.style.display = "none";
+    navIcon.onclick = function (e) {
+      e.preventDefault();
+      var x = linkContainer;
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
+      }
+      return false;
+    }
+
+    let links = document.getElementsByClassName(style.link);
+    for (let link of links) {
+      link.onclick = function () {
+        linkContainer.style.display = "none";
+      }
+    }
+    populateSignInOut();
+  }
+
+  render() {
+    return (
+      <div class={style.nav}>
+        <a class={style.navIcon} href="">&#9776;</a>
+        <div class={style.linkContainer}>
+          <p><a href="/" class={style.link}>Home</a></p>
+          <p><a href="/maps" class={style.link}>Maps</a></p>
+          <p><a href="/directions" class={style.link}>Directions</a></p>
+          <p><a href="/places" class={style.link}>Places</a></p>
+          <p><a href="/profile" class={style.link}>Profile</a></p>
+          <p id="signInOut" class={style.link}></p>
+        </div>
+      </div>
+    );
+  }
 }

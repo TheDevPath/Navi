@@ -1,0 +1,5 @@
+.fullscreen {
+	height: inherit;
+	width: inherit;
+	display: block;
+}

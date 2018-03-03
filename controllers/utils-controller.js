@@ -44,8 +44,8 @@ exports.verifyToken = (req, res, next) => {
  * @description Utility function for generating query string from an object with
  *   key-value pairs for params needed for http request using native node https.
  *
- * @param {Object} key-value pairs for params needed for request to be parsed as
- *   query string
+ * @param {Object} paramsObject: key-value pairs for params needed for request
+ *   to be parsed as query string
  */
 exports.convertToQueryString = (paramsObject) => {
   const str = [];
@@ -54,4 +54,28 @@ exports.convertToQueryString = (paramsObject) => {
     str.push(`${encodeURIComponent(element)}=${encodeURIComponent(paramsObject[element])}`);
   });
   return str.join('&');
+};
+
+/**
+ * @description Utility function for processing google places autocomplete
+ *   results.
+ * 
+ * @param {Object} queryResult: JSON response containing two root elememts:
+ *   - status: contains metadata on the request along with status codes
+ *   - predictions: an array of query predictions
+ * 
+ * @returns {[Ojbect]} An array of suggestions as object with two root elements:
+ *   - prediction: the predicted query
+ *   - placeID: if prediction is a place else ''
+ */
+exports.processAutocomplete = (queryResult) => {
+  const descriptions = [];
+  const placeIds = [];
+  queryResult.predictions.forEach((result) => {
+    const description = result.description;
+    const placeId = result.place_id || '';
+    descriptions.push(description);
+    placeIds.push(placeId);
+  });
+  return {descriptions, placeIds};
 };

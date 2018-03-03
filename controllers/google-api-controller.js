@@ -1,7 +1,11 @@
 const http = require('https');
 const { URL } = require('url');
 const { GOOGLE_API_KEY } = require('../config');
-const { convertToQueryString } = require('./utils-controller');
+const { convertToQueryString, processAutocomplete } = require('./utils-controller');
+// const googleMapsClient = require('@google/maps').createClient({
+//   key: GOOGLE_API_KEY,
+//   Promise: Promise, // allow for using promises instead of callbacks
+// });  // docs: https://googlemaps.github.io/google-maps-services-js/docs/
 
 /**
  * Geolocation API access
@@ -123,7 +127,9 @@ exports.getStaticMap = (appReq, appRes) => {
  * @description Handles request for search autocompletion
  *
  * @api {POST} /search/autocomplete
- * @apiSuccess 200 {JSON} Potential search queries.
+ * @apiSuccess 200 {JSON} With two root elements:
+ *   - status: a string identifier of the request outcome
+ *   - predictions: an array query predictions
  * @apiError 400 {request error} Google api request error.
  *
  * @param {string} appReq.body.input - The text string on which to search.
@@ -165,10 +171,62 @@ exports.autocomplete = (appReq, appRes) => {
 
     res.on('end', () => {
       const body = Buffer.concat(chunks);
-      appRes.status(200).send(JSON.parse(body.toString()));
+      const queryResult = JSON.parse(body.toString());
+      const outcome = processAutocomplete(queryResult);
+      const result = {
+        status: queryResult.status,
+        predictions: outcome.descriptions,
+        placeIds: outcome.placeIds,
+      };
+      appRes.status(200).send(result);
     });
-  }).on('error', (e) => {
-    appRes.send(e);
+  }).on('error', (err) => {
+    appRes.send(err);
+  });
+};
+
+/**
+ * Place Details API
+ * A Place Details request is an HTTP URL of the following form:
+ * https://maps.googleapis.com/maps/api/place/details/output?parameters
+ *
+ * Where output may be either of the following values:
+ *   - json (recommended) indicates output in JavaScript Object Notation (JSON)
+ *   - xml indicates output as XML
+ */
+/**
+ * @description Handles request for getting details for given place_id.
+ *
+ * @api {GET} /search/places/:id
+ * @apiSuccess 200 {JSON} Potential search queries.
+ * @apiError 400 {request error} Google api request error.
+ *
+ * @param {string} appReq.params.id - The unique google place_id identifier for a place.
+ */
+exports.placeDetails = (appReq, appRes) => {
+  const strictbounds = (appReq.body.strictbounds) ? 'strictbounds' : '';
+  const params = {
+    placeid: appReq.params.id, // 'placeid' is required for google api request
+    key: GOOGLE_API_KEY,
+  };
+  const BASE_URL = 'https://maps.googleapis.com/maps/api/place/details/json?';
+  const queryString = convertToQueryString(params);
+  const reqUrl = new URL(`${BASE_URL}${queryString}`);
+
+  http.get(reqUrl, (res) => {
+    const chunks = [];
+
+    res.on('data', (chunk) => {
+      chunks.push(chunk);
+    });
+
+    res.on('end', () => {
+      const body = Buffer.concat(chunks);
+      const queryResult = JSON.parse(body.toString());
+      appRes.status(200).send(queryResult);
+    });
+  }).on('error', (err) => {
+    appRes.send(err);
   });
 };
 
@@ -274,5 +332,125 @@ exports.directions = (appReq, appRes) => {
     });
   }).on('error', (e) => {
     appRes.send(e);
+  });
+};
+
+/**
+ * Geocoding API
+ * A Google Maps Geocoding request is an HTTP URL of the following form:
+ * https://maps.googleapis.com/maps/api/geocode/outputFormat?parameters
+ *
+ * Where output may be either of the following values:
+ *   - json (recommended) indicates output in JavaScript Object Notation (JSON)
+ *   - xml indicates output as XML
+ */
+
+/**
+ * @description Handles request for processing converting addresses into
+ *   geographic lat/lng coordinates or reverse if applicable.
+ *   Note - unpredicatable when used with latlng input type; recommend using for
+ *   retrieving latlng only i.e. use address input type.
+ *
+ * @api {POST} /map/geocode
+ * @apiSuccess 200 {JSON} With two root elements:
+ *   - status: a string identifier of the request outcome
+ *   - result: an array objects
+ *     reference: https://developers.google.com/maps/documentation/geocoding/intro#Results
+ * @apiError 400 {request error} Google api request error.
+ *
+ * @param {string} appReq.body.input The street address or lat/lng you want
+ *  to geocode.
+ * @param {string} appReq.body.type ['address'(default), 'latlng'] Input type
+ *  passed for geocode request.
+ */
+exports.geocode = (appReq, appRes) => {
+  const type = appReq.body.type || 'address';
+  const params = {
+    key: GOOGLE_API_KEY,
+  };
+  if (appReq.body.input && (type === 'address')) {
+    params.address = appReq.body.input;
+  } else if (appReq.body.input && (type === 'latlng')) {
+    params.latlng = appReq.body.input;
+  } else {
+    return appRes.status(404).send({
+      success: false,
+      error: 'Invalid request, check passed params!',
+    });
+  }
+  const BASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?';
+  const queryString = convertToQueryString(params);
+  const reqUrl = new URL(`${BASE_URL}${queryString}`);
+  console.log(reqUrl);
+
+  http.get(reqUrl, (res) => {
+    const chunks = [];
+
+    res.on('data', (chunk) => {
+      chunks.push(chunk);
+    });
+
+    res.on('end', () => {
+      const body = Buffer.concat(chunks);
+      const queryResult = JSON.parse(body.toString());
+      appRes.status(200).send(queryResult);
+    });
+  }).on('error', (err) => {
+    appReq.send(err);
+  });
+};
+
+/**
+* TextSearch API
+* A Text Search request is an HTTP URL of the following form:
+* https://maps.googleapis.com/maps/api/place/textsearch/output?parameters
+*
+* Where output may be either of the following values:
+* - json (recommended) indicates output in JavaScript Object Notation (JSON)
+* - xml indicates output as XML
+*/
+/**
+* @description Handles request for search input query to get back search results and its geocode details
+*
+* @api {POST} /search/textSearch
+* @apiSuccess 200 {JSON} With two root elements:
+* - status: a string identifier of the request outcome
+* - results: An array, each element of the results array
+* contains a single result from the specified area (location and radius)
+* @apiError 400 {request error} Google api request error.
+*
+* @param {string} appReq.body.input - The text string on which to search.
+* @param {lat, lng} appReq.body.lat - The latitude for the point around which you
+* wish to retrieve place information.
+* @param {lat, lng} appReq.body.lng - The longitude for the point around which you
+* wish to retrieve place information.
+*
+*/
+exports.textSearch = (appReq, appRes) => {
+  const strictbounds = (appReq.body.strictbounds) ? 'strictbounds' : '';
+  const params = {
+    input: appReq.body.input,
+    key: GOOGLE_API_KEY,
+    location: `${appReq.body.lat},${appReq.body.lng}` || '',
+    radius: appReq.body.radius || '',
+    types: appReq.body.types || '',
+    strictbounds,
+  };
+  const BASE_URL = 'https://maps.googleapis.com/maps/api/place/textsearch/json?';
+  const queryString = convertToQueryString(params);
+  const reqUrl = new URL(`${BASE_URL}${queryString}`);
+  http.get(reqUrl, (res) => {
+    const chunks = [];
+    res.on('data', (chunk) => {
+      chunks.push(chunk);
+    });
+    res.on('end', () => {
+      const body = Buffer.concat(chunks);
+      const queryResult = JSON.parse(body.toString());
+
+      appRes.status(200).send(queryResult);
+    });
+  }).on('error', (err) => {
+    appRes.send(err);
   });
 };

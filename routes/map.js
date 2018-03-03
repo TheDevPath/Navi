@@ -11,11 +11,15 @@ const googleApiController = require('../controllers/google-api-controller');
 
 // temporary hook to confirm base routing is working
 router.get('/', (req, res) => {
-  res.send('NOT IMPLEMENTED: Map View');
+  res.status(404).send({
+    success: false,
+    error: 'Not a valid end point!',
+  });
 });
 
 router.get('/geolocation', googleApiController.getGeolocation);
 router.post('/staticmap', googleApiController.getStaticMap);
 router.post('/directions', googleApiController.directions);
+router.post('/geocode', googleApiController.geocode);
 
 module.exports = router;
