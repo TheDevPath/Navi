@@ -3,7 +3,7 @@
   "name": "Navi - a navigator app for the Udacity Grow with Google project",
   "start_url": "/?utm_source=homescreen",
   "display": "standalone",
-  "orientation": "landscape",
+  "orientation": "portrait",
   "background_color": "#2196F3",
   "theme_color": "#2196F3",
   "icons": [{
