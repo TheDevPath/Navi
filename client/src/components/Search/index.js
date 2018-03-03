@@ -2,7 +2,7 @@ import { h , Component, cloneElement } from 'preact';
 import style from './style';
 import axios from 'axios';
 import {API_SERVER} from '../../../config';
-const OK_Status = 'OK';
+const OK_STATUS = 'OK';
 let marker;
 export default class Search extends Component {
   constructor(props) {
@@ -11,11 +11,13 @@ export default class Search extends Component {
       value: '',
       predictions: [],
       placeIDs: [],
+      marker: null,
+      position: null,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.onPlaceFound = this.onPlaceFound.bind(this);
+    this.handleSelectedPlace = this.handleSelectedPlace.bind(this);
   }
 
   handleChange(event) {
@@ -42,10 +44,10 @@ export default class Search extends Component {
       lat: this.props.position.lat,
       lng: this.props.position.lng,
       }).then((response) => { 
-        if(response.data.status == OK_Status)
+        if(response.data.status == OK_STATUS)
         {
           const [searchResult] = response.data.results;
-          this.onPlaceFound(searchResult);
+          this.handleSelectedPlace(searchResult);
         }          
         else
           alert(response.data.status);      
@@ -59,26 +61,31 @@ export default class Search extends Component {
    * @param {*} placeDetail 
    */
   
-  onPlaceFound(placeDetail) {
+  handleSelectedPlace(placeDetail) {
     this.props.map.setZoom(16);
-    const location = placeDetail.geometry.location;
+    console.log(placeDetail)
+    if (this.state.marker) 
+      this.props.map.removeLayer(this.state.marker); 
+    this.setState({
+      marker : L.marker(placeDetail.geometry.location).addTo(this.props.map),
+      position: placeDetail.geometry.location
+    })
     
-    if (marker) 
-      this.props.map.removeLayer(marker); 
-    
-    marker = L.marker(location).addTo(this.props.map)
-    .bindPopup(`<b>${placeDetail.name} </b>${placeDetail.formatted_address}`);
-    this.props.map.setView(location, 16);
-    //ToDO : add to parent state , this location should be separate to user location
+    //TO DO: Customize the marker popup
+    this.state.marker.bindPopup(`<b>${placeDetail.name || ''} </b>${placeDetail.formatted_address}`)
+
+    this.props.map.setView(this.state.position, 16);
     
     }
+
+    handleMarkerPopupContent
 
   render() {
     // pass props to children components
     const childWithProps = this.props.children.map((child) => {
       return cloneElement(child, {
         predictions: this.state.predictions,
-        onClicked: this.onPlaceFound
+        onClicked: this.handleSelectedPlace
       });
     });
     

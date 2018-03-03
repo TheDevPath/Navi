@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import style from './style.css';
 import axios from 'axios';
 import {API_SERVER} from '../../../config';
-const OK_Status = 'OK'
+const OK_STATUS = 'OK'
 
 export default class UnorderedList extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ export default class UnorderedList extends Component {
       input: prediction     
       }).then((response) => { 
         console.log(response);
-        if(response.data.status == OK_Status)
+        if(response.data.status == OK_STATUS)
         {
           const [searchResult] = response.data.results;
           this.props.onClicked(searchResult);
