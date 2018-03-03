@@ -3,7 +3,7 @@ import style from './style';
 import axios from 'axios';
 import {API_SERVER} from '../../../config';
 const OK_STATUS = 'OK';
-let marker;
+
 export default class Search extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +12,7 @@ export default class Search extends Component {
       predictions: [],
       placeIDs: [],
       marker: null,
-      position: null,
+      position: {},
     };
 
     this.handleChange = this.handleChange.bind(this);
