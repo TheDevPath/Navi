@@ -1,6 +1,5 @@
 import {h, Component} from 'preact';
 import style from './style.css';
-import {populateSignInOut} from "../../js/utilities";
 
 export default class Nav extends Component {
 
@@ -25,7 +24,6 @@ export default class Nav extends Component {
         linkContainer.style.display = "none";
       }
     }
-    populateSignInOut();
   }
 
   render() {
@@ -37,7 +35,6 @@ export default class Nav extends Component {
           <p><a href="/maps" class={style.link}>Maps</a></p>
           <p><a href="/directions" class={style.link}>Directions</a></p>
           <p><a href="/profile" class={style.link}>Profile</a></p>
-          <p id="signInOut" class={style.link}></p>
         </div>
       </div>
     );
