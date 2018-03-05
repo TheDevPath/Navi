@@ -24,5 +24,6 @@ router.post('/register', usersController.registerUser);
 router.get('/user', verifyToken, usersController.getUser);
 router.post('/login', usersController.loginUser);
 router.get('/logout', usersController.logoutUser);
+router.post('/reset-password', usersController.resetPassword);
 
 module.exports = router;

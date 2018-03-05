@@ -108,8 +108,8 @@ exports.getUser = (appReq, appRes) => {
  *
  * @api {POST} /users/login
  * @apiSuccess 200 {auth: true, token: token} jsonwebtoken.
- * @apiError 400 {request error} User not found.
  * @apiError 401 {auth: false, token: null} Invalid password.
+ * @apiError 404 {request error} User not found.
  * @apiError 500 {server error} Problem finding user.
  *
  * @param {string} appReq.body.email - email provided by user
@@ -120,7 +120,19 @@ exports.loginUser = (appReq, appRes) => {
     if (err) return appRes.status(500).send('Error on the server.');
     if (!user) return appRes.status(404).send('No user found.');
 
-    const passwordIsValid = bcrypt.compareSync(
+    let passwordIsValid = bcrypt.compareSync(
+      appReq.body.password,
+      user.password,
+    );
+
+    if (!passwordIsValid) {
+      return appRes.status(401).send({
+        auth: false,
+        token: null,
+      });
+    }
+
+    passwordIsValid = bcrypt.compareSync(
       appReq.body.password,
       user.password,
     );
@@ -156,3 +168,51 @@ exports.logoutUser = (appReq, appRes) => {
     token: null,
   });
 };
+
+
+/**
+ * @description Handles resetting password
+ *
+ * @api {POST} /users/reset-password
+ * @apiSuccess 200 {auth: true, token: token} jsonwebtoken.
+ * @apiError 401 {auth: false, token: null} Invalid password.
+ * @apiError 404 {request error} User not found.
+ * @apiError 500 {server error} Problem finding user.
+ *
+ * @param {string} appReq.body.email - email provided by user
+ * @param {string} appReq.body.password - user provided password
+ * @param {string} appReq.body.new_password - user provided password
+ * @param {string} appReq.body.confirm_password - user provided password
+ */
+exports.resetPassword = (appReq, appRes) => {
+
+  const HASHED_PASSWORD = bcrypt.hashSync(appReq.body.new_password, 8);
+
+  User.findOneAndUpdate({ email: appReq.body.email }, {password: HASHED_PASSWORD}, {upsert:false}, (err, user) => {
+    if (err) return appRes.status(500).send('Error on the server.');
+    if (!user) return appRes.status(404).send('No user found.');
+
+    const passwordIsValid = bcrypt.compareSync(
+      appReq.body.password,
+      user.password,
+    );
+
+    if (!passwordIsValid) {
+      return appRes.status(401).send({
+        auth: false,
+        token: null,
+      });
+    }
+
+    const token = jwt.sign({ id: user._id }, JWT_KEY, {
+      expiresIn: 86400,
+    });
+
+    appRes.status(200).send({
+      auth: true,
+      token,
+    });
+  });
+
+};
+
