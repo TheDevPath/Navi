@@ -1,10 +1,6 @@
 import {h, Component, render} from 'preact';
-import Cookies from "universal-cookie";
-import axios from "axios/index";
-import {API_SERVER} from "../../config";
 import {route} from "preact-router";
-
-const TOKEN_COOKIE = 'token';
+import {makeRequest, token} from './server-requests-utils';
 
 const renderElement = (content, element_id) => {
   let element = document.getElementById(element_id);
@@ -16,18 +12,8 @@ const passwordsMatch = (formData) => {
   return formData.confirm_password === undefined || formData.password === formData.confirm_password;
 }
 
-const deleteTokenCookie = () => {
-  const cookies = new Cookies();
-  cookies.remove(TOKEN_COOKIE);
-}
-
-const getToken = () => {
-  const cookies = new Cookies();
-  return cookies.get(TOKEN_COOKIE);
-}
-
 const getSignInPromise = () => {
-  return axios.get(`${API_SERVER}/users/user`, {headers: {'x-access-token': getToken()}});
+  return makeRequest('GET','user');
 }
 
 const formDataForAxios = (form) => {
@@ -36,11 +22,6 @@ const formDataForAxios = (form) => {
     formData[pair[0]] = pair[1];
   }
   return formData;
-}
-
-const setTokenCookie = (val) => {
-  const cookies = new Cookies();
-  cookies.set(TOKEN_COOKIE, val, {path: '/'});
 }
 
 const handleSubmit = (event, path) => {
@@ -54,9 +35,9 @@ const handleSubmit = (event, path) => {
     return;
   }
 
-  axios.post(`${API_SERVER}${path}`, formData)
-    .then(function (response) {
-      setTokenCookie(response.data.token);
+  makeRequest('POST', path, '', formData)
+  .then(function (response) {
+      token.setCookie(response.data.token);
       populateSignInOut();
       route('/profile', true);
     })
@@ -66,9 +47,10 @@ const handleSubmit = (event, path) => {
         return;
       }
       if (error.response.status === 401) {
-        deleteTokenCookie();
+        token.deleteCookie();
         renderElement('Wrong password.', MESSAGE_AREA);
       } else {
+        console.log(error);
         renderElement(error.response.data, MESSAGE_AREA);
       }
     });
@@ -90,7 +72,7 @@ export const clearForms = () => {
 }
 
 export const logout = () => {
-  deleteTokenCookie();
+  token.deleteCookie();
   populateSignInOut();
   route('/', true);
 }
@@ -102,4 +84,3 @@ export const handleRegisterSubmit = (event) => {
 export const handleSigninSubmit = (event) => {
   handleSubmit(event, '/users/login');
 }
-
