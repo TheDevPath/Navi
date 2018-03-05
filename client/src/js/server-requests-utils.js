@@ -34,7 +34,13 @@ const BASE_ENDPOINTS = {
  * Utility functions
  */
 
-const token = {
+
+ /**
+ * Exported functions
+ */
+
+
+export const token = {
   setCookie: val => {
     const cookies = new Cookies();
     cookies.set(TOKEN_COOKIE, val, {path: '/'});
@@ -51,10 +57,6 @@ const token = {
   }
 
 }
-
-/**
- * Exported functions
- */
 
  /* makeRequest(...)
 
@@ -93,7 +95,7 @@ export const makeRequest = (method='GET', baseEndPoint, endPointAddon='', bodyDa
     baseURL: API_SERVER,
     data: bodyData
   }
-
+  
   return axios.request(config);
 }
 
