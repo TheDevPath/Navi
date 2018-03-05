@@ -34,7 +34,6 @@ export default class Nav extends Component {
           <p><a href="/" class={style.link}>Home</a></p>
           <p><a href="/maps" class={style.link}>Maps</a></p>
           <p><a href="/directions" class={style.link}>Directions</a></p>
-          <p><a href="/places" class={style.link}>Places</a></p>
           <p><a href="/profile" class={style.link}>Profile</a></p>
         </div>
       </div>

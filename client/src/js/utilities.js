@@ -1,22 +1,8 @@
-import Cookies from "universal-cookie";
-import axios from "axios/index";
-import {API_SERVER} from "../../config";
 import {route} from "preact-router";
-
-const TOKEN_COOKIE = 'token';
-
-const deleteTokenCookie = () => {
-  const cookies = new Cookies();
-  cookies.remove(TOKEN_COOKIE);
-}
-
-const getToken = () => {
-  const cookies = new Cookies();
-  return cookies.get(TOKEN_COOKIE);
-}
+import {makeRequest, token} from './server-requests-utils';
 
 const getSignInPromise = () => {
-  return axios.get(`${API_SERVER}/users/user`, {headers: {'x-access-token': getToken()}});
+  return makeRequest('GET','user');
 }
 
 const formDataForAxios = (form) => {
@@ -26,11 +12,6 @@ const formDataForAxios = (form) => {
     formData[pair[0]] = pair[1];
   }
   return formData;
-}
-
-const setTokenCookie = (val) => {
-  const cookies = new Cookies();
-  cookies.set(TOKEN_COOKIE, val, {path: '/'});
 }
 
 const setStateValue = (key, value, component) => {
@@ -106,20 +87,17 @@ export const handleSubmit = (args) => {
   };
   if(!formIsValid(validationArgs)) return;
 
-  axios.post(`${API_SERVER}${path}`, formData)
-    .then(function (response) {
-      setTokenCookie(response.data.token);
-      getSignInPromise()
-        .then(() => {
-           route(`/profile?success=${successMessage}`,true);
-        });
+  makeRequest('POST', path, '', formData)
+  .then(function (response) {
+      token.setCookie(response.data.token);
+        route(`/profile?success=${successMessage}`,true);
     })
     .catch(function (error) {
       if (error.response === undefined) {
         return setStateValue(message_key, error, component);
       }
       if (error.response.status === 401) {
-        deleteTokenCookie();
+        token.deleteCookie();
         return setStateValue(message_key, 'Wrong password.', component);
       } else {
         return setStateValue(message_key, error.response.data, component);
@@ -134,7 +112,7 @@ export const clearForms = () => {
 }
 
 export const logout = () => {
-  deleteTokenCookie();
+  token.deleteCookie();
 }
 
 export const setStateUserOrRedirectToSignIn = (component) => {
@@ -148,5 +126,4 @@ export const setStateUserOrRedirectToSignIn = (component) => {
     ).catch(() => {
       route('/signin', true);
   });
-
 }

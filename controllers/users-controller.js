@@ -119,30 +119,7 @@ exports.loginUser = (appReq, appRes) => {
   User.findOne({ email: appReq.body.email }, (err, user) => {
     if (err) return appRes.status(500).send('Error on the server.');
     if (!user) return appRes.status(404).send('No user found.');
-
-    let passwordIsValid = bcrypt.compareSync(
-      appReq.body.password,
-      user.password,
-    );
-
-    if (!passwordIsValid) {
-      return appRes.status(401).send({
-        auth: false,
-        token: null,
-      });
-    }
-
-    passwordIsValid = bcrypt.compareSync(
-      appReq.body.password,
-      user.password,
-    );
-
-    if (!passwordIsValid) {
-      return appRes.status(401).send({
-        auth: false,
-        token: null,
-      });
-    }
+    if(!checkPassword(appReq.body.password,user.password)) return getInvalidPasswordResponse(appRes);
 
     const token = jwt.sign({ id: user._id }, JWT_KEY, {
       expiresIn: 86400,
@@ -188,21 +165,15 @@ exports.resetPassword = (appReq, appRes) => {
 
   const HASHED_PASSWORD = bcrypt.hashSync(appReq.body.new_password, 8);
 
-  User.findOneAndUpdate({ email: appReq.body.email }, {password: HASHED_PASSWORD}, {upsert:false}, (err, user) => {
+  User.findOne({ email: appReq.body.email }, (err, user) => {
     if (err) return appRes.status(500).send('Error on the server.');
     if (!user) return appRes.status(404).send('No user found.');
+    if(!checkPassword(appReq.body.password,user.password)) return getInvalidPasswordResponse(appRes);
 
-    const passwordIsValid = bcrypt.compareSync(
-      appReq.body.password,
-      user.password,
-    );
-
-    if (!passwordIsValid) {
-      return appRes.status(401).send({
-        auth: false,
-        token: null,
-      });
-    }
+    user.password = HASHED_PASSWORD;
+    user.save(function (err, updatedUser) {
+      if (err) return appRes.status(500).send('Error on the server.');
+    });
 
     const token = jwt.sign({ id: user._id }, JWT_KEY, {
       expiresIn: 86400,
@@ -216,3 +187,13 @@ exports.resetPassword = (appReq, appRes) => {
 
 };
 
+const checkPassword = (password1, password2) => {
+  return bcrypt.compareSync(password1, password2);
+}
+
+const getInvalidPasswordResponse = (appRes) => {
+  return appRes.status(401).send({
+    auth: false,
+    token: null,
+  });
+}

@@ -4,8 +4,6 @@ import Match from 'preact-router/match';
 import { LOGIN_PATH, RESET_PATH, REGISTER_PATH } from "../../config";
 
 // import components
-import GoogleMap from './GoogleMap';
-import PlacesMap from './PlacesMap';
 import Nav from './Nav';
 import Logo from './Logo';
 import Pins from './Pins';
@@ -14,7 +12,6 @@ import Pins from './Pins';
 import Home from '../routes/home';
 import Profile from '../routes/profile';
 import Directions from '../routes/directions';
-import Places from '../routes/places';
 import Maps from '../routes/maps';
 import Account from '../routes/account';
 // import Signin from '../routes/signin';
@@ -52,7 +49,6 @@ export default class App extends Component {
           				<Account path="/reset-password"/>
           				<Settings path="/settings"/>
 					<SignOut path="/signout"/>
-					<Places path="/places" />
 					<Directions path="/directions" />
 					<Pins path="/pins" />
 					<Maps path="/maps" />
