@@ -3,6 +3,7 @@ import style from "./style";
 import MapPane from './MapPane';
 import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
+import {fetchAndDropUserPins} from './SavedPlaces.js';
 
 /**
  * Leaflet related imports: leaflet, pouchdb module, and routing machine module
@@ -64,6 +65,9 @@ export default class LeafletOSMMap extends Component {
     this.state.map.on('locationfound', this.onLocationFound);
     this.state.map.on('locationerror', this.onLocationError);
     this.state.map.on('click', this.onMapClick);
+
+    //once map is ready, drop pins
+    fetchAndDropUserPins(undefined, this.state.map);
   }
 
   /**

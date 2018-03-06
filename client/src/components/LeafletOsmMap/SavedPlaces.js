@@ -15,16 +15,17 @@ Full list of options: http://leafletjs.com/reference-1.3.0.html#icon
 const FAV_MARKER_ICON = L.icon({
   iconUrl: '../../assets/icons/leaflet/marker-icon-fav-2x.png',
   className: 'favorites',
-  iconSize: [25, 41],
+  iconSize: [25, 41], //native aspect ratio: [28, 41]
 });
 const CURRENT_USER = makeRequest('GET', 'user');
  
-
+ 
 
 export default class SavedPlaces extends Component {
   constructor(props) {
     super(props)
     const {user, map} = props;
+
     fetchAndDropUserPins(user, map);
   }
 
@@ -43,7 +44,6 @@ export default class SavedPlaces extends Component {
 //Get and drop pins from any user on any map
 const fetchAndDropUserPins =  (userPromised=CURRENT_USER, mapObj=undefined) => {
 
-  console.log(userPromised);
   userPromised
   .then(res => res.data._id) //get user ID
   .then(user_id => getSavedPins(user_id))
@@ -91,6 +91,8 @@ const makePinMarkers = (pinArray = []) => {
       title: pin.place_id
     });
 
+    thisMarker.data = pin; //save the db data to the marker
+
     pinMarkers.push(thisMarker);
   }
 
@@ -114,11 +116,14 @@ const dropPin = (pinMarkers=[], mapObj=undefined) => {
 
   for (let marker of pinMarkers){
     marker.addTo(mapObj);
-
-    /* TO DO
-    Bind a custom container for each pin on click */
-    marker.bindPopup(marker.title);
+    setPinPopup(marker);
   }
+}
+
+/* TO DO
+    Create a custom container for each pin on click */
+const setPinPopup = (marker) => {
+  marker.bindPopup(marker.options.title);
 }
 
 
