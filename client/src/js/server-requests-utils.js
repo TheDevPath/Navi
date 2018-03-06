@@ -85,16 +85,22 @@ export const makeRequest = (method='GET', baseEndPoint, endPointAddon='', bodyDa
     })
   } 
 
-  const url = (BASE_ENDPOINTS[baseEndPoint] || baseEndPoint) + endPointAddon;
+  let url = (BASE_ENDPOINTS[baseEndPoint] || baseEndPoint);
+
+  if (endPointAddon.length > 0) {
+    url += endPointAddon;
+  }
+
   headers['x-access-token'] = token.getCookie();
 
-  let config = {method, 
+  const config = {method, 
     url,
     params,
     headers,
     baseURL: API_SERVER,
     data: bodyData
   }
+  console.log('makeRequest() - config: ', config);
   
   return axios.request(config);
 }
