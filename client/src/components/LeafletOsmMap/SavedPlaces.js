@@ -7,26 +7,24 @@ import {makeRequest} from "../../js/server-requests-utils";
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import '../../../node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import L from '../../js/leaflet-tileLayer-pouchdb-cached';
-import Routing from '../../../node_modules/leaflet-routing-machine/src/index.js';
 
 /* Set all settings for saved place icon
+Waiting for new icon for favorites
 Full list of options: http://leafletjs.com/reference-1.3.0.html#icon
  */
 const FAV_MARKER_ICON = L.icon({
-  iconUrl: '../../icons/marker-icon-fav.png',
-  shadowUrl: '../../icons/marker-shadow.png',
+  iconUrl: '../../assets/icons/leaflet/marker-icon-fav-2x.png',
   className: 'favorites',
+  iconSize: [25, 41],
 });
-
 const CURRENT_USER = makeRequest('GET', 'user');
-
+ 
 
 
 export default class SavedPlaces extends Component {
   constructor(props) {
     super(props)
     const {user, map} = props;
-
     fetchAndDropUserPins(user, map);
   }
 
@@ -36,7 +34,7 @@ export default class SavedPlaces extends Component {
   }
 
 }
-
+ 
 
 /**
  * Exported Functions
@@ -45,6 +43,7 @@ export default class SavedPlaces extends Component {
 //Get and drop pins from any user on any map
 const fetchAndDropUserPins =  (userPromised=CURRENT_USER, mapObj=undefined) => {
 
+  console.log(userPromised);
   userPromised
   .then(res => res.data._id) //get user ID
   .then(user_id => getSavedPins(user_id))
@@ -74,7 +73,7 @@ const getSavedPins = (user_id='') => {
     throw(err);
   });
 
-}
+} 
 
 //This function generates markers and drops them on a map (if specified)
 const makePinMarkers = (pinArray = []) => {
