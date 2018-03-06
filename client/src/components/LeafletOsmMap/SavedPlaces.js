@@ -17,7 +17,12 @@ const FAV_MARKER_ICON = L.icon({
   className: 'favorites',
   iconSize: [25, 41], //native aspect ratio: [28, 41]
 });
-const CURRENT_USER = makeRequest('GET', 'user');
+
+
+const CURRENT_USER = makeRequest('GET', 'user')
+  .catch(err=>{
+    //user not logged in
+  });
  
  
 
@@ -42,22 +47,44 @@ export default class SavedPlaces extends Component {
  */
 
 //Get and drop pins from any user on any map
-const fetchAndDropUserPins =  (userPromised=CURRENT_USER, mapObj=undefined) => {
+const fetchAndDropUserPins = (userPromised = CURRENT_USER, mapObj = undefined) => {
 
   userPromised
-  .then(res => res.data._id) //get user ID
-  .then(user_id => getSavedPins(user_id))
-  .then(savedPins => {
+    .then(res => res.data._id) //get user ID
+    .then(user_id => getSavedPins(user_id))
+    .then(savedPins => {
 
-    let pinMarkers = makePinMarkers(savedPins);
-    if (mapObj != null) dropPin(pinMarkers, mapObj);
+      let pinMarkers = makePinMarkers(savedPins);
+      if (mapObj != null) dropPin(pinMarkers, mapObj);
 
-  })
-  .catch(err => {
-    //User not signed in, no saved places to load
-    console.log(`Error. abort load saved places: ${err}`);
-  });
-  
+    })
+    .catch(err => {
+
+      /*
+      
+      //TO DO: 
+      //Ensure all errors are relatd to user not being logged in
+ 
+      //Make sure it's a server errror
+       if (!err.response) {
+         console.error(err);
+         return
+       };
+ 
+       //Determine which 
+       switch (err.response.status) {
+         case 403:
+           //user not logged in
+           console.info('No places saved places, user not logged in');
+           break;
+ 
+         default:
+           //throw the error
+           console.errpr(err);
+       } */
+
+    });
+
 }
 
 const getSavedPins = (user_id='') => {
