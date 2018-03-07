@@ -29,7 +29,7 @@ export default class Account extends Component {
 		}
 		return (
 			<div class={style.main}>
-				<div class={style.signin}>
+				<div class={style.inherit}>
 					{renderedForm}
 				</div>
 			</div>
