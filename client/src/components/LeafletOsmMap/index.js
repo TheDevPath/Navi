@@ -97,7 +97,7 @@ export default class LeafletOSMMap extends Component {
           'leaflet-bar leaflet-control leaflet-control-custom'
         );
 
-        L.DomEvent.stopPropagation(container);
+        L.DomEvent.disableClickPropagation(container);
 
         container.style.backgroundColor = 'white';
         container.style.width = '50px';
