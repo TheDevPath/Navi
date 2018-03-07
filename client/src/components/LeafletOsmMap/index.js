@@ -97,11 +97,35 @@ export default class LeafletOSMMap extends Component {
           'leaflet-bar leaflet-control leaflet-control-custom'
         );
 
+        let controlText = L.DomUtil.create('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '16px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Center Map';
+        container.appendChild(controlText);
+
         L.DomEvent.disableClickPropagation(container);
 
-        container.style.backgroundColor = 'white';
-        container.style.width = '50px';
-        container.style.height = '50px';
+        container.style.backgroundColor = '#fff';
+        container.style.border = '2px solid #e7e7e7';
+        container.style.borderRadius = '3px';
+        container.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        container.style.cursor = 'pointer';
+        container.style.marginBottom = '22px';
+        container.style.textAlign = 'center';
+        container.title = 'Click to recenter the map';
+
+        L.DomEvent.on(container, 'mouseenter', function(e) {
+          e.target.style.background = '#e7e7e7';
+        });
+
+        L.DomEvent.on(container, 'mouseleave', function(e) {
+          // e.target.style.color = '#ccc';
+          e.target.style.background = '#fff';
+        });
 
         L.DomEvent.on(container, 'click', function() {
           map.flyTo(map._lastCenter);
