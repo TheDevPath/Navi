@@ -28,7 +28,7 @@ const fetchAndDropUserPins = (user_id, mapObj, L) => {
 
       if (!savedPins) return;
 
-      let pinMarkers = makePinMarkers(savedPins, favMarker);
+      const pinMarkers = makePinMarkers(savedPins, favMarker);
       if (mapObj != null) dropPin(pinMarkers, mapObj);
 
     })
