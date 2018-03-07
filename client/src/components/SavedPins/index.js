@@ -2,12 +2,13 @@ import {h, Component} from 'preact';
 import style from './style';
 import {setStateUserOrRedirectToSignIn} from "../../js/utilities";
 
-export default class ProfileCard extends Component {
+export default class SavedPins extends Component {
   constructor() {
     super();
     this.state = {
       time: Date.now(),
       user: {},
+      search: {},
     };
     setStateUserOrRedirectToSignIn(this);
   }
@@ -29,11 +30,8 @@ export default class ProfileCard extends Component {
 
     render({  }, { user, time }) {
         return (
-        <div class={style.profileCard}>
-            <span id={style.profileCardTitle}>Profile: {user.name}</span><br/>
-            <hr/>
-            <span>picture here</span><br/>
-            <span>Local time: {new Date(time).toTimeString()}</span><br/>
+        <div class={style.savedPins}>
+            <span id={style.savedPinsTitle}>SavedPins: {}</span><br/>
         </div>
         );
     }

@@ -3,11 +3,13 @@ import style from './style';
 
 import Logo from '../../components/Logo';
 import ProfileCard from '../../components/ProfileCard';
+import SavedPins from '../../components/SavedPins';
+import SearchHistory from '../../components/SearchHistory';
 import ProfileEditForm from '../../components/ProfileEditForm';
 import ProfileSettingsForm from '../../components/ProfileSettingsForm';
 import {setStateUserOrRedirectToSignIn} from "../../js/utilities";
 
-export default class Profile extends Component {
+export default class ProfileInfo extends Component {
 
   constructor() {
     super();
@@ -25,11 +27,21 @@ render({success}, {user, time}) {
         <Logo/>
         {success}
         <div class={style.link}><a href="/">Home</a></div>
-        <div class={style.link}><a href="/maps">Your Maps</a></div>
-        <div class={style.link}><a href="/signin">Sign In or Create Account</a></div>
-        <div class={style.link}><a href="/profileinfo">Profile</a></div>
-        <div class={style.link}><a href="/settings">Account Settings</a></div>
-        <div class={style.link}><a href="/signout">Sign Out</a></div>
+        <div class={style.profile}>
+          <ProfileCard />
+        </div>
+        <div class={style.profile}>
+          <SavedPins />
+        </div>
+        <div class={style.profile}>
+          <SearchHistory />
+        </div>
+        <div class={style.profile}>
+          <ProfileEditForm />
+        </div>
+        <div class={style.profile}>
+          <ProfileSettingsForm />
+        </div>
       </div>
     );
   }

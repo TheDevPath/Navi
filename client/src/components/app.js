@@ -11,6 +11,7 @@ import Pins from './Pins';
 // import routes
 import Home from '../routes/home';
 import Profile from '../routes/profile';
+import ProfileInfo from '../routes/profileinfo';
 import Directions from '../routes/directions';
 import Maps from '../routes/maps';
 import Account from '../routes/account';
@@ -43,6 +44,8 @@ export default class App extends Component {
 					<Home path="/" />
 					<Profile path="/profile/" user="me" />
 					<Profile path="/profile/:user" />
+					<ProfileInfo path="/profileinfo" />
+					<ProfileInfo path="/profileinfo/:user" />
 					<Account path="/register" />
 					<Account path="/signin"/>
 					<Account path="/forgot-password"/>

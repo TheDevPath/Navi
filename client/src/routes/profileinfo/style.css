@@ -1,0 +1,13 @@
+.profile {
+	padding: 56px 20px;
+	min-height: 100%;
+	width: 100%;
+}
+
+.link {
+    padding: 5px;
+}
+
+.link a {
+    text-decoration: none;
+}
