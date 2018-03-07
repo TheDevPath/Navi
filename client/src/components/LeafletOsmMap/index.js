@@ -3,6 +3,7 @@ import style from "./style";
 import MapPane from './MapPane';
 import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
+import { makeRequest } from '../../js/server-requests-utils';
 import {fetchAndDropUserPins} from '../../js/saved-places';
 
 /**
