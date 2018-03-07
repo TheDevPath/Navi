@@ -50,7 +50,7 @@ const makePinMarkers = (pinArray = [], icon) => {
  
   let pinMarkers = [];
 
-  for (let pin of pinArray) {
+  for (const pin of pinArray) {
     //create  marker for the pin and bind it ot the map
 
     let thisMarker = []; //the marker icon cannot be changed after the marker is created?
