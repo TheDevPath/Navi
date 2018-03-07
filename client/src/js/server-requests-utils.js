@@ -85,10 +85,10 @@ export const makeRequest = (method='GET', baseEndPoint, endPointAddon='', bodyDa
     })
   } 
 
-  const url = (BASE_ENDPOINTS[baseEndPoint] || baseEndPoint) + endPointAddon;
+  const url = ((BASE_ENDPOINTS[baseEndPoint] || baseEndPoint) + endPointAddon).trim();
   headers['x-access-token'] = token.getCookie();
 
-  let config = {method, 
+  const config = {method, 
     url,
     params,
     headers,
