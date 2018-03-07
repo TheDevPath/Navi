@@ -91,13 +91,15 @@ export default class LeafletOSMMap extends Component {
     });
 
     L.Control.Center = L.Control.extend({
-      onAdd: function(map) {
-        let container = L.DomUtil.create(
+      onAdd: map => {
+        const center = this.state.mapCenter;
+        const zoom = map.options.zoom;
+        const container = L.DomUtil.create(
           'div',
           'leaflet-bar leaflet-control leaflet-control-custom'
         );
 
-        let controlText = L.DomUtil.create('div');
+        const controlText = L.DomUtil.create('div');
         controlText.style.color = 'rgb(25,25,25)';
         controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
         controlText.style.fontSize = '16px';
@@ -126,16 +128,15 @@ export default class LeafletOSMMap extends Component {
           // e.target.style.color = '#ccc';
           e.target.style.background = '#fff';
         });
-
         L.DomEvent.on(container, 'click', function() {
-          map.flyTo(map._lastCenter);
+          map.setView(center, zoom);
         });
         return container;
       }
     });
 
-    L.control.center = function() {
-      return new L.Control.Center();
+    L.control.center = function(opts) {
+      return new L.Control.Center(opts);
     };
 
     L.control
