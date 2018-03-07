@@ -1,0 +1,21 @@
+.savedPinsCard {
+    border-radius: 3px;
+    border-width: 2px;
+    border-style: groove;
+    margin-bottom: 10px;
+    padding-left: 5px;
+}
+
+#savedPinsCardTitle {
+    display: block;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    color: purple;
+    margin: 0 auto;
+}
+
+.savedPinsContainer{
+    text-align: center;
+}
+
