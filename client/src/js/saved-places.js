@@ -46,8 +46,10 @@ const getSavedPins = (user_id) => {
 } 
 
 //This function generates markers and drops them on a map (if specified)
-const makePinMarkers = (pinArray = [], icon) => {
+const makePinMarkers = (pinArray = [], icon, L) => {
  
+  const icon = (L && !icon) ? L.icon(FAV_MARKER_OPTIONS) : icon;
+
   let pinMarkers = [];
 
   for (const pin of pinArray) {
