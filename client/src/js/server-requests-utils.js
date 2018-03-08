@@ -4,16 +4,15 @@
 
 import axios from 'axios';
 import { API_SERVER } from '../../config';
-import { url } from 'inspector';
+import Cookies from "universal-cookie";
 
 /**
 * Configuration of Axios for making server requests
 * See 'Creating an instance' and 'Request Config' sections for more information:
 * https://www.npmjs.com/package/axios
 */
-const AXIOS_INSTANCE = axios.create({
-  baseURL: API_SERVER
-});
+
+const TOKEN_COOKIE = 'token';
 
 /**
  * Key-value pairs for existing base server endpoints
@@ -34,23 +33,83 @@ const BASE_ENDPOINTS = {
 /**
  * Utility functions
  */
-exports.postAutocomplete = (input='') => {
-  return AXIOS_INSTANCE.post(url=BASE_ENDPOINTS.autocomplete, {input});
-}
 
-/**
+
+ /**
  * Exported functions
  */
-// TODO - generalized method
-exports.makeRequest = (method='GET', baseEndPoint, endPointAddon={}, bodyData={}, params={}) => {
-  switch (method) {
-    case 'GET':
-      break;
-    case 'POST':
-      break;
-    case 'DELETE':
-      break;
-    default:
-      return new TypeError(`Invalid request method: ${method}`);
+
+
+export const token = {
+  setCookie: val => {
+    const cookies = new Cookies();
+    cookies.set(TOKEN_COOKIE, val, {path: '/'});
+  },
+
+  deleteCookie: () => {
+    const cookies = new Cookies();
+    cookies.remove(TOKEN_COOKIE);
+  },
+
+  getCookie: () => {
+    const cookies = new Cookies();
+    return cookies.get(TOKEN_COOKIE);  
   }
+
 }
+
+ /* makeRequest(...)
+
+ __include__ import {makeRequest} from "../../js/server-requests-utils"
+ __exmample__  makeRequest('GET','savedPins').then(res => {return res.data})
+
+ __output__ Promise that returns an object with the following keys: 
+    * config 
+    * data: response body
+    * headers
+    * request
+    * status
+    * statusText
+  
+  See: https://www.npmjs.com/package/axios#response-schema for more on the output
+ */
+
+export const makeRequest = (method='GET', baseEndPoint, endPointAddon='', bodyData={}, params={}, headers={}) => {
+
+  const validMethod = ['GET', 'POST', 'DELETE', 'PATCH','PUT']; //determined by axios
+
+  //if it's not a valid method, return rejected promise
+  if (!validMethod.includes(method)) {
+    return new Promise(function (res,rej) {
+      rej(TypeError(`Invalid request method: ${method}`));
+    })
+  } 
+
+  const url = ((BASE_ENDPOINTS[baseEndPoint] || baseEndPoint) + endPointAddon).trim();
+  headers['x-access-token'] = token.getCookie();
+
+  const config = {method, 
+    url,
+    params,
+    headers,
+    baseURL: API_SERVER,
+    data: bodyData
+  }
+  
+  return axios.request(config);
+}
+
+
+/* 
+Incomplete Function...
+
+import { url } from 'inspector';
+
+const AXIOS_INSTANCE = axios.create({
+  baseURL: API_SERVER
+});
+
+exports.postAutocomplete = (input='') => { //ERR: url is read only
+  // return AXIOS_INSTANCE.post(url=BASE_ENDPOINTS.autocomplete, {input});
+}
+ */

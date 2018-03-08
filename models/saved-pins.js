@@ -7,7 +7,7 @@ const savedPinsSchema = new mongoose.Schema({
   lng: {
     type: Number, min: -180, max: 180, required: true,
   },
-  place_id: { type: String, required: true },
+  place_id: { type: String, default: '' },
   save_date: { type: Date, default: Date.now },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });

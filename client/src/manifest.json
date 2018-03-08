@@ -18,11 +18,11 @@
        "src": "client/src/assets/icons/apple-touch-icon.png",
        "sizes": "152x152",
        "type": "image/png"
-     }, , {
+     }, {
        "src": "client/src/assets/icons/favicon-16x16.png",
        "sizes": "128X128",
        "type": "image/png"
-     }, , {
+     }, {
        "src": "client/src/assets/icons/favicon-16x16.png",
        "sizes": "144X144",
        "type": "image/png"

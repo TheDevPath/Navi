@@ -3,6 +3,8 @@ import style from "./style";
 import MapPane from './MapPane';
 import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
+import { makeRequest } from '../../js/server-requests-utils';
+import {fetchAndDropUserPins} from '../../js/saved-places';
 
 /**
  * Leaflet related imports: leaflet, pouchdb module, and routing machine module
@@ -64,6 +66,9 @@ export default class LeafletOSMMap extends Component {
     this.state.map.on('locationfound', this.onLocationFound);
     this.state.map.on('locationerror', this.onLocationError);
     this.state.map.on('click', this.onMapClick);
+
+    //once map is ready, drop pins (user=undefined --> default)
+    fetchAndDropUserPins(undefined, this.state.map, L);
   }
 
   /**
@@ -111,9 +116,16 @@ export default class LeafletOSMMap extends Component {
     const deleteBtn = createButton('Remove', container);
   
     L.DomEvent.on(saveBtn, 'click', function() {
-      // TODO - save marker location to db if possible or queue to
-      // save when backend server is available
-      alert(`Save marker at: ${event.latlng}!`);
+      makeRequest('POST', 'savedPins', '', {
+        lat: event.latlng.lat,
+        lng: event.latlng.lng,
+      }).then((response) => {
+        alert(`Succes: Saved pin at ${event.latlng} to db`);
+        console.log('Success - saved: ', response);
+      }).catch((err) => {
+        alert('Error saving pin: ', err);
+        console.log('Error saving pin: ', err);
+      })
     });
   
     L.DomEvent.on(deleteBtn, 'click', function() {
