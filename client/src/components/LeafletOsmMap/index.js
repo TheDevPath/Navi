@@ -5,7 +5,7 @@ import MapPane from './MapPane';
 import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
 import { makeRequest } from '../../js/server-requests-utils';
-import {fetchAndDropUserPins} from '../../js/saved-places';
+import {fetchAndDropUserPins, makePinMarkers, dropPin} from '../../js/saved-places';
 
 /**
  * Leaflet related imports: leaflet, pouchdb module, and routing machine module
@@ -115,16 +115,22 @@ export default class LeafletOSMMap extends Component {
     const container = L.DomUtil.create('div');
     const saveBtn = createButton('Save', container);
     const deleteBtn = createButton('Remove', container);
-  
-    L.DomEvent.on(saveBtn, 'click', function() {
+
+    L.DomEvent.on(saveBtn, 'click', function () {
       makeRequest('POST', 'savedPins', '', {
         lat: event.latlng.lat,
         lng: event.latlng.lng,
       }).then((response) => {
 
-        alert(`Succes: Saved pin at ${event.latlng} to db`);
-        console.log('Success - saved: ', response);
-        //convert the pinh
+        //remove old icon
+        droppedPin.remove()
+
+        //add a new one
+        const savedMarker = makePinMarkers([response.data.pin], L);
+        dropPin(savedMarker, event.target);
+
+        // alert(`Succes: Saved pin at ${event.latlng} to db`);
+
       }).catch((err) => {
 
         switch (err.response.status){
