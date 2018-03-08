@@ -1,4 +1,5 @@
 import { h, Component } from "preact";
+import { route } from "preact-router";
 import style from "./style";
 import MapPane from './MapPane';
 import Search from '../../components/Search';
@@ -120,11 +121,34 @@ export default class LeafletOSMMap extends Component {
         lat: event.latlng.lat,
         lng: event.latlng.lng,
       }).then((response) => {
+
         alert(`Succes: Saved pin at ${event.latlng} to db`);
         console.log('Success - saved: ', response);
+        //convert the pinh
       }).catch((err) => {
-        alert('Error saving pin: ', err);
-        console.log('Error saving pin: ', err);
+
+        switch (err.response.status){
+          case 400: //duplicate pin
+            const origPin = err.response.data;
+            alert('This pin is already on your map.');
+            /*TO DO:
+            Convert popup alert to toast message
+            */
+            break;
+          case 403: //user not signed in
+          /*TO DO:
+          Convert to overlay/lightbox window to sign up form
+          */
+            if (confirm("Would you like to sign in to save places?")) {
+              route('/signin', true);
+            }
+
+            break;
+          default:
+          console.log(err); //error saving pin
+
+        }
+        
       })
     });
   
