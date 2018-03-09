@@ -7,8 +7,8 @@ export default class Logo extends Component {
 	render(){
 		return (
 			<div class={style.logo}>
-				<img src='../assets/icons/favicon-32x32.png'/>
-				<h3>Welcome to {APP_NAME}, login</h3>
+				<img src='../assets/logos/navi_logo.png'/>
+				<h3>Welcome to {APP_NAME}</h3>
 			</div>
 		);
 	}

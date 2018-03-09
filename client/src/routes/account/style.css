@@ -1,0 +1,14 @@
+.inherit {
+	height: inherit;
+	width: inherit;
+	display: inherit;
+}
+
+.main {
+	display: block;
+	height: 93vh;
+	width: 100vw;
+	position: fixed;
+	top: 7vh;
+	background-color: snow;
+}

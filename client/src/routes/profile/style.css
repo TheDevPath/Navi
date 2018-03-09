@@ -3,3 +3,21 @@
 	min-height: 100%;
 	width: 100%;
 }
+
+.successMessage{
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.link {
+    padding: 5px;
+}
+
+.link a {
+    text-decoration: none;
+}
+
+.links_container{
+    text-align: center;
+}

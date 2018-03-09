@@ -9,7 +9,7 @@
         "client": "npm run start --prefix client",
         "server": "nodemon server.js",
         "test": "concurrently \"npm run test-server\" \"npm run test-client\"",
-        "test-server": "cross-env NODE_ENV=test mocha tests -r chai/register-expect",
+        "test-server": "cross-env NODE_ENV=test mocha tests --timeout 10000 -r chai/register-expect",
         "test-watch": "nodemon --exec 'npm test'",
         "test-client": "npm test --prefix client"
     },
@@ -24,7 +24,8 @@
         "Peter Matthews (https://github.com/pjdmatts)",
         "John Kwening (https://github.com/jkwening)",
         "Vasanth (https://github.com/Vasanthkesavan)",
-        "Travis Haley (https://github.com/Mallek"
+        "Travis Haley (https://github.com/Mallek",
+        "Eddie Ford (https://github.com/seckboy)"
     ],
     "license": "MIT",
     "bugs": {
@@ -33,6 +34,7 @@
     "devDependencies": {
         "babel-eslint": "^8.2.1",
         "chai": "^4.1.2",
+        "chai-http": "^3.0.0",
         "concurrently": "^3.5.1",
         "cross-env": "^5.1.3",
         "eslint": "^4.16.0",
@@ -44,6 +46,7 @@
         "supertest": "^3.0.0"
     },
     "dependencies": {
+        "@google/maps": "^0.4.5",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.18.2",
         "express": "^4.16.2",

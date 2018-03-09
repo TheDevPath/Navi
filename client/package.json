@@ -5,8 +5,8 @@
     "license": "MIT",
     "scripts": {
         "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
-        "build": "preact build",
-        "serve": "preact build && preact serve",
+        "build": "preact build --no-prerender",
+        "serve": "preact build --no-prerender && preact serve",
         "dev": "preact watch",
         "lint": "eslint src",
         "test": "mocha ./tests --require babel-polyfill --require ignore-styles --compilers js:babel-core/register --reporter spec || exit 0"
@@ -48,14 +48,16 @@
         "preact-material-components": "^1.3.5"
     },
     "dependencies": {
-        "google-maps-react": "^1.1.2",
+        "axios": "^0.18.0",
         "leaflet": "^1.3.1",
         "leaflet-routing-machine": "^3.2.8",
+        "linkstate": "^1.1.1",
         "pouchdb-browser": "^6.4.3",
         "preact": "^8.2.6",
         "preact-compat": "^3.17.0",
         "preact-render-to-string": "^3.7.0",
         "preact-router": "^2.5.7",
-        "prop-types": "^15.6.0"
+        "prop-types": "^15.6.0",
+        "universal-cookie": "^2.1.2"
     }
 }

@@ -1,21 +1,65 @@
 {
-  "name": "client",
-  "short_name": "client",
-  "start_url": "/",
+  "short_name": "navi",
+  "name": "Navi - a navigator app for the Udacity Grow with Google project",
+  "start_url": "/?utm_source=homescreen",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#fff",
-  "theme_color": "#673ab8",
-  "icons": [
-    {
-      "src": "/assets/icons/android-chrome-192x192.png",
+  "background_color": "#2196F3",
+  "theme_color": "#2196F3",
+  "icons": [{
+     "src": "client/src/assets/icons/android-chrome-192x192.png",
+       "sizes": "128x128",
+       "type": "image/png"
+     }, {
+       "src": "client/src/assets/icons/android-chrome-512x512.png",
+       "sizes": "144x144",
+       "type": "image/png"
+     }, {
+       "src": "client/src/assets/icons/apple-touch-icon.png",
+       "sizes": "152x152",
+       "type": "image/png"
+     }, {
+       "src": "client/src/assets/icons/favicon-16x16.png",
+       "sizes": "128X128",
+       "type": "image/png"
+     }, {
+       "src": "client/src/assets/icons/favicon-16x16.png",
+       "sizes": "144X144",
+       "type": "image/png"
+     }, {
+       "src": "client/src/assets/icons/favicon-16x16.png",
+       "sizes": "16X16",
+       "type": "image/png"
+     }, {
+       "src": "client/src/assets/icons/favicon-32x32.png",
+       "sizes": "256x256",
+       "type": "image/png"
+     },{
+      "src": "client/src/assets/icons/mstile-150x150.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "32X32"
     },
     {
-      "src": "/assets/icons/android-chrome-512x512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
+      "src": "client/src/assets/icons/favicon-16x16.png",
+      "sizes": "384X384",
+      "type": "image/png"
+    },
+    {
+      "src": "client/src/assets/icons/fmstile-150x150.png",
+      "sizes": "48X48",
+      "type": "image/png"
+    },  {
+        "src": "client/src/assets/icons/favicon-150x150.png",
+        "sizes": "512X512",
+        "type": "image/png"
+      },  {
+          "src": "client/src/assets/icons/favicon-150x150.png",
+          "sizes": "96X96",
+          "type": "image/png"
+        },  {
+            "src": "client/src/assets/icons/mstile-150x150.png",
+            "sizes": "150X150",
+            "type": "image/png"
+          }
   ]
 }
