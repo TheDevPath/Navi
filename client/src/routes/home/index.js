@@ -6,8 +6,8 @@ export default class Home extends Component {
 		return (
 			<div class={style.home}>
 				<p>What Can navi find for you today!</p>
-				<a href="/maps"><button>Map</button></a>				
-				<a href="/profile"><button>Profile</button></a>
+				<a href="/maps"><button>Map</button></a>
+				<a href="/profile"><button>Log in or Create an Account</button></a>
 			</div>
 		);
 	}
