@@ -1,9 +1,48 @@
 .home {
-	padding: 56px 20px;
 	width: 100%;
+	display: block;
 }
 
-button {
-	display: block;
-	width: 80%;
+.welcome {
+	padding-top: 3vh;
+	display: inherit;
+}
+
+.welcome > h2 {
+	text-align: center;
+	margin: 3vh auto auto;
+}
+
+.welcome > img {
+	display: inherit;
+	margin: auto;
+	width: 50vw;
+}
+
+.search {
+	padding-top: 5vh;
+	display: inherit;
+}
+
+.search > p {
+	text-align: center;
+	font-size: 1.2em;
+}
+
+.searchBar {
+	position: static;
+}
+
+.mapLink {
+	position: fixed;
+	right: 15vw;
+	bottom: 5vh;
+}
+
+.pin {
+	width: 9vw;
+	height: 9vh;
+	position: fixed;
+	right: 5vw;
+	bottom: 3vh;
 }

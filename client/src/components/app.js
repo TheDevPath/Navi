@@ -40,14 +40,9 @@ export default class App extends Component {
 	render() {
 		return (
 			<div id="app">
-				<Match path="/">
-					{ ({ matches, path, url }) => matches && (
-						<Logo />
-					) }
-				</Match>
 				<Nav navHeight={this.state.navbarHeight}/>
 				<Router onChange={this.handleRoute}>
-					<Home path="/" />
+					<Home path="/" paneHeight={AVAIL_PANE_HEIGHT}/>
 					<Profile path="/profile/" user="me" />
 					<Profile path="/profile/:user" />
 					<Account path="/register" paneHeight={AVAIL_PANE_HEIGHT}/>
