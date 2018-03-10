@@ -39,6 +39,7 @@ export default class App extends Component {
 						<Logo />
 					) }
 				</Match>
+				<Nav />
 				<Router onChange={this.handleRoute}>
 					<Home path="/" />
 					<Profile path="/profile/" user="me" />
