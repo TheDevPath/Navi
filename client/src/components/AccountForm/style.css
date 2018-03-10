@@ -70,16 +70,16 @@
 .link2 {
     display: block;
     position: fixed;
-    right: 0px;
-    padding: 2vh;
+    right: 5vw;
+    bottom: 1vh;
     font-size: 1.1em;
     color: blue;
 }
 
 button {
-    background-color: turquoise;
+    background-color: #5A98A1;
 }
 
 .regBtn {
-    background-color: darkcyan;
+    background-color: #2c5b61;
 }

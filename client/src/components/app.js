@@ -19,10 +19,16 @@ import SignOut from '../routes/signout';
 // import Register from '../routes/register';
 import Settings from '../routes/settings';
 
-// import Home from 'async!../routes/home';
-// import Profile from 'async!../routes/profile';
+// Available screen real state after factoring space for navbar
+const AVAIL_PANE_HEIGHT = screen.availHeight * 0.93;
 
 export default class App extends Component {
+	constructor() {
+		super();
+		this.state = {
+			navbarHeight: screen.availHeight - AVAIL_PANE_HEIGHT
+		};
+	}
 	/** Gets fired when the route changes.
 	 *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
 	 *	@param {string} event.url	The newly routed URL
@@ -39,20 +45,20 @@ export default class App extends Component {
 						<Logo />
 					) }
 				</Match>
-				<Nav />
+				<Nav navHeight={this.state.navbarHeight}/>
 				<Router onChange={this.handleRoute}>
 					<Home path="/" />
 					<Profile path="/profile/" user="me" />
 					<Profile path="/profile/:user" />
-					<Account path="/register" />
-					<Account path="/signin"/>
-					<Account path="/forgot-password"/>
-          				<Account path="/reset-password"/>
+					<Account path="/register" paneHeight={AVAIL_PANE_HEIGHT}/>
+					<Account path="/signin" paneHeight={AVAIL_PANE_HEIGHT}/>
+					<Account path="/forgot-password" paneHeight={AVAIL_PANE_HEIGHT}/>
+          				<Account path="/reset-password" paneHeight={AVAIL_PANE_HEIGHT}/>
           				<Settings path="/settings"/>
 					<SignOut path="/signout"/>
 					<Directions path="/directions" />
 					<Pins path="/pins" />
-					<Maps path="/maps" />
+					<Maps path="/maps" paneHeight={AVAIL_PANE_HEIGHT}/>
 				</Router>
 			</div>
 		);

@@ -94,7 +94,6 @@ export default class AccountForm extends Component {
       <button type="button" className={[style.formChild, style.regBtn].join(' ')}
         onClick={this.routeToRegister}>CREATE AN ACCOUNT</button>
     </div>;
-    let link1 = "";
     let link2 = <p class={style.link2}><a href="/forgot-password">forgot password?</a></p>;
 
     if(path === REGISTER_PATH){
@@ -106,7 +105,6 @@ export default class AccountForm extends Component {
         <input class={style.formChild} name="confirm_password" type="password" placeholder="confirm password"
           value={confirm_password} onInput={linkState(this, 'confirm_password')} required/>;
       submit_button = <button class={style.formChild}>SUBMIT</button>;
-      link1 = <p class={style.formChild}><a href="/signin">Sign in</a></p>;
       link2 = "";
     }
     
@@ -117,7 +115,6 @@ export default class AccountForm extends Component {
       new_password_input = <div>New password: <input name="new_password" type="password" value={new_password} onInput={linkState(this, 'new_password')}/></div>;
       confirm_password_input = <div>Confirm new password: <input name="confirm_password" type="password" value={confirm_password} onInput={linkState(this, 'confirm_password')}/></div>;
       submit_button = <div><button>Reset!</button></div>;;
-      link1 = "";
       link2 = "";
     }
       return (
@@ -132,7 +129,6 @@ export default class AccountForm extends Component {
               {new_password_input}
               {confirm_password_input}
               {submit_button}
-              {link1}
             </form>
           </div>
           {link2}

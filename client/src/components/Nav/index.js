@@ -19,8 +19,11 @@ export default class Nav extends Component {
   };
 
   render() {
+    const styles = {
+      height: this.props.navHeight,
+    }
     return (
-      <div class={style.nav}>
+      <div class={style.nav} style={styles}>
         <img src='../../assets/icons/leaflet/SVG/NaviHomeIcon.svg' alt='Home screen icon'
           class={style.homeIcon} onClick={this.routeToHome}/>
         <img src='../../assets/icons/leaflet/SVG/ProfileIcon.svg' alt='Profile page icon'
