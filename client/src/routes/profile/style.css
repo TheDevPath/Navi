@@ -1,6 +1,5 @@
 .profile {
-	padding: 56px 20px;
-	min-height: 100%;
+	padding: 5vh 5vw;
 	width: 100%;
 }
 
@@ -20,4 +19,13 @@
 
 .links_container{
     text-align: center;
+}
+
+form {
+    text-align: center;
+    margin-bottom: 2vh;
+}
+
+fieldset {
+    border-radius: 3px;
 }
