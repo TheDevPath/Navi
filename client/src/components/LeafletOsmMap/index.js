@@ -230,7 +230,7 @@ export default class LeafletOSMMap extends Component {
         <Search position={this.state.mapCenter} map={this.state.map}>
           <SearchResults />
         </Search>
-        <MapPane height={screen.height} />
+        <MapPane paneHeight={this.props.paneHeight} />
       </div>
     );
   }
