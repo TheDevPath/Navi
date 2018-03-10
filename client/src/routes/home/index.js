@@ -24,7 +24,7 @@ export default class Home extends Component {
 				</div>
 				<div class={style.search}>
 					<p>Where can we take you today?</p>
-					<Search class={style.searchBar}>
+					<Search>
 						<SearchResults />
 					</Search>
 				</div>
