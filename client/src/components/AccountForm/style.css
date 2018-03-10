@@ -1,10 +1,3 @@
-
-.signOut a{
-    padding: 5px;
-    font-weight: bold;
-    color: green;
-}
-
 .inherit {
     display: inherit;
     height: inherit;
@@ -15,11 +8,12 @@
     display: inherit;
     margin: auto;
     padding: 2vh;
+    width: 50%;
 }
 
 .form {
     display: grid;
-    padding: 5vh;
+    padding: 0 5vh;
     height: 70vh;
     align-content: flex-start;
 }
