@@ -1,45 +1,33 @@
 import {h, Component} from 'preact';
+import { route } from 'preact-router';
 import style from './style.css';
-import {populateSignInOut} from "../../js/utilities";
 
 export default class Nav extends Component {
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    let navIcon = document.getElementsByClassName(style.navIcon)[0];
-    let linkContainer = document.getElementsByClassName(style.linkContainer)[0];
-    linkContainer.style.display = "none";
-    navIcon.onclick = function (e) {
-      e.preventDefault();
-      var x = linkContainer;
-      if (x.style.display === "block") {
-        x.style.display = "none";
-      } else {
-        x.style.display = "block";
-      }
-      return false;
-    }
+    this.routeToHome = this.routeToHome.bind(this);
+    this.routeToProfile = this.routeToProfile.bind(this);
+  } 
 
-    let links = document.getElementsByClassName(style.link);
-    for (let link of links) {
-      link.onclick = function () {
-        linkContainer.style.display = "none";
-      }
-    }
-    populateSignInOut();
-  }
+  routeToHome() {
+    route('/', true);
+  };
+
+  routeToProfile() {
+    route('/profile', true);
+  };
 
   render() {
+    const styles = {
+      height: this.props.navHeight,
+    }
     return (
-      <div class={style.nav}>
-        <a class={style.navIcon} href="">&#9776;</a>
-        <div class={style.linkContainer}>
-          <p><a href="/" class={style.link}>Home</a></p>
-          <p><a href="/maps" class={style.link}>Maps</a></p>
-          <p><a href="/directions" class={style.link}>Directions</a></p>
-          <p><a href="/places" class={style.link}>Places</a></p>
-          <p><a href="/profile" class={style.link}>Profile</a></p>
-          <p id="signInOut" class={style.link}></p>
-        </div>
+      <div class={style.nav} style={styles}>
+        <img src='../../assets/icons/leaflet/SVG/NaviHomeIcon.svg' alt='Home screen icon'
+          class={style.homeIcon} onClick={this.routeToHome}/>
+        <img src='../../assets/icons/leaflet/SVG/ProfileIcon.svg' alt='Profile page icon'
+          class={style.profileIcon} onClick={this.routeToProfile}/>
       </div>
     );
   }

@@ -5,17 +5,16 @@ import style from './style';
 
 export default class ForgotPasswordForm extends Component {
     render() {
-        return (<div class={style['forgot-password-form']}>
-
-            <h1>We will send you a temporary password, enter your email address</h1>
-            <form action="/">
-                <span>Email: </span><input type="text" name="email"/><br/>
-                <br/>
-                <input type="submit" value="Submit"/>
+        return (
+        <div class={style['forgot-password-form']}>
+            <h2>Forgot Your Password?</h2>
+            <p>Enter your email address below to reset your password.</p>
+            <form action="/" class={style.form}>
+                <input type="email" name="email" placeholder="email address"
+                  class={style.formChild} required/>
+                <button type="button" class={style.formChild}>RESET PASSWORD</button>
             </form>
-            <a class={style.active} href="/register">register</a>
-            <br/>
-            <a class={style.active} href="/signin">sign in</a>
+            <p>Not a member? <a href="/register">Sign up!</a></p>
         </div>);
     }
 }

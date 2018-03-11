@@ -1,0 +1,12 @@
+.inherit {
+	height: inherit;
+	width: inherit;
+	display: inherit;
+}
+
+.main {
+	display: block;
+	width: 100vw;
+	position: fixed;
+	top: 7vh;
+}

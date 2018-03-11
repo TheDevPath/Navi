@@ -1,23 +1,46 @@
 import {h, Component} from 'preact';
 import style from './style';
+
+import Logo from '../../components/Logo';
 import ProfileCard from '../../components/ProfileCard';
 import ProfileEditForm from '../../components/ProfileEditForm';
 import ProfileSettingsForm from '../../components/ProfileSettingsForm';
+import SavedPinsCard from '../../components/SavedPinsCard';
+import SearchHistoryCard from '../../components/SearchHistoryCard';
+import {setStateUserOrRedirectToSignIn} from "../../js/utilities";
 
 export default class Profile extends Component {
 
-    state = {
-        timeLocale: 'To be used later for profile card'
+  constructor() {
+    super();
+    this.state = {
+      timeLocale: 'To be used later for profile card',
+      user: {},
+      isSignedIn: false,
     };
+    setStateUserOrRedirectToSignIn(this);
+  }
 
-    // Note: `user` comes from the URL, courtesy of our router
-    render({ user }, { time }) {
-        return (
-            <div class={style.profile}>
-                <ProfileCard user={user}/>
-                <ProfileEditForm user={user} />
-                <ProfileSettingsForm user={user} />
-            </div>
-        );
-    }
+render({success}, {user, time}) {
+    return (
+      <div class={style.profile}>
+        <Logo/>
+        <div class={style.successMessage}>{success}</div>
+        <form>
+          <fieldset>
+            <legend>User Info</legend>
+            Name: {user.name}<br />
+            Email: {user.email}<br />
+          </fieldset>
+        </form>
+        <SearchHistoryCard user={user}/>
+        <SavedPinsCard user={user}/>
+        <div class={style.links_container}>
+          <div class={style.link}><a href="/maps">Explore Map</a></div>
+          <div class={style.link}><a href="/reset-password">Update User Info</a></div>
+          <div class={style.link}><a href="/signout">Sign Out</a></div>
+        </div>
+      </div>
+    );
+  }
 }

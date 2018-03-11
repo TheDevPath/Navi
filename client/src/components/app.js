@@ -1,10 +1,9 @@
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 import Match from 'preact-router/match';
+import { LOGIN_PATH, RESET_PATH, REGISTER_PATH } from "../../config";
 
 // import components
-import GoogleMap from './GoogleMap';
-import PlacesMap from './PlacesMap';
 import Nav from './Nav';
 import Logo from './Logo';
 import Pins from './Pins';
@@ -13,16 +12,23 @@ import Pins from './Pins';
 import Home from '../routes/home';
 import Profile from '../routes/profile';
 import Directions from '../routes/directions';
-import Places from '../routes/places';
 import Maps from '../routes/maps';
-import Signin from '../routes/signin';
+import Account from '../routes/account';
+// import Signin from '../routes/signin';
 import SignOut from '../routes/signout';
-import Register from '../routes/register';
+// import Register from '../routes/register';
+import Settings from '../routes/settings';
 
-// import Home from 'async!../routes/home';
-// import Profile from 'async!../routes/profile';
+// Available screen real state after factoring space for navbar
+const AVAIL_PANE_HEIGHT = screen.availHeight * 0.93;
 
 export default class App extends Component {
+	constructor() {
+		super();
+		this.state = {
+			navbarHeight: screen.availHeight - AVAIL_PANE_HEIGHT
+		};
+	}
 	/** Gets fired when the route changes.
 	 *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
 	 *	@param {string} event.url	The newly routed URL
@@ -34,24 +40,20 @@ export default class App extends Component {
 	render() {
 		return (
 			<div id="app">
-				<Match path="/">
-					{ ({ matches, path, url }) => matches && (
-						<Logo />
-					) }
-				</Match>
+				<Nav navHeight={this.state.navbarHeight}/>
 				<Router onChange={this.handleRoute}>
-					<Home path="/" />
+					<Home path="/" paneHeight={AVAIL_PANE_HEIGHT}/>
 					<Profile path="/profile/" user="me" />
 					<Profile path="/profile/:user" />
-					<Register path="/register" />
-					<Signin path="/signin" />
-					<Signin path="/forgot-password"/>
-					<Signin path="/reset-password"/>
+					<Account path="/register" paneHeight={AVAIL_PANE_HEIGHT}/>
+					<Account path="/signin" paneHeight={AVAIL_PANE_HEIGHT}/>
+					<Account path="/forgot-password" paneHeight={AVAIL_PANE_HEIGHT}/>
+          				<Account path="/reset-password" paneHeight={AVAIL_PANE_HEIGHT}/>
+          				<Settings path="/settings" paneHeight={AVAIL_PANE_HEIGHT}/>
 					<SignOut path="/signout"/>
-					<Places path="/places" />
 					<Directions path="/directions" />
 					<Pins path="/pins" />
-					<Maps path="/maps" />
+					<Maps path="/maps" paneHeight={AVAIL_PANE_HEIGHT}/>
 				</Router>
 			</div>
 		);
