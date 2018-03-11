@@ -94,7 +94,6 @@ export default class AccountForm extends Component {
       <button type="button" className={[style.formChild, style.regBtn].join(' ')}
         onClick={this.routeToRegister}>CREATE AN ACCOUNT</button>
     </div>;
-    let link1 = "";
     let link2 = <p class={style.link2}><a href="/forgot-password">forgot password?</a></p>;
 
     if(path === REGISTER_PATH){
@@ -106,23 +105,36 @@ export default class AccountForm extends Component {
         <input class={style.formChild} name="confirm_password" type="password" placeholder="confirm password"
           value={confirm_password} onInput={linkState(this, 'confirm_password')} required/>;
       submit_button = <button class={style.formChild}>SUBMIT</button>;
-      link1 = <p class={style.formChild}><a href="/signin">Sign in</a></p>;
       link2 = "";
     }
     
     if(path === RESET_PATH){
       form_header = "Reset Password";
-      email_input = <div>Email: <b>{user ? user.email : ''}</b><input name="email" type="hidden" value={user ? user.email : ''}/></div>;
-      password_input =  <div>Current password: <input id="password" name="password" type="password" value={password} onInput={linkState(this, 'password')}/></div>;
-      new_password_input = <div>New password: <input name="new_password" type="password" value={new_password} onInput={linkState(this, 'new_password')}/></div>;
-      confirm_password_input = <div>Confirm new password: <input name="confirm_password" type="password" value={confirm_password} onInput={linkState(this, 'confirm_password')}/></div>;
-      submit_button = <div><button>Reset!</button></div>;;
-      link1 = "";
+      name_input =
+        <div>
+          <p>To change user info:</p>
+          <input class={style.formChild} name="name" type="text" placeholder="Enter new name"
+            value={name} onInput={linkState(this, 'name')}/>
+          <input class={style.formChild} id="email" name="email" type="email" placeholder='Enter new email address' 
+            value={email} onInput={linkState(this, 'email')}/>
+      </div>;
+      email_input = "";
+      password_input =
+        <div>
+          <p>To change password:</p>
+          <input class={style.formChild} id="password" name="password" type="password" placeholder="Enter current password"
+            value={password} onInput={linkState(this, 'password')}/>
+          <input class={style.formChild} name="new_password" type="password" placeholder="Enter new password"
+            value={new_password} onInput={linkState(this, 'new_password')}/>
+          <input class={style.formChild} name="confirm_password" type="password" placeholder="Confirm new password"
+            value={confirm_password} onInput={linkState(this, 'confirm_password')}/>
+        </div>;
+      submit_button = <button class={style.formChild}>Update</button>;
       link2 = "";
     }
       return (
         <div class={style.inherit}>
-          <img class={style.logo} src='../../assets/logos/navi_logo_small.png' alt='Navi logo' />
+          <img class={style.logo} src='../../assets/icons/leaflet/SVG/darkLogo.svg' alt='Navi logo' />
           <div>{form_message}</div>
           <div>
             <form class={style.form} onSubmit={this.doSubmit}>
@@ -132,12 +144,10 @@ export default class AccountForm extends Component {
               {new_password_input}
               {confirm_password_input}
               {submit_button}
-              {link1}
             </form>
           </div>
           {link2}
         </div>
       );
     }
-  // }
 }

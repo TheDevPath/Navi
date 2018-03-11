@@ -20,15 +20,13 @@ const FAV_MARKER_OPTIONS = {
 
 //Get and drop pins from any user on any map  (all arguments are optional)
 const fetchAndDropUserPins = (user_id, mapObj, L) => {
-  
-  const favMarker =  L ? L.icon(FAV_MARKER_OPTIONS) : undefined;
 
   getSavedPins(user_id)
     .then(savedPins => {
 
       if (!savedPins) return;
 
-      const pinMarkers = makePinMarkers(savedPins, favMarker);
+      const pinMarkers = makePinMarkers(savedPins, L);
       if (mapObj != null) dropPin(pinMarkers, mapObj);
 
     })
@@ -46,8 +44,10 @@ const getSavedPins = (user_id) => {
 } 
 
 //This function generates markers and drops them on a map (if specified)
-const makePinMarkers = (pinArray = [], icon) => {
+const makePinMarkers = (pinArray = [], L, markerOptions=FAV_MARKER_OPTIONS) => {
  
+  const icon =  L ? L.icon(FAV_MARKER_OPTIONS) : undefined;
+
   let pinMarkers = [];
 
   for (const pin of pinArray) {
