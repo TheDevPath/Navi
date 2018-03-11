@@ -68,7 +68,7 @@ app.use(morgan('dev'));
  */
 
 // API Routes
-app.use('/', require('./routes/index'));
+// app.use('/', require('./routes/index'));
 app.use('/map', require('./routes/map'));
 app.use('/search', require('./routes/search'));
 app.use('/users', require('./routes/users'));
@@ -83,7 +83,7 @@ if (ENV === 'production') {
   // Serve index.html file if no other routes were matched
   const { resolve } = require('path');
 
-  app.get('**', (req, res) => {
+  app.get('/', (req, res) => {
     res.sendFile(resolve(__dirname, 'dist', 'index.html'));
   });
 }
