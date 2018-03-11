@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1702.978 580 28.822 39.707">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #087e8b;
+      }
+
+      .cls-2 {
+        fill: #fff;
+        stroke: #95989a;
+      }
+
+      .cls-3 {
+        stroke: none;
+      }
+
+      .cls-4 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="FindLocationPin" transform="translate(1390)">
+    <path id="Path_9" data-name="Path 9" class="cls-1" d="M14.249,0C22.118,0,30.6,5.221,28.5,14.249S14.249,39.707,14.249,39.707,0,22.118,0,14.249A14.249,14.249,0,0,1,14.249,0Z" transform="translate(312.978 580)"/>
+    <g id="Ellipse_22" data-name="Ellipse 22" class="cls-2" transform="translate(319.952 587.702)">
+      <circle class="cls-3" cx="7.274" cy="7.274" r="7.274"/>
+      <circle class="cls-4" cx="7.274" cy="7.274" r="6.774"/>
+    </g>
+  </g>
+</svg>
