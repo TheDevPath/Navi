@@ -78,13 +78,13 @@ app.use('/users', require('./routes/users'));
 // Serve static assets and index.html in production
 if (ENV === 'production') {
   // Serve static assets
-  app.use(express.static('client/build'));
+  app.use(express.static('dist'));
 
   // Serve index.html file if no other routes were matched
   const { resolve } = require('path');
 
   app.get('**', (req, res) => {
-    res.sendFile(resolve(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(resolve(__dirname, 'dist', 'index.html'));
   });
 }
 
