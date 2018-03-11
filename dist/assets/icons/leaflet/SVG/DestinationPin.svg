@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1065.978 354 28.822 39.707">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ff5a5f;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="DestinationPin" transform="translate(931)">
+    <path id="Path_9" data-name="Path 9" class="cls-1" d="M14.249,0C22.118,0,30.6,5.221,28.5,14.249S14.249,39.707,14.249,39.707,0,22.118,0,14.249A14.249,14.249,0,0,1,14.249,0Z" transform="translate(134.978 354)"/>
+    <circle id="Ellipse_22" data-name="Ellipse 22" class="cls-2" cx="7.274" cy="7.274" r="7.274" transform="translate(141.952 361.702)"/>
+  </g>
+</svg>

@@ -4,7 +4,7 @@ let router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.send('Hello World!');
+  res.send('Hello NAVI');
 });
 
 module.exports = router;
