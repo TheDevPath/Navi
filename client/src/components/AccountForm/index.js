@@ -3,6 +3,7 @@ import style from './style.css';
 import { handleSubmit, clearForms, setStateUserOrRedirectToSignIn } from "../../js/utilities";
 import { LOGIN_PATH, REGISTER_PATH, RESET_PATH } from '../../../config';
 import linkState from "linkstate";
+import { route } from 'preact-router';
 
 export default class AccountForm extends Component {
   constructor() {
@@ -14,6 +15,7 @@ export default class AccountForm extends Component {
       validatePasswordMap: this.createValidatePasswordMap(),
     };
     this.handleSubmit = handleSubmit.bind(this);
+    this.routeToRegister = this.routeToRegister.bind(this);
   }
 
   createMessageMap = () => {
@@ -66,54 +68,86 @@ export default class AccountForm extends Component {
     }
   }
 
+  routeToRegister() {
+    route("/register", true);
+  }
+
   render({path},{ form_message, user, name, email, password, new_password, confirm_password }) {
 
     //DEFAULT TO LOGIN_PATH
     let form_header = "Sign In";
     let name_input = "";
-    let email_input = <div>Email: <input id="email" name="email" type="text" value={email} onInput={linkState(this, 'email')}/></div>;
-    let password_input =  <div>Password: <input id="password" name="password" type="password" value={password} onInput={linkState(this, 'password')}/></div>;
+    let email_input =
+      <input class={style.formChild} id="email" name="email" type="text" placeholder='email address' 
+        value={email} onInput={linkState(this, 'email')}/>;
+    let password_input =
+      <input class={style.formChild} id="password" name="password" type="password" placeholder='password'
+        value={password} onInput={linkState(this, 'password')}/>;
     let new_password_input = "";
     let confirm_password_input = "";
-    let submit_button = <div><button>Login!</button></div>;
-    let link1 = <p><a href="/register">register</a></p>;
-    let link2 = "";
-    // let link2 = <p><a href="/forgot-password">forgot password?</a></p>;
+    let submit_button =
+    <div>
+      <button class={style.formChild}>LOGIN</button>
+      <div class={style.strike}>
+        <span>OR</span>
+      </div>
+      <button type="button" className={[style.formChild, style.regBtn].join(' ')}
+        onClick={this.routeToRegister}>CREATE AN ACCOUNT</button>
+    </div>;
+    let link2 = <p class={style.link2}><a href="/forgot-password">forgot password?</a></p>;
 
     if(path === REGISTER_PATH){
       form_header = "Register";
-      name_input = <div>Name: <input name="name" type="text" value={name} onInput={linkState(this, 'name')}/></div>;
-      confirm_password_input = <div>Confirm password: <input name="confirm_password" type="password" value={confirm_password} onInput={linkState(this, 'confirm_password')}/></div>;
-      submit_button = <div><button>Join!</button></div>;
-      link1 = <p><a href="/signin">Sign in</a></p>;
+      name_input = 
+        <input class={style.formChild} name="name" type="text" placeholder="firstname lastname"
+          value={name} onInput={linkState(this, 'name')} required/>;
+      confirm_password_input = 
+        <input class={style.formChild} name="confirm_password" type="password" placeholder="confirm password"
+          value={confirm_password} onInput={linkState(this, 'confirm_password')} required/>;
+      submit_button = <button class={style.formChild}>SUBMIT</button>;
+      link2 = "";
     }
+    
     if(path === RESET_PATH){
       form_header = "Reset Password";
-      email_input = <div>Email: <b>{user ? user.email : ''}</b><input name="email" type="hidden" value={user ? user.email : ''}/></div>;
-      password_input =  <div>Current password: <input id="password" name="password" type="password" value={password} onInput={linkState(this, 'password')}/></div>;
-      new_password_input = <div>New password: <input name="new_password" type="password" value={new_password} onInput={linkState(this, 'new_password')}/></div>;
-      confirm_password_input = <div>Confirm new password: <input name="confirm_password" type="password" value={confirm_password} onInput={linkState(this, 'confirm_password')}/></div>;
-      submit_button = <div><button>Reset!</button></div>;;
-      link1 = "";
+      name_input =
+        <div>
+          <p>To change user info:</p>
+          <input class={style.formChild} name="name" type="text" placeholder="Enter new name"
+            value={name} onInput={linkState(this, 'name')}/>
+          <input class={style.formChild} id="email" name="email" type="email" placeholder='Enter new email address' 
+            value={email} onInput={linkState(this, 'email')}/>
+      </div>;
+      email_input = "";
+      password_input =
+        <div>
+          <p>To change password:</p>
+          <input class={style.formChild} id="password" name="password" type="password" placeholder="Enter current password"
+            value={password} onInput={linkState(this, 'password')}/>
+          <input class={style.formChild} name="new_password" type="password" placeholder="Enter new password"
+            value={new_password} onInput={linkState(this, 'new_password')}/>
+          <input class={style.formChild} name="confirm_password" type="password" placeholder="Confirm new password"
+            value={confirm_password} onInput={linkState(this, 'confirm_password')}/>
+        </div>;
+      submit_button = <button class={style.formChild}>Update</button>;
+      link2 = "";
     }
       return (
-        <div>
-          <h1>{form_header}</h1>
+        <div class={style.inherit}>
+          <img class={style.logo} src='../../assets/icons/leaflet/SVG/darkLogo.svg' alt='Navi logo' />
           <div>{form_message}</div>
-          <div class={style.form}>
-            <form onSubmit={this.doSubmit}>
+          <div>
+            <form class={style.form} onSubmit={this.doSubmit}>
               {name_input}
               {email_input}
               {password_input}
               {new_password_input}
               {confirm_password_input}
               {submit_button}
-              {link1}
-              {link2}
             </form>
           </div>
+          {link2}
         </div>
       );
     }
-  // }
 }

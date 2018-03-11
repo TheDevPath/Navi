@@ -60,18 +60,38 @@ exports.getSavedPinsById = (appReq, appRes) => {
  * @param {string} appReq.body.place_id - name of pin location
  */
 exports.postSavedPins = (appReq, appRes) => {
-  const savedPin = new SavedPins({
-    lat: appReq.body.lat,
-    lng: appReq.body.lng,
-    place_id: appReq.body.place_id,
-    user: appReq.userId, // authenticated user's id
-  });
 
-  savedPin.save().then((pin) => {
-    appRes.send({ pin });
-  }, (e) => {
-    appRes.status(500).send(e);
-  });
+  //ensure not duplicate first
+  SavedPins.find({ user: appReq.userId })
+    .then(savedPins => {
+      //check to see if the pin already exists
+      return savedPins.filter(pin => {
+        return (pin.lat == appReq.body.lat) && (pin.lng == appReq.body.lng)
+      });
+
+    })
+    .then(duplicatePins => {
+
+      if (duplicatePins.length > 0) {
+        appRes.status(400).send({ duplicatePin: duplicatePins, message: 'Duplicate found. Pin not saved.' });
+        return
+      }
+
+      const newPin = new SavedPins({
+        lat: appReq.body.lat,
+        lng: appReq.body.lng,
+        place_id: appReq.body.place_id,
+        user: appReq.userId, // authenticated user's id
+      });
+
+      newPin.save().then((pin) => {
+        appRes.send({ pin });
+      }, (e) => {
+        appRes.status(500).send(e);
+      });
+
+
+    })
 };
 
 /**

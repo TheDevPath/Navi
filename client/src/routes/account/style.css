@@ -1,8 +1,12 @@
-.signin {
-	padding: 56px 20px;
-	min-height: 100%;
-	width: 100%;
+.inherit {
+	height: inherit;
+	width: inherit;
+	display: inherit;
 }
 
 .main {
+	display: block;
+	width: 100vw;
+	position: fixed;
+	top: 7vh;
 }
