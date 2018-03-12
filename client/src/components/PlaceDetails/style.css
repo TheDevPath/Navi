@@ -1,0 +1,31 @@
+.placeDetails__container {
+    position: absolute;
+    width: 20vw;
+    height: auto;
+    z-index: 1000;
+    background: #000000;
+    opacity: 0.8;
+    margin: 2.5rem 0 1rem;
+    display: grid;
+}
+
+.placeDetails__innersmall {
+    height: 40vh;
+    transition: height 0.3s ease-in-out;
+}
+
+.placeDetails__innerbig {
+    height : calc(100vh - 3.5rem);
+    transition: height 0.3s ease-in-out;
+}
+
+.hours__hidden {
+    height: 0px;
+    visibility: hidden;
+}
+
+.hours__seen {
+    height: auto;
+    visibility: visible;
+    transition: all 0.5s ease-in-out;
+}

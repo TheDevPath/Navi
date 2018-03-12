@@ -6,6 +6,7 @@ import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
 import { makeRequest } from '../../js/server-requests-utils';
 import {fetchAndDropUserPins, makePinMarkers, dropPin} from '../../js/saved-places';
+import PlaceDetails from '../../components/PlaceDetails';
 
 /**
  * Leaflet related imports: leaflet, pouchdb module, and routing machine module
@@ -230,6 +231,7 @@ export default class LeafletOSMMap extends Component {
         <Search position={this.state.mapCenter} map={this.state.map}>
           <SearchResults />
         </Search>
+        <PlaceDetails/>
         <MapPane paneHeight={this.props.paneHeight} />
       </div>
     );
