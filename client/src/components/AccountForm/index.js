@@ -75,78 +75,70 @@ export default class AccountForm extends Component {
   render({path},{ form_message, user, name, email, password, new_password, confirm_password }) {
 
     //DEFAULT TO LOGIN_PATH
-    let form_header = "Sign In";
-    let name_input = "";
-    let email_input =
-      <input class={style.formChild} id="email" name="email" type="text" placeholder='email address' 
-        value={email} onInput={linkState(this, 'email')}/>;
-    let password_input =
-      <input class={style.formChild} id="password" name="password" type="password" placeholder='password'
-        value={password} onInput={linkState(this, 'password')}/>;
-    let new_password_input = "";
-    let confirm_password_input = "";
-    let submit_button =
-    <div>
-      <button class={style.formChild}>LOGIN</button>
-      <div class={style.strike}>
-        <span>OR</span>
-      </div>
-      <button type="button" className={[style.formChild, style.regBtn].join(' ')}
-        onClick={this.routeToRegister}>CREATE AN ACCOUNT</button>
-    </div>;
-    let link2 = <p class={style.link2}><a href="/forgot-password">forgot password?</a></p>;
+    let display =
+      <div class={style.display}>
+        <form class={style.form} onSubmit={this.doSubmit}>
+          <input class={style.formChild} id="email" name="email" type="text" placeholder='email address' 
+            value={email} onInput={linkState(this, 'email')}/>
+          <input class={style.formChild} id="password" name="password" type="password" placeholder='password'
+            value={password} onInput={linkState(this, 'password')}/>
+          <div>
+            <button class={style.formChild}>LOGIN</button>
+            <div class={style.strike}>
+              <span>OR</span>
+            </div>
+            <button type="button" className={[style.formChild, style.regBtn].join(' ')}
+              onClick={this.routeToRegister}>CREATE AN ACCOUNT</button>
+          </div>
+        </form>
+        <p class={style.link2}><a href="/forgot-password">forgot password?</a></p>
+      </div>;
 
     if(path === REGISTER_PATH){
-      form_header = "Register";
-      name_input = 
-        <input class={style.formChild} name="name" type="text" placeholder="firstname lastname"
-          value={name} onInput={linkState(this, 'name')} required/>;
-      confirm_password_input = 
-        <input class={style.formChild} name="confirm_password" type="password" placeholder="confirm password"
-          value={confirm_password} onInput={linkState(this, 'confirm_password')} required/>;
-      submit_button = <button class={style.formChild}>SUBMIT</button>;
-      link2 = "";
+      display =
+      <div class={style.display}>
+        <form class={style.form} onSubmit={this.doSubmit}>
+          <input class={style.formChild} name="name" type="text" placeholder="firstname lastname"
+            value={name} onInput={linkState(this, 'name')} required/>
+          <input class={style.formChild} id="email" name="email" type="text" placeholder='email address' 
+            value={email} onInput={linkState(this, 'email')}/>
+          <input class={style.formChild} id="password" name="password" type="password" placeholder='password'
+            value={password} onInput={linkState(this, 'password')}/>
+          <input class={style.formChild} name="confirm_password" type="password" placeholder="confirm password"
+            value={confirm_password} onInput={linkState(this, 'confirm_password')} required/>
+          <button class={style.formChild}>SUBMIT</button>
+        </form>
+      </div>;
     }
     
     if(path === RESET_PATH){
-      form_header = "Reset Password";
-      name_input =
-        <div>
+      display =
+      <div>
+        <form class={style.form} onSubmit={this.doSubmit}>
           <p>To change user info:</p>
-          <input class={style.formChild} name="name" type="text" placeholder="Enter new name"
+          <input class={style.formChildReset} name="name" type="text" placeholder="Enter new name"
             value={name} onInput={linkState(this, 'name')}/>
-          <input class={style.formChild} id="email" name="email" type="email" placeholder='Enter new email address' 
+          <input class={style.formChildReset} id="email" name="email" type="email" placeholder='Enter new email address' 
             value={email} onInput={linkState(this, 'email')}/>
-      </div>;
-      email_input = "";
-      password_input =
-        <div>
+          <button class={style.formChildReset}>Update Info</button>
+        </form>
+        <form class={style.form} onSubmit={this.doSubmit}>
           <p>To change password:</p>
-          <input class={style.formChild} id="password" name="password" type="password" placeholder="Enter current password"
-            value={password} onInput={linkState(this, 'password')}/>
-          <input class={style.formChild} name="new_password" type="password" placeholder="Enter new password"
-            value={new_password} onInput={linkState(this, 'new_password')}/>
-          <input class={style.formChild} name="confirm_password" type="password" placeholder="Confirm new password"
-            value={confirm_password} onInput={linkState(this, 'confirm_password')}/>
-        </div>;
-      submit_button = <button class={style.formChild}>Update</button>;
-      link2 = "";
+          <input class={style.formChildReset} id="password" name="password" type="password" placeholder="Enter current password"
+            value={password} onInput={linkState(this, 'password')} required/>
+          <input class={style.formChildReset} name="new_password" type="password" placeholder="Enter new password"
+            value={new_password} onInput={linkState(this, 'new_password')} required/>
+          <input class={style.formChildReset} name="confirm_password" type="password" placeholder="Confirm new password"
+            value={confirm_password} onInput={linkState(this, 'confirm_password')} required/>
+          <button class={style.formChildReset}>Reset Password</button>
+        </form>
+      </div>;
     }
       return (
         <div class={style.inherit}>
           <img class={style.logo} src='../../assets/icons/leaflet/SVG/darkLogo.svg' alt='Navi logo' />
           <div>{form_message}</div>
-          <div>
-            <form class={style.form} onSubmit={this.doSubmit}>
-              {name_input}
-              {email_input}
-              {password_input}
-              {new_password_input}
-              {confirm_password_input}
-              {submit_button}
-            </form>
-          </div>
-          {link2}
+          {display}
         </div>
       );
     }
