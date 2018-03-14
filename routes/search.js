@@ -38,6 +38,7 @@ router.get('/places/:id', placeDetails);
 router.post('/autocomplete', autocomplete);
 router.get('/textsearch', textSearch);
 router.post('/textsearch', textSearch);
+
 /**
  * Saved search history end points
  */

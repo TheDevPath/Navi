@@ -8,7 +8,7 @@ export default class Logo extends Component {
 		return (
 			<div class={style.logo}>
 				<img src='../assets/logos/navi_logo.png'/>
-				<h3>Welcome to {APP_NAME}</h3>
+				<h3>Welcome!</h3>
 			</div>
 		);
 	}

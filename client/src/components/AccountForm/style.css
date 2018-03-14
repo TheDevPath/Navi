@@ -1,32 +1,44 @@
-
-.signOut a{
-    padding: 5px;
-    font-weight: bold;
-    color: green;
-}
-
 .inherit {
     display: inherit;
     height: inherit;
     width: inherit;
 }
 
+.display {
+    margin: 10vh 0px;
+}
+
 .logo {
     display: inherit;
     margin: auto;
     padding: 2vh;
+    width: 50%;
 }
 
 .form {
     display: grid;
-    padding: 5vh;
-    height: 70vh;
+    padding: 0 5vh;
     align-content: flex-start;
+}
+
+.form > p {
+    margin: 1vh;
+    font-size: 1.2em;
 }
 
 .formChild {
     display: block;
-    margin: 2vh auto;
+    margin: 1vh auto;
+    width: 100%;
+    padding: 3vw;
+    border-color: lightslategray;
+    border-radius: 8px;
+    font-size: 1.2em;
+}
+
+.formChildReset {
+    display: block;
+    margin: 0.7vh auto;
     width: 100%;
     padding: 3vw;
     border-color: lightslategray;
@@ -70,16 +82,16 @@
 .link2 {
     display: block;
     position: fixed;
-    right: 0px;
-    padding: 2vh;
+    right: 5vw;
+    bottom: 1vh;
     font-size: 1.1em;
     color: blue;
 }
 
 button {
-    background-color: turquoise;
+    background-color: #5A98A1;
 }
 
 .regBtn {
-    background-color: darkcyan;
+    background-color: #2c5b61;
 }

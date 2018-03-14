@@ -1,5 +1,43 @@
 .forgot-password-form {
-    padding: 56px 20px;
-    min-height: 100%;
-    width: 100%;
+    width: inherit;
+    height: inherit;
+    margin-top: 15vh;
 }
+
+.forgot-password-form > h2 {
+    margin: auto;
+    text-align: center;
+}
+
+.forgot-password-form > p {
+    padding: 3vw;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.form {
+    display: grid;
+    padding: 0 5vh;
+    align-content: flex-start;
+}
+
+.formChild {
+    display: block;
+    margin: 2vh auto;
+    width: 100%;
+    padding: 3vw;
+    border-color: lightslategray;
+    border-radius: 8px;
+    font-size: 1.2em;
+}
+
+.register {
+    display: block;
+    position: fixed;
+    bottom: 5vh;
+}
+
+.register > p {
+    text-align: center;
+}
+

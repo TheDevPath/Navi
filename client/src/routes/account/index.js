@@ -27,11 +27,14 @@ export default class Account extends Component {
         <AccountForm path={LOGIN_PATH}/>
 			)
 		}
+
+		const styles = {
+			height: this.props.paneHeight
+		}
+
 		return (
-			<div class={style.main}>
-				<div class={style.inherit}>
-					{renderedForm}
-				</div>
+			<div class={style.main} style={styles}>
+				{renderedForm}
 			</div>
 		);
 	}

@@ -7,7 +7,7 @@ import ProfileEditForm from '../../components/ProfileEditForm';
 import ProfileSettingsForm from '../../components/ProfileSettingsForm';
 import SavedPinsCard from '../../components/SavedPinsCard';
 import SearchHistoryCard from '../../components/SearchHistoryCard';
-import {setStateUserOrRedirectToSignIn} from "../../js/utilities";
+import {setStateUserOrRedirectToSignIn} from "../../js/validate-account-form";
 
 export default class Profile extends Component {
 
@@ -26,13 +26,19 @@ render({success}, {user, time}) {
       <div class={style.profile}>
         <Logo/>
         <div class={style.successMessage}>{success}</div>
+        <form>
+          <fieldset>
+            <legend>User Info</legend>
+            Name: {user.name}<br />
+            Email: {user.email}<br />
+          </fieldset>
+        </form>
         <SearchHistoryCard user={user}/>
         <SavedPinsCard user={user}/>
         <div class={style.links_container}>
-        <div class={style.link}><a href="/">Home</a></div>
-        <div class={style.link}><a href="/maps">Your Maps</a></div>
-        <div class={style.link}><a href="/settings">Settings</a></div>
-        <div class={style.link}><a href="/signout">Sign Out</a></div>
+          <div class={style.link}><a href="/maps">Explore Map</a></div>
+          <div class={style.link}><a href="/reset-password">Update User Info</a></div>
+          <div class={style.link}><a href="/signout">Sign Out</a></div>
         </div>
       </div>
     );
