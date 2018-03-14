@@ -1,6 +1,6 @@
 import {h, Component} from 'preact';
 import style from './style';
-import {setStateUserOrRedirectToSignIn} from "../../js/utilities";
+import {setStateUserOrRedirectToSignIn} from "../../js/validate-account-form";
 
 export default class ProfileCard extends Component {
   constructor() {

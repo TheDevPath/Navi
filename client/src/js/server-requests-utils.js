@@ -98,18 +98,3 @@ export const makeRequest = (method='GET', baseEndPoint, endPointAddon='', bodyDa
   
   return axios.request(config);
 }
-
-
-/* 
-Incomplete Function...
-
-import { url } from 'inspector';
-
-const AXIOS_INSTANCE = axios.create({
-  baseURL: API_SERVER
-});
-
-exports.postAutocomplete = (input='') => { //ERR: url is read only
-  // return AXIOS_INSTANCE.post(url=BASE_ENDPOINTS.autocomplete, {input});
-}
- */
