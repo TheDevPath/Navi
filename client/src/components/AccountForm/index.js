@@ -13,13 +13,6 @@ export default class AccountForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  /**
-   * TODO - refactor: simplify
-   * 
-   * Pass: event, path
-   * Return: a promise - request result that can be used to here to set 'successMessage'
-   *   via setState
-   */
   handleSubmit = (event) => {
     event.preventDefault();
 
@@ -40,11 +33,8 @@ export default class AccountForm extends Component {
       console.log('validateAccountForm(): ', response);
       if (response.status) {
         if (this.props.path === RESET_PATH) {
-          // TODO - alert with success
-          console.log('path: ', this.props.path);
           alert(response.message);
         } else {  // redirect to /profile with success for login/registration
-          console.log('route to profile');
           route(`/profile`, true);
         }
       } else {
@@ -58,11 +48,6 @@ export default class AccountForm extends Component {
 
   componentWillUnmount = () => {
     clearForms();
-  }
-
-  componentDidMount = () => {
-    // TODO - remove
-    console.log('AccountForm.componentDidMount()');
   }
 
   routeToRegister() {
