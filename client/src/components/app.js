@@ -51,7 +51,7 @@ export default class App extends Component {
           				<Account path="/reset-password" paneHeight={AVAIL_PANE_HEIGHT}/>
           				<Settings path="/settings" paneHeight={AVAIL_PANE_HEIGHT}/>
 					<SignOut path="/signout"/>
-					<Directions path="/directions" />
+					<Directions path="/directions" paneHeight={AVAIL_PANE_HEIGHT}/>
 					<Pins path="/pins" />
 					<Maps path="/maps" paneHeight={AVAIL_PANE_HEIGHT}/>
 				</Router>

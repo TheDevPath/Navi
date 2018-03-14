@@ -6,4 +6,5 @@ module.exports = {
     RESET_PATH: '/users/reset-password',
     SEARCH_HISTORY_PATH: '/search/history',
     SAVED_PINS_PATH: '/search/savedpins',
+    SAVE_DIRECTIONS_PATH: '/search/directions',
 };

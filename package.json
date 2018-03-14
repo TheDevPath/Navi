@@ -52,6 +52,7 @@
         "express": "^4.16.2",
         "helmet": "^3.9.0",
         "jsonwebtoken": "^8.1.1",
+        "leaflet-easybutton": "^2.3.0",
         "mongodb": "^3.0.2",
         "mongoose": "^5.0.1",
         "morgan": "^1.9.0"
