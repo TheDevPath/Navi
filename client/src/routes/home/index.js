@@ -28,10 +28,11 @@ export default class Home extends Component {
 						<SearchResults />
 					</Search>
 				</div>
-				<div class="myLocation"><a href="/maps" class={style.mapLink}>where am I?</a>
-				<img src='../../assets/icons/leaflet/SVG/CurrentLocationPin.svg'
+				<div class={style.myLocation}>
+				<a href="/maps" class={style.mapLink}>where am I?</a>
+				<img src='../../assets/icons/leaflet/SVG/FindLocationPin.svg'
 					class={style.pin} onClick={this.routeToMap}/>	
-					</div>
+				</div>
 			</div>
 		);
 	}
