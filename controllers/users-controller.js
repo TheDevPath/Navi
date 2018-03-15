@@ -243,44 +243,53 @@ exports.resetPassword = (appReq, appRes) => {
  * @param {string} appReq.body.email - email provided by user
  */
 exports.update = (appReq, appRes) => {
+  const updateFields = {};
+
+  // event lister for when to process update
+  usersControllerEE.on('update', () => {
+    User.findByIdAndUpdate(
+      appReq.userId,
+      { $set: updateFields },
+      { new: true },
+      (error, updatedUser) => {
+        if (error) return appRes.status(500).send('Error on the server.');
+
+        return appRes.status(200).send({
+          // don't send password!!
+          user: {
+            name: updatedUser.name,
+            email: updatedUser.email,
+            _id: updatedUser._id,
+          },
+        });
+      },
+    );
+  });
+
+  // update name
+  if (appReq.body.name) {
+    updateFields.name = appReq.body.name;
+  }
+
+  // process email verification and rest of user update accordingly
+  // halt if email request not unique even if name request included
+  if (appReq.body.email && validateEmail(appReq.body.email)) {
+    uniqueEmail(appReq.body.email).then((result) => {
+      if (result) {
+        updateFields.email = appReq.body.email;
+        return usersControllerEE.emit('update');
+      }
+      
+      return appRes.status(400).send('Email is already in use!');
+    }).catch((error) => {
+      return appRes.status(500).send(error);
+    });
+  } else { // only email update requested but invalid email
+    return appRes.status(400)
+      .send('Email is not of the valid format!');
+  }
   User.findById(appReq.userId, (err, user) => {
     if (err) return appRes.status(500).send('Error on the server.');
     if (!user) return appRes.status(404).send('No user found.');
-    
-    const updateFields = {};
-
-    // event lister for when to process update
-    usersControllerEE.on('update', () => {
-      user.save((error, updatedUser) => {
-        if (error) return appRes.status(500).send('Error on the server.');
-  
-        return appRes.status(200).send({
-          user: updatedUser,
-        });
-      });
     });
-
-    // update name
-    if (appReq.body.name) {
-      updateFields.name = appReq.body.name;
-    }
-
-    // process email verification and rest of user update accordingly
-    // halt if email request not unique even if name request included
-    if (appReq.body.email && validateEmail(appReq.body.email)) {
-      uniqueEmail(appReq.body.email).then((result) => {
-        if (result) {
-          updateFields.email = appReq.body.email;
-          usersControllerEE.emit('update');
-        }
-        
-        return appRes.status(400).send('Email is already in use!');
-      }).catch((error) => {
-        return appRes.status(500).send(error);
-      });
-    } else { // only email update requested but invalid email
-      return appRes.status(400)
-        .send('Email is not of the valid format!');
-    }
-  });
 };
