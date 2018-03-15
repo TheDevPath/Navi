@@ -10,7 +10,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#28c0d1', end
 }
 
 .profileIcon {
-	padding: 1vw;
+	padding: 2.5vw;
 	height: inherit;
 	position: fixed;
 	right: 0px;
