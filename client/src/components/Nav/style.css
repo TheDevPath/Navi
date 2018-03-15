@@ -1,17 +1,27 @@
 .nav {
 	width: 100%;
-	background: linear-gradient(to right, #5A98A1,#2c5b61);
 	display: block;
+		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#28c0d1+0,10416c+100 */
+background: #28c0d1; /* Old browsers */
+background: -moz-linear-gradient(-45deg, #28c0d1 0%, #10416c 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(-45deg, #28c0d1 0%,#10416c 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(135deg, #28c0d1 0%,#10416c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#28c0d1', endColorstr='#10416c',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 .profileIcon {
-	padding: 2vw;
+	padding: 2.5vw;
 	height: inherit;
 	position: fixed;
 	right: 0px;
 }
 
 .homeIcon {
-	padding: 2vw;
+	padding: 2.5vw;
 	height: inherit;
+}
+@media only screen and (min-width: 800px)  {
+	.homeIcon, .profileIcon {
+	padding: 1vw;
+	}
 }
