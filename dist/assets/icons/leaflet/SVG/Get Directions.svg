@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="1059 109 104.133 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #28c0d1;
+      }
+
+      .cls-3 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-4 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <rect class="cls-1" width="28.639" height="20.015"/>
+    </clipPath>
+  </defs>
+  <g id="Get_Directions" data-name="Get Directions" transform="translate(931)">
+    <rect id="Rectangle_8" data-name="Rectangle 8" class="cls-2" width="104.133" height="32" rx="10" transform="translate(128 109)"/>
+    <g id="Repeat_Grid_1" data-name="Repeat Grid 1" class="cls-3" transform="translate(165.753 116.641)">
+      <g id="Group_11" data-name="Group 11" transform="translate(-152.974 -105.23)">
+        <rect id="Rectangle_9" data-name="Rectangle 9" class="cls-4" width="10.9" height="3.633" rx="1.817" transform="matrix(0.788, 0.616, -0.616, 0.788, 155.211, 105.23)"/>
+        <rect id="Rectangle_10" data-name="Rectangle 10" class="cls-4" width="10.9" height="3.633" rx="1.817" transform="translate(163.525 112.535) rotate(135)"/>
+      </g>
+      <g id="Group_11-2" data-name="Group 11" transform="translate(-137.974 -105.23)">
+        <rect id="Rectangle_9-2" data-name="Rectangle 9" class="cls-4" width="10.9" height="3.633" rx="1.817" transform="matrix(0.788, 0.616, -0.616, 0.788, 155.211, 105.23)"/>
+        <rect id="Rectangle_10-2" data-name="Rectangle 10" class="cls-4" width="10.9" height="3.633" rx="1.817" transform="translate(163.525 112.535) rotate(135)"/>
+      </g>
+    </g>
+  </g>
+</svg>

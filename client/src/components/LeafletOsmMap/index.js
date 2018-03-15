@@ -36,7 +36,8 @@ export default class LeafletOSMMap extends Component {
     this.state = {
       map: null,
       mapCenter: null,
-      userMarker: null
+      userMarker: null,
+      unSavedMarker:null //used to track unsaved markers on map
     };
     this.onLocationFound = this.onLocationFound.bind(this);
     this.onLocationError = this.onLocationError.bind(this);
@@ -171,6 +172,14 @@ export default class LeafletOSMMap extends Component {
       autoPan: true
     }).addTo(this.state.map);
 
+    //handles removing unsaved markers when new marker is dropped
+    if (this.state.unSavedMarker) {
+        console.log(this.state.unSavedMarker);
+        this.state.unSavedMarker.remove();
+        dropPin(this.state.UnSavedMarker, event.target);
+      }
+      this.setState({ unSavedMarker: droppedPin });
+
     const container = L.DomUtil.create('div');
     const saveBtn = createButton('Save', container);
     const deleteBtn = createButton('Remove', container);
@@ -183,6 +192,7 @@ export default class LeafletOSMMap extends Component {
 
         //remove old icon
         droppedPin.remove()
+        //TODO: delete temporary marker from unSavedMarker
 
         //add a new one
         const savedMarker = makePinMarkers([response.data.pin], L);
@@ -213,12 +223,13 @@ export default class LeafletOSMMap extends Component {
           console.log(err); //error saving pin
 
         }
-        
+
       })
     });
 
     L.DomEvent.on(deleteBtn, 'click', function() {
       droppedPin.remove();
+      //TODO: delete temporary marker from unSavedMarker
     });
 
     droppedPin.bindPopup(container);
