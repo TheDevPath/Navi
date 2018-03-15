@@ -1,10 +1,23 @@
+@font-face {
+font-family: "Open Sans";
+src: url(../assets/font/OpenSans-Regular.ttf);
+}
+@font-face {
+font-family: "Open Sans Bold";
+src: url(../assets/font/OpenSans-Bold.ttf);
+}
+@font-face {
+font-family: "Open Sans Light";
+src: url(../assets/font/OpenSans-Light.ttf);
+}
+
 html, body {
 	height: 100%;
 	width: 100%;
 	padding: 0;
 	margin: 0;
 	background: #FAFAFA;
-	font-family: 'Helvetica Neue', arial, sans-serif;
+	font-family: 'Open Sans Light', arial, sans-serif;
 	font-weight: 400;
 	color: #444;
 	-webkit-font-smoothing: antialiased;
@@ -17,4 +30,15 @@ html, body {
 
 #app {
 	height: 100%;
+	background-image: url(../assets/images/background-image.jpg);
+	background-repeat:no-repeat;
+	background-size:cover;
+}
+input{
+	border-radius: 10px;
+	border: 1px solid #95989A;
+	background-color: #ffffff;
+	font-size: 16px;
+	line-height:20px;
+	padding: 13px;
 }
