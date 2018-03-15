@@ -17,7 +17,7 @@ const TOKEN_COOKIE = 'token';
 /**
  * Key-value pairs for existing base server endpoints
  */
-const BASE_ENDPOINTS = {
+export const BASE_ENDPOINTS = {
   savedPins: '/search/savedpins',
   savedDirections: '/search/directions',
   savedHistory: '/search/history',
@@ -28,6 +28,8 @@ const BASE_ENDPOINTS = {
   userLogout: '/users/logout',
   userRegister: '/users/register',
   textsearch: '/search/textsearch',
+  userReset: '/users/reset-password',
+  userUpdate: '/users/update',
 }
 
 /**
@@ -83,7 +85,7 @@ export const makeRequest = (method='GET', baseEndPoint, endPointAddon='', bodyDa
     return new Promise(function (res,rej) {
       rej(TypeError(`Invalid request method: ${method}`));
     })
-  } 
+  }
 
   const url = ((BASE_ENDPOINTS[baseEndPoint] || baseEndPoint) + endPointAddon).trim();
   headers['x-access-token'] = token.getCookie();
@@ -95,6 +97,8 @@ export const makeRequest = (method='GET', baseEndPoint, endPointAddon='', bodyDa
     baseURL: API_SERVER,
     data: bodyData
   }
+
+  console.log('makeRequest().config: ', config);
   
   return axios.request(config);
 }
