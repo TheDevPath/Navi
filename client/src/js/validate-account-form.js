@@ -138,7 +138,13 @@ export const validateAccountForm = (args) => {
   return new Promise((resolve, reject) => {
     makeRequest('POST', path, '', body)
     .then(function (response) {
+      // TODO - need to better handle token assignment and update
+      // because depending on the type of response this is accidentally
+      // removing the token. This temp change should prevent that
+      // from happening for now.
+      if (response.data.token) {
         token.setCookie(response.data.token);
+      }
         resolve({status, message});
       })
       .catch(function (error) {

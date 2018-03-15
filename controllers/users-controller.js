@@ -252,7 +252,9 @@ exports.update = (appReq, appRes) => {
       { $set: updateFields },
       { new: true },
       (error, updatedUser) => {
-        if (error) return appRes.status(500).send('Error on the server.');
+        if (error) {
+          return appRes.status(500).send('Error on the server.');
+        }
 
         return appRes.status(200).send({
           // don't send password!!
@@ -266,7 +268,7 @@ exports.update = (appReq, appRes) => {
     );
   });
 
-  // update name
+  // prepare name for update
   if (appReq.body.name) {
     updateFields.name = appReq.body.name;
   }
@@ -277,15 +279,17 @@ exports.update = (appReq, appRes) => {
     uniqueEmail(appReq.body.email).then((result) => {
       if (result) {
         updateFields.email = appReq.body.email;
-        return usersControllerEE.emit('update');
+        usersControllerEE.emit('update');
       }
       
-      return appRes.status(400).send('Email is already in use!');
+      appRes.status(400).send('Email is already in use!');
     }).catch((error) => {
-      return appRes.status(500).send(error);
+      appRes.status(500).send(error);
     });
+  } else if (appReq.body.name) { // handle name only update
+    usersControllerEE.emit('update');
   } else { // only email update requested but invalid email
-    return appRes.status(400)
+    appRes.status(400)
       .send('Email is not of the valid format!');
   }
 };
