@@ -3,6 +3,30 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { JWT_KEY } = require('../config');
 
+/**
+ * Helper functions
+ */
+
+const validEmail = (email) => {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+};
+
+const validPassword = (password) => {
+  const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+  return re.test(String(password));
+};
+
+const checkPassword = (password1, password2) => bcrypt.compareSync(password1, password2);
+
+const getInvalidPasswordResponse = appRes => appRes.status(401).send({
+  auth: false,
+  token: null,
+});
+
+/**
+ * Request handler functions
+ */
 
 /**
  * @description Handles user registeration
@@ -23,16 +47,6 @@ exports.registerUser = (appReq, appRes) => {
    *  Checks whether password is of minimum 6 characters & that it has atleast one number,
    *   one letter, & atleast one specail character.
    */
-  const validEmail = (email) => {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  };
-
-  const validPassword = (password) => {
-    const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
-    return re.test(String(password));
-  };
-
   if (appReq.body.email && appReq.body.name && appReq.body.password) {
     if (!validEmail(appReq.body.email)) return appRes.status(400).send('Email is not of the valid format');
     if (!validPassword(appReq.body.password)) {
@@ -69,15 +83,13 @@ exports.registerUser = (appReq, appRes) => {
         }
 
         // create token
-        const token = jwt.sign({id: user._id}, JWT_KEY, {
+        const token = jwt.sign({ id: user._id }, JWT_KEY, {
           expiresIn: 86400, // expires in 24 hours
         });
 
-        appRes.status(200).send({auth: true, token});
+        appRes.status(200).send({ auth: true, token });
       },
     );
-
-
   });
 };
 
@@ -102,17 +114,6 @@ exports.getUser = (appReq, appRes) => {
       appRes.status(200).send(user);
     },
   );
-};
-
-const checkPassword = (password1, password2) => {
-  return bcrypt.compareSync(password1, password2);
-};
-
-const getInvalidPasswordResponse = (appRes) => {
-  return appRes.status(401).send({
-    auth: false,
-    token: null,
-  });
 };
 
 /**
@@ -185,20 +186,21 @@ exports.resetPassword = (appReq, appRes) => {
     }
 
     user.password = HASHED_PASSWORD;
-    user.save(function (err, updatedUser) {
-      if (err) return appRes.status(500).send('Error on the server.');
-    });
 
-    const token = jwt.sign({ id: user._id }, JWT_KEY, {
-      expiresIn: 86400,
-    });
+    user.save((error, updatedUser) => {
+      if (error) return appRes.status(500).send('Error on the server.');
 
-    appRes.status(200).send({
-      auth: true,
-      token,
+      // TODO - do we need resend the token again? It already exists...
+      const token = jwt.sign({ id: updatedUser._id }, JWT_KEY, {
+        expiresIn: 86400,
+      });
+
+      return appRes.status(200).send({
+        auth: true,
+        token,
+      });
     });
   });
-
 };
 
 /**
@@ -214,5 +216,25 @@ exports.resetPassword = (appReq, appRes) => {
  * @param {string} appReq.body.email - email provided by user
  */
 exports.update = (appReq, appRes) => {
-  appRes.status(200).send('Test123');
+  User.findById(appReq.userId, (err, user) => {
+    if (err) return appRes.status(500).send('Error on the server.');
+    if (!user) return appRes.status(404).send('No user found.');
+
+    // update name and/or email accordingly
+    if (appReq.body.name) {
+      user.name = appReq.body.name;
+    }
+
+    if (appReq.body.email) {
+      user.email = appReq.body.email;
+    }
+
+    user.save((error, updatedUser) => {
+      if (error) return appRes.status(500).send('Error on the server.');
+
+      return appRes.status(200).send({
+        user: updatedUser,
+      });
+    });
+  });
 };

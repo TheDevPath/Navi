@@ -1,7 +1,6 @@
 import {route} from 'preact-router';
-import {makeRequest, token} from './server-requests-utils';
-import { LOGIN_PATH, REGISTER_PATH, RESET_PATH } from '../../config';
-import { resolve } from 'url';
+import { makeRequest, token, BASE_ENDPOINTS } from './server-requests-utils';
+import { LOGIN_PATH, REGISTER_PATH, RESET_PATH, UPDATE_PATH } from '../../config';
 
 const validEmail = (email) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -45,8 +44,8 @@ const validateReset = (formData) => {
     }
   }
 
-  // validate user info has at least on field completed
-  if (name.length < 1 && email.length < 1) {
+  // validate user info has at least one field completed
+  if (!name && !email) {
     return {
       status: false,
       message: 'Please enter a new name and/or email address!',
@@ -55,7 +54,7 @@ const validateReset = (formData) => {
   }
   
   return {
-    status: false,
+    status: true,
     message: 'Success - valid request!',
     body: {name, email},
   };
@@ -106,11 +105,16 @@ const validateRegister = (formData) => {
 // Exports below
 export const validateAccountForm = (args) => {
 
-  const {path, formData} = args;
+  let {path, formData} = args;
+
   let result = null;
 
   if (path === RESET_PATH) {
     result = validateReset(formData);
+    
+    if (result.body.email || result.body.name) {
+      path = BASE_ENDPOINTS.userUpdate;
+    }
   }
 
   if (path === REGISTER_PATH) {
