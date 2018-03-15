@@ -54,7 +54,8 @@ exports.registerUser = (appReq, appRes) => {
     // encrypt password
     const HASHED_PASSWORD = bcrypt.hashSync(appReq.body.password, 8);
 
-    //This is inside User.count so that it does not run before the User.count check finishes
+    // This is inside User.count so that it does not run before the User.count
+    // check finishes
     User.create(
       {
         name: appReq.body.name,
@@ -103,6 +104,17 @@ exports.getUser = (appReq, appRes) => {
   );
 };
 
+const checkPassword = (password1, password2) => {
+  return bcrypt.compareSync(password1, password2);
+};
+
+const getInvalidPasswordResponse = (appRes) => {
+  return appRes.status(401).send({
+    auth: false,
+    token: null,
+  });
+};
+
 /**
  * @description Handles user login
  *
@@ -119,13 +131,15 @@ exports.loginUser = (appReq, appRes) => {
   User.findOne({ email: appReq.body.email }, (err, user) => {
     if (err) return appRes.status(500).send('Error on the server.');
     if (!user) return appRes.status(404).send('No user found.');
-    if(!checkPassword(appReq.body.password,user.password)) return getInvalidPasswordResponse(appRes);
+    if (!checkPassword(appReq.body.password, user.password)) {
+      return getInvalidPasswordResponse(appRes);
+    }
 
     const token = jwt.sign({ id: user._id }, JWT_KEY, {
       expiresIn: 86400,
     });
 
-    appRes.status(200).send({
+    return appRes.status(200).send({
       auth: true,
       token,
     });
@@ -156,19 +170,19 @@ exports.logoutUser = (appReq, appRes) => {
  * @apiError 404 {request error} User not found.
  * @apiError 500 {server error} Problem finding user.
  *
- * @param {string} appReq.body.email - email provided by user
- * @param {string} appReq.body.password - user provided password
- * @param {string} appReq.body.new_password - user provided password
+ * @param {string} appReq.body.password - current user password
+ * @param {string} appReq.body.new_password - user provided new password
  * @param {string} appReq.body.confirm_password - user provided password
  */
 exports.resetPassword = (appReq, appRes) => {
-
   const HASHED_PASSWORD = bcrypt.hashSync(appReq.body.new_password, 8);
 
-  User.findOne({ email: appReq.body.email }, (err, user) => {
+  User.findById(appReq.userId, (err, user) => {
     if (err) return appRes.status(500).send('Error on the server.');
     if (!user) return appRes.status(404).send('No user found.');
-    if(!checkPassword(appReq.body.password,user.password)) return getInvalidPasswordResponse(appRes);
+    if (!checkPassword(appReq.body.password, user.password)) {
+      return getInvalidPasswordResponse(appRes);
+    }
 
     user.password = HASHED_PASSWORD;
     user.save(function (err, updatedUser) {
@@ -187,13 +201,18 @@ exports.resetPassword = (appReq, appRes) => {
 
 };
 
-const checkPassword = (password1, password2) => {
-  return bcrypt.compareSync(password1, password2);
-}
-
-const getInvalidPasswordResponse = (appRes) => {
-  return appRes.status(401).send({
-    auth: false,
-    token: null,
-  });
-}
+/**
+ * @description Handles updating user info
+ *
+ * @api {POST} /users/update
+ * @apiSuccess 200 {auth: true, token: token} jsonwebtoken.
+ * @apiError 401 {auth: false, token: null} Invalid password.
+ * @apiError 404 {request error} User not found.
+ * @apiError 500 {server error} Problem finding user.
+ *
+ * @param {string} appReq.body.name - name provided by user
+ * @param {string} appReq.body.email - email provided by user
+ */
+exports.update = (appReq, appRes) => {
+  appRes.status(200).send('Test123');
+};
