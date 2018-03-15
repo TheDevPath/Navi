@@ -10,8 +10,6 @@
 .search {
   width: 80vw;
   text-align: center;
-  height: 5vh;
-  background-color: aliceblue;
-  display: inherit;
+   display: inherit;
   margin: auto;
 }

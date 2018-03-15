@@ -7,7 +7,7 @@ import ProfileEditForm from '../../components/ProfileEditForm';
 import ProfileSettingsForm from '../../components/ProfileSettingsForm';
 import SavedPinsCard from '../../components/SavedPinsCard';
 import SearchHistoryCard from '../../components/SearchHistoryCard';
-import {setStateUserOrRedirectToSignIn} from "../../js/utilities";
+import {setStateUserOrRedirectToSignIn} from "../../js/validate-account-form";
 
 export default class Profile extends Component {
 
