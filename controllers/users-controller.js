@@ -288,8 +288,4 @@ exports.update = (appReq, appRes) => {
     return appRes.status(400)
       .send('Email is not of the valid format!');
   }
-  User.findById(appReq.userId, (err, user) => {
-    if (err) return appRes.status(500).send('Error on the server.');
-    if (!user) return appRes.status(404).send('No user found.');
-    });
 };
