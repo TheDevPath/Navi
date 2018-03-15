@@ -46,3 +46,22 @@
 	right: 5vw;
 	bottom: 3vh;
 }
+.myLocation{
+	position: fixed;
+    bottom: 1vh;
+    right: 1vw;
+}
+@media only screen and (min-width: 800px){
+	.welcome > img {
+		width: 20vw;
+	}
+	.search{
+		width: 30vw;
+		margin: 0 auto;
+	}
+	.search input{
+		width: 100%;
+	}
+		
+
+}

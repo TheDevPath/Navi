@@ -28,9 +28,10 @@ export default class Home extends Component {
 						<SearchResults />
 					</Search>
 				</div>
-				<a href="/maps" class={style.mapLink}>where am I?</a>
+				<div class="myLocation"><a href="/maps" class={style.mapLink}>where am I?</a>
 				<img src='../../assets/icons/leaflet/SVG/CurrentLocationPin.svg'
 					class={style.pin} onClick={this.routeToMap}/>	
+					</div>
 			</div>
 		);
 	}

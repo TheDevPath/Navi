@@ -17,4 +17,7 @@ html, body {
 
 #app {
 	height: 100%;
+	background-image: url(../assets/images/background-image.jpg);
+	background-repeat:no-repeat;
+	background-size:cover;
 }
