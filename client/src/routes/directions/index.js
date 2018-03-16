@@ -7,6 +7,7 @@ import Itinerary from "./Itinerary";
 import { makeRequest, token } from "../../js/server-requests-utils";
 const SUCCESS_STATUS = 200;
 const ERROR_STATUS = 500;
+
 /**
 * Leaflet related imports: leaflet, pouchdb module, and routing machine module
 */
@@ -15,7 +16,7 @@ import '../../../node_modules/leaflet-routing-machine/dist/leaflet-routing-machi
 import L from '../../js/leaflet-tileLayer-pouchdb-cached';
 import Routing from '../../../node_modules/leaflet-routing-machine/src/index.js';
 import 'leaflet-easybutton';
-//import easyButton from '../../../node_modules/leaflet-routing-machine/src/index.js';
+
 /**
 * TIle layer configuration and attribution constants
 */
@@ -26,8 +27,10 @@ const OSM_TILE_LAYER = new L.TileLayer(OSM_URL, {
   useCache: true,
   crossOrigin: true,
 });
+
 // redirect marker icon path to assets directory
 L.Icon.Default.imagePath = '../../assets/icons/leaflet/';
+
 export default class Directions extends Component {
   constructor(props) {
     super(props);
@@ -58,6 +61,7 @@ export default class Directions extends Component {
 
     this.formatter = new L.Routing.Formatter({});
   }
+  
   componentDidMount() {
     const map = L.map('map');
     const selfDir = this;
@@ -179,6 +183,7 @@ export default class Directions extends Component {
     );
   }
 }
+
 function createButton(label, container) {
   const btn = L.DomUtil.create('button', '', container);
   btn.setAttribute('type', 'button');
