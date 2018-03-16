@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1614.978 255 35.803 41.707">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #10416c;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="CurrentLocationPin" transform="translate(1390)">
+    <g id="Group_13" data-name="Group 13" transform="translate(-19 255)">
+      <path id="Path_9" data-name="Path 9" class="cls-1" d="M14.967,0c8.266,0,17.17,5.484,14.967,14.967S14.967,41.707,14.967,41.707,0,23.232,0,14.967A14.967,14.967,0,0,1,14.967,0Z" transform="translate(243.978 0)"/>
+      <circle id="Ellipse_22" data-name="Ellipse 22" class="cls-2" cx="7.64" cy="7.64" r="7.64" transform="translate(251.304 8.09)"/>
+    </g>
+    <circle id="Ellipse_49" data-name="Ellipse 49" class="cls-1" cx="5.489" cy="5.489" r="5.489" transform="translate(249.804 268.826)"/>
+    <circle id="Ellipse_50" data-name="Ellipse 50" class="cls-1" cx="5.489" cy="5.489" r="5.489" transform="translate(249.804 255)"/>
+  </g>
+</svg>

@@ -1,5 +1,5 @@
 {
-    "name": "googlemaps-offline-navigator",
+    "name": "navi",
     "version": "0.0.1",
     "description": "Open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and google maps api",
     "main": "server.js",
@@ -7,6 +7,7 @@
         "start": "node server.js",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "client": "npm run start --prefix client",
+        "build": "npm run build --prefix client",
         "server": "nodemon server.js",
         "test": "concurrently \"npm run test-server\" \"npm run test-client\"",
         "test-server": "cross-env NODE_ENV=test mocha tests --timeout 10000 -r chai/register-expect",
