@@ -4,6 +4,10 @@
     width: inherit;
 }
 
+.display {
+    margin: 10vh 0px;
+}
+
 .logo {
     display: inherit;
     margin: auto;
@@ -14,13 +18,27 @@
 .form {
     display: grid;
     padding: 0 5vh;
-    height: 70vh;
     align-content: flex-start;
+}
+
+.form > p {
+    margin: 1vh;
+    font-size: 1.2em;
 }
 
 .formChild {
     display: block;
-    margin: 2vh auto;
+    margin: 1vh auto;
+    width: 100%;
+    padding: 3vw;
+    border-color: lightslategray;
+    border-radius: 8px;
+    font-size: 1.2em;
+}
+
+.formChildReset {
+    display: block;
+    margin: 0.7vh auto;
     width: 100%;
     padding: 3vw;
     border-color: lightslategray;
