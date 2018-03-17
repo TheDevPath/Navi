@@ -84,7 +84,7 @@ export default class AccountForm extends Component {
       display =
       <div class={style.display}>
         <form class={style.form} onSubmit={this.handleSubmit}>
-          <input class={style.formChild} name="name" type="text" placeholder="firstname lastname"
+          <input class={style.formChild} name="name" type="text" placeholder="Name"
             value={name} onInput={linkState(this, 'name')} required/>
           <input class={style.formChild} id="email" name="email" type="email" placeholder='email address' 
             value={email} onInput={linkState(this, 'email')} required/>
