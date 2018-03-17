@@ -71,11 +71,19 @@ exports.convertToQueryString = (paramsObject) => {
 exports.processAutocomplete = (queryResult) => {
   const descriptions = [];
   const placeIds = [];
+  const descSubfields = [];
+
   queryResult.predictions.forEach((result) => {
-    const description = result.description;
+    const { description } = result;
     const placeId = result.place_id || '';
+    const subfields = {
+      mainText: result.structured_formatting.main_text,
+      secondaryText: result.structured_formatting.secondary_text,
+    };
+
     descriptions.push(description);
     placeIds.push(placeId);
+    descSubfields.push(subfields);
   });
-  return {descriptions, placeIds};
+  return { descriptions, placeIds, descSubfields };
 };

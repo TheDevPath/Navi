@@ -11,6 +11,7 @@ export default class Search extends Component {
       value: '',
       predictions: [],
       placeIDs: [],
+      descSubfields: [],
       marker: null,
       position: {},
     };
@@ -31,9 +32,12 @@ export default class Search extends Component {
       const status = response.data.status;
       const predictions = response.data.predictions;
       const placeIds = response.data.placeIds;
+      const descSubfields = response.data.descSubfields;
+
       this.setState({
         predictions,
         placeIds,
+        descSubfields,
       });
     });
   }
@@ -80,13 +84,12 @@ export default class Search extends Component {
     
     }
 
-    handleMarkerPopupContent
-
   render() {
     // pass props to children components
     const childWithProps = this.props.children.map((child) => {
       return cloneElement(child, {
         predictions: this.state.predictions,
+        descSubfields: this.state.descSubfields,
         onClicked: this.handleSelectedPlace
       });
     });
