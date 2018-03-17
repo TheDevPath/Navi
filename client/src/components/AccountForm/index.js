@@ -42,8 +42,10 @@ export default class AccountForm extends Component {
         alert(response.message);
       }
       }).catch(function (error) {
-          alert(error);
-        });
+        // TODO - standardize API error output so we can handle cleanly
+        // on frontend
+        alert(error);
+      });
    };
 
   componentWillUnmount = () => {
