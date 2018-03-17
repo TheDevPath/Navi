@@ -6,7 +6,7 @@ import { LOGIN_PATH, RESET_PATH, REGISTER_PATH } from "../../config";
 // import components
 import Nav from './Nav';
 import Logo from './Logo';
-import Pins from './Pins';
+
 
 // import routes
 import Home from '../routes/home';
@@ -14,9 +14,7 @@ import Profile from '../routes/profile';
 import Directions from '../routes/directions';
 import Maps from '../routes/maps';
 import Account from '../routes/account';
-// import Signin from '../routes/signin';
 import SignOut from '../routes/signout';
-// import Register from '../routes/register';
 import Settings from '../routes/settings';
 
 // Available screen real state after factoring space for navbar
@@ -52,7 +50,6 @@ export default class App extends Component {
           				<Settings path="/settings" paneHeight={AVAIL_PANE_HEIGHT}/>
 					<SignOut path="/signout"/>
 					<Directions path="/directions" />
-					<Pins path="/pins" />
 					<Maps path="/maps" paneHeight={AVAIL_PANE_HEIGHT}/>
 				</Router>
 			</div>
