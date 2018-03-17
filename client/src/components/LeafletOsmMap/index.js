@@ -36,7 +36,8 @@ export default class LeafletOSMMap extends Component {
     this.state = {
       map: null,
       mapCenter: null,
-      userMarker: null
+      userMarker: null,
+      droppedMarker:null //used to track unsaved markers on map
     };
     this.onLocationFound = this.onLocationFound.bind(this);
     this.onLocationError = this.onLocationError.bind(this);
@@ -163,13 +164,19 @@ export default class LeafletOSMMap extends Component {
   /**
    * On map click event, add a marker to the map at the clicked location.
    *
-   * @param {*} event
+   * @param {object} event
    */
   onMapClick(event) {
     const droppedPin = L.marker(event.latlng, {
       draggable: true,
       autoPan: true
     }).addTo(this.state.map);
+
+    if (this.state.droppedMarker) {
+          console.log(this.state.droppedMarker);
+          this.state.droppedMarker.remove();
+        }
+    this.setState({ droppedMarker: droppedPin });
 
     const container = L.DomUtil.create('div');
     const saveBtn = createButton('Save', container);
@@ -182,7 +189,10 @@ export default class LeafletOSMMap extends Component {
       }).then((response) => {
 
         //remove old icon
-        droppedPin.remove()
+        droppedPin.remove();
+
+        // update droppedmarker state
+        this.setState({ droppedMarker: null });
 
         //add a new one
         const savedMarker = makePinMarkers([response.data.pin], L);
@@ -213,12 +223,14 @@ export default class LeafletOSMMap extends Component {
           console.log(err); //error saving pin
 
         }
-        
+
       })
     });
 
     L.DomEvent.on(deleteBtn, 'click', function() {
       droppedPin.remove();
+      // update droppedmarker state
+      this.setState({ droppedMarker: null });
     });
 
     droppedPin.bindPopup(container);

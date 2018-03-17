@@ -1,5 +1,5 @@
 # Getting Started
-See the Guide on how to contribute [here](https://github.com/TheDevPath/googleMaps-offline-navigator/blob/development/CONTRIBUTING.md#how-to-contribute) for instructions on how to fork and set up your repository.
+See the Guide on how to contribute [here](https://github.com/TheDevPath/Navi/blob/development/CONTRIBUTING.md#how-to-contribute) for instructions on how to fork and set up your repository.
 
 # Installing Dependencies
 In the root directory of your newly cloned project `npm install`
@@ -43,9 +43,9 @@ When update has completed go to where you installed the project and run `npm ins
 When finished, in the project's root directory type `npm run dev`. This will start the dev servers on `localhost:8080` & `localhost:8081` respectively
 
 
-# About googleMaps-offline-navigator
+# About Navi
 
-This is an open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and google maps api
+This is an open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and Open Street Maps and google api
 
 The idea for this project is to build a progressive web app utilizing the technologies learned in the Grow with Google Udacity Scholarship challenge.
 
@@ -107,13 +107,14 @@ The main goal of the app is to provide the user with a map interface that they c
 
 ### *About the application*
 * Node backend
-* React Frontend
-* Google Maps api
+* Preact Frontend
+* Open Street Maps
+* Google api
 * Service Workers
 * [MIT License](../blob/master/LICENSE)
 
 ### *Where to get the files*
-* [This repository](https://github.com/TheDevPath/googleMaps-offline-navigator)
+* [This repository](https://github.com/TheDevPath/Navi)
 
 ### *Key files included*
 * Files
