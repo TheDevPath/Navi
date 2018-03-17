@@ -82,8 +82,6 @@ export default class Search extends Component {
     
     }
 
-    handleMarkerPopupContent
-
   render() {
     // pass props to children components
     const childWithProps = this.props.children.map((child) => {
