@@ -177,7 +177,9 @@ exports.autocomplete = (appReq, appRes) => {
         status: queryResult.status,
         predictions: outcome.descriptions,
         placeIds: outcome.placeIds,
+        descSubfields: outcome.descSubfields,
       };
+      console.log('query result:\n', result);
       appRes.status(200).send(result);
     });
   }).on('error', (err) => {
