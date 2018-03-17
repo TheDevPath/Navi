@@ -192,8 +192,8 @@ export default class LeafletOSMMap extends Component {
         //remove old icon
         droppedPin.remove()
 
-        //TODO: delete temporary marker from unSavedMarker
-
+        //update unSavedMarker so the saved Marker will show on the map
+        setState({unSavedMarker:null});
         //add a new one
         const savedMarker = makePinMarkers([response.data.pin], L);
         dropPin(savedMarker, event.target);
@@ -229,7 +229,6 @@ export default class LeafletOSMMap extends Component {
 
     L.DomEvent.on(deleteBtn, 'click', function() {
       droppedPin.remove();
-      //TODO: delete temporary marker from unSavedMarker
     });
 
     droppedPin.bindPopup(container);
