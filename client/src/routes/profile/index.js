@@ -2,9 +2,6 @@ import {h, Component} from 'preact';
 import style from './style';
 
 import Logo from '../../components/Logo';
-import ProfileCard from '../../components/ProfileCard';
-import ProfileEditForm from '../../components/ProfileEditForm';
-import ProfileSettingsForm from '../../components/ProfileSettingsForm';
 import SavedPinsCard from '../../components/SavedPinsCard';
 import SearchHistoryCard from '../../components/SearchHistoryCard';
 import {setStateUserOrRedirectToSignIn} from "../../js/validate-account-form";
