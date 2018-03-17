@@ -14,7 +14,6 @@ export default class Profile extends Component {
   constructor() {
     super();
     this.state = {
-      timeLocale: 'To be used later for profile card',
       user: {},
       isSignedIn: false,
     };
