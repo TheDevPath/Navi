@@ -7,6 +7,7 @@ const OK_STATUS = 'OK'
 export default class UnorderedList extends Component {
   constructor(props) {
     super(props);
+
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -38,7 +39,10 @@ export default class UnorderedList extends Component {
     return (
       <ul>
         {this.props.predictions.map((prediction, index) => {
-          return <div key={index} onClick={() => this.handleClick(prediction)} >{prediction}</div>
+          return <div key={index} onClick={() => this.handleClick(prediction)} >
+              <p class={style.mainText}> {this.props.descSubfields[index].mainText} </p>
+              <p class={style.secondaryText}> {this.props.descSubfields[index].secondaryText} </p>
+            </div>
         })}
       </ul>
     )
