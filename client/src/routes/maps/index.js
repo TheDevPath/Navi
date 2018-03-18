@@ -6,7 +6,8 @@ export default class MapExplorer extends Component {
   render() {
     return (
       <div class={style.maps}>
-        <MapContainer paneHeight={this.props.paneHeight}/>
+        <MapContainer paneHeight={this.props.paneHeight} url={this.props.url}
+          searchResult={this.props.searchResult}/>
       </div>
     );
   }

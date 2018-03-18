@@ -14,9 +14,7 @@ import Profile from '../routes/profile';
 import Directions from '../routes/directions';
 import Maps from '../routes/maps';
 import Account from '../routes/account';
-// import Signin from '../routes/signin';
 import SignOut from '../routes/signout';
-// import Register from '../routes/register';
 import Settings from '../routes/settings';
 
 // Available screen real state after factoring space for navbar
@@ -26,9 +24,14 @@ export default class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			navbarHeight: screen.availHeight - AVAIL_PANE_HEIGHT
+			navbarHeight: screen.availHeight - AVAIL_PANE_HEIGHT,
+			position: null,
+			searchResult: null,
 		};
+
+		this.setSearchResult = this.setSearchResult.bind(this);
 	}
+
 	/** Gets fired when the route changes.
 	 *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
 	 *	@param {string} event.url	The newly routed URL
@@ -37,12 +40,32 @@ export default class App extends Component {
 		this.currentUrl = e.url;
 	};
 
+	setSearchResult(result) {
+		this.setState({ searchResult: result });
+	}
+
+	componentDidMount() {
+		// get user location if possible before map is loaded
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition((position) => {
+				this.setState({
+					position: {
+						lat: position.coords.latitude,
+						lng: position.coords.longitude,
+					},
+				});
+			},
+			(error) => {console.log(error)},
+			{enableHighAccuracy:false, maximumAge:Infinity, timeout:60000});
+		}
+	}
+
 	render() {
 		return (
 			<div id="app">
 				<Nav navHeight={this.state.navbarHeight}/>
 				<Router onChange={this.handleRoute}>
-					<Home path="/" paneHeight={AVAIL_PANE_HEIGHT}/>
+					<Home path="/" paneHeight={AVAIL_PANE_HEIGHT} setSearchResult={this.setSearchResult}/>
 					<Profile path="/profile/" user="me" />
 					<Profile path="/profile/:user" />
 					<Account path="/register" paneHeight={AVAIL_PANE_HEIGHT}/>
@@ -53,7 +76,8 @@ export default class App extends Component {
 					<SignOut path="/signout"/>
 					<Directions path="/directions" />
 					<Pins path="/pins" />
-					<Maps path="/maps" paneHeight={AVAIL_PANE_HEIGHT}/>
+					<Maps path="/maps" paneHeight={AVAIL_PANE_HEIGHT}
+						searchResult={this.state.searchResult}/>
 				</Router>
 			</div>
 		);

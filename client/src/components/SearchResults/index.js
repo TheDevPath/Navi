@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import style from './style.css';
 import axios from 'axios';
 import {API_SERVER} from '../../../config';
+import { route } from 'preact-router';
 const OK_STATUS = 'OK'
 
 export default class UnorderedList extends Component {
@@ -26,7 +27,13 @@ export default class UnorderedList extends Component {
         if(response.data.status == OK_STATUS)
         {
           const [searchResult] = response.data.results;
-          this.props.onClicked(searchResult);
+
+          if (this.props.url === '/maps'){
+            this.props.onResultClicked(searchResult);
+          } else {
+            this.props.setSearchResult(searchResult);
+            route('/maps', true);
+          }
         }          
         else
           alert(response.data.status);
