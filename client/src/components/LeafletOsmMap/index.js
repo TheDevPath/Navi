@@ -179,13 +179,18 @@ export default class LeafletOSMMap extends Component {
     this.setState({ droppedMarker: droppedPin });
 
     const container = L.DomUtil.create('div');
+    const saveMarkerTitle = createInput('Title', container);
     const saveBtn = createButton('Save', container);
     const deleteBtn = createButton('Remove', container);
 
+    //TODO: build function to handle description input using function as state
+
     L.DomEvent.on(saveBtn, 'click', function () {
+      console.log(event);
       makeRequest('POST', 'savedPins', '', {
         lat: event.latlng.lat,
         lng: event.latlng.lng,
+        place_id: saveMarkerTitle.value //should be from state not dom
       }).then((response) => {
 
         //remove old icon
@@ -256,4 +261,11 @@ function createButton(label, container) {
   btn.setAttribute('type', 'button');
   btn.innerHTML = label;
   return btn;
+}
+
+function createInput(input, container) {
+  var input = L.DomUtil.create('input','sml-textfield_input', container);
+  input.setAttribute('type', 'input');
+  input.setAttribute('placeholder', 'Enter Description');
+  return input;
 }
