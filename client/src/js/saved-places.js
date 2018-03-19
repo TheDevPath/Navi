@@ -12,7 +12,7 @@ const FAV_MARKER_OPTIONS = {
   className: 'favorites',
   iconSize: [25, 41], //native aspect ratio: [28, 41]
 };
- 
+
 
 /**
  * Exported Functions
@@ -34,18 +34,18 @@ const fetchAndDropUserPins = (user_id, mapObj, L) => {
 
 const getSavedPins = (user_id) => {
   //GET 'search/savedpins/:user_id'
- 
+
   return makeRequest('GET', 'savedPins', '', user_id) //pinsPromised
   .then(res => res.data.savedPins)
   .catch(err => {
     // console.log(`Couldn't get the user pins: ${err}`);
   });
 
-} 
+}
 
 //This function generates markers and drops them on a map (if specified)
 const makePinMarkers = (pinArray = [], L, markerOptions=FAV_MARKER_OPTIONS) => {
- 
+
   const icon =  L ? L.icon(FAV_MARKER_OPTIONS) : undefined;
 
   let pinMarkers = [];
@@ -64,7 +64,7 @@ const makePinMarkers = (pinArray = [], L, markerOptions=FAV_MARKER_OPTIONS) => {
         title: pin.place_id
       });
 
-    } else { 
+    } else {
       thisMarker =  L.marker([pin.lat, pin.lng], {
         draggable: false,
         autopan: true,
@@ -72,9 +72,12 @@ const makePinMarkers = (pinArray = [], L, markerOptions=FAV_MARKER_OPTIONS) => {
         title: pin.place_id
       });
     }
-    
-    thisMarker.data = pin; //save the db data to the marker
 
+    const container = L.DomUtil.create('div');
+    console.log('thisMarker');
+    console.log(thisMarker);
+
+    thisMarker.data = pin; //save the db data to the marker
     pinMarkers.push(thisMarker);
   }
 
@@ -85,7 +88,7 @@ const makePinMarkers = (pinArray = [], L, markerOptions=FAV_MARKER_OPTIONS) => {
 
 //This funciton drops pins on a map replacing pins if they already exist
 const dropPin = (pinMarkers=[], mapObj=undefined) => {
-  
+
   //if no map is defined, or there are no pins return
    if ((mapObj == null) || (pinMarkers.length == 0)) return;
 
@@ -105,9 +108,31 @@ const dropPin = (pinMarkers=[], mapObj=undefined) => {
 /* TO DO
     Create a custom container for each pin on click */
 const setPinPopup = (marker) => {
-  marker.bindPopup(marker.options.title);
+  const container = L.DomUtil.create('div');
+  const markerDescription = createLabel(marker.options.title, container);
+  const deleteBtn = createButton('Delete', container);
+  marker.bindPopup(container);
+
+
+  L.DomEvent.on(deleteBtn, 'click', function() {
+    console.log("delete button was hit");
+    //droppedPin.remove();
+  });
 }
 
+function createButton(label, container) {
+  var btn = L.DomUtil.create('button', '', container);
+  btn.setAttribute('type', 'button');
+  btn.innerHTML = label;
+  return btn;
+}
+
+
+function createLabel(label, container) {
+  var displayLabel = L.DomUtil.create('div','', container);
+  displayLabel.innerHTML = label;
+  return displayLabel;
+}
 
 //Export Statements
 export {fetchAndDropUserPins, makePinMarkers, dropPin};
