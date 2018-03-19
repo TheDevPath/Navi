@@ -24,7 +24,7 @@ export default class Home extends Component {
 				</div>
 				<div class={style.search}>
 					<p>Where can we take you today?</p>
-					<Search setSearchResult={this.props.setSearchResult} url={this.props.url}>
+					<Search position={this.props.position} setSearchResult={this.props.setSearchResult} url={this.props.url}>
 						<SearchResults setSearchResult={this.props.setSearchResult}
 						  url={this.props.url}/>
 					</Search>

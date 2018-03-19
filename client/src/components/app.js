@@ -65,7 +65,8 @@ export default class App extends Component {
 			<div id="app">
 				<Nav navHeight={this.state.navbarHeight}/>
 				<Router onChange={this.handleRoute}>
-					<Home path="/" paneHeight={AVAIL_PANE_HEIGHT} setSearchResult={this.setSearchResult}/>
+					<Home path="/" paneHeight={AVAIL_PANE_HEIGHT} setSearchResult={this.setSearchResult}
+					  position={this.state.position}/>
 					<Profile path="/profile/" user="me" />
 					<Profile path="/profile/:user" />
 					<Account path="/register" paneHeight={AVAIL_PANE_HEIGHT}/>
@@ -76,7 +77,7 @@ export default class App extends Component {
 					<SignOut path="/signout"/>
 					<Directions path="/directions" />
 					<Pins path="/pins" />
-					<Maps path="/maps" paneHeight={AVAIL_PANE_HEIGHT}
+					<Maps path="/maps" paneHeight={AVAIL_PANE_HEIGHT} position={this.state.position}
 						searchResult={this.state.searchResult}/>
 				</Router>
 			</div>

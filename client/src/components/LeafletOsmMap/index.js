@@ -33,17 +33,20 @@ L.Icon.Default.imagePath = '../../assets/icons/leaflet/';
 export default class LeafletOSMMap extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       map: null,
       mapCenter: null,
       userMarker: null,
       droppedMarker:null,
     };
+
+    this.getUserLocation = this.getUserLocation.bind(this);
     this.onLocationFound = this.onLocationFound.bind(this);
     this.onLocationError = this.onLocationError.bind(this);
     this.onMapClick = this.onMapClick.bind(this);
     this.handleSelectedPlace = this.handleSelectedPlace.bind(this);
-    this.setCenterControl = this.setCenterControl.bind(this);
+    this.createCenterControl = this.createCenterControl.bind(this);
   }
 
   componentDidMount() {
@@ -65,31 +68,47 @@ export default class LeafletOSMMap extends Component {
     this.state.map.addLayer(OSM_TILE_LAYER);
 
     // set "Center Map" control
-    this.setCenterControl();
-
-    // if routed from home screen search show result
-    if (this.props.searchResult) {
-      return this.handleSelectedPlace(this.props.searchResult);
-    }
-
-    // attempt to get user's current location via device
-    this.state.map.locate({
-      setView: true,
-      enableHighAccuracy: false,
-      timeout: 60000,
-      maximumAge: Infinity,
-    });
+    this.createCenterControl();
 
     // configure map events
     this.state.map.on('locationfound', this.onLocationFound);
     this.state.map.on('locationerror', this.onLocationError);
     this.state.map.on('click', this.onMapClick);
-
-    //once map is ready, drop pins (user=undefined --> default)
+    
+    // if logged in ,once map is ready, drop pins (user=undefined --> default)
     fetchAndDropUserPins(undefined, this.state.map, L);
+    
+    // if routed from home screen search show result
+    if (this.props.searchResult) {
+      if (!this.props.position) {
+        this.setState({
+          mapCenter: this.props.position,
+        });
+      }
+      
+      this.handleSelectedPlace(this.props.searchResult);
+    } else {
+      this.getUserLocation();
+    }
   }
 
-  setCenterControl() {
+  /**
+   * Attempt to get user's current location via device
+   */
+  getUserLocation() {
+     this.state.map.locate({
+      setView: true,
+      enableHighAccuracy: false,
+      timeout: 60000,
+      maximumAge: Infinity,
+    });
+  }
+
+  /**
+   * Create control button for returning user to their current location
+   *   on the map
+   */
+  createCenterControl() {
     L.Control.Center = L.Control.extend({
       onAdd: map => {
         const center = this.state.mapCenter;
@@ -147,7 +166,7 @@ export default class LeafletOSMMap extends Component {
 
   /**
    * Handle leaflet map get device location event
-   * @param {*} event
+   * @param {object} event
    */
   onLocationFound(event) {
     this.state.map.setZoom(16);
@@ -167,7 +186,7 @@ export default class LeafletOSMMap extends Component {
 
   /**
    * Handle leaflet map get device location failure
-   * @param {*} event
+   * @param {object} event
    */
   onLocationError(event) {
     // TODO - dummy message for now if don't have permission to get user
@@ -288,6 +307,11 @@ export default class LeafletOSMMap extends Component {
   }
 }
 
+/**
+ * Handles the creation of button objects
+ * @param {string} label 
+ * @param {HTML div tag} container 
+ */
 function createButton(label, container) {
   var btn = L.DomUtil.create('button', '', container);
   btn.setAttribute('type', 'button');

@@ -8,6 +8,7 @@ const OK_STATUS = 'OK';
 export default class Search extends Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       value: '',
       predictions: [],
