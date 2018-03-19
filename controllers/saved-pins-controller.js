@@ -121,7 +121,6 @@ exports.deleteSavedPins = (appReq, appRes) => {
  */
 exports.deleteSavedPinsById = (appReq, appRes) => {
   const params = { id: appReq.params.id };
-
   if (!ObjectID.isValid(params.id)) {
     return appRes.status(404).send();
   }

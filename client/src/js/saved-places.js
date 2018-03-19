@@ -108,15 +108,16 @@ const dropPin = (pinMarkers=[], mapObj=undefined) => {
 /* TO DO
     Create a custom container for each pin on click */
 const setPinPopup = (marker) => {
+  console.log(marker);
   const container = L.DomUtil.create('div');
   const markerDescription = createLabel(marker.options.title, container);
-  const deleteBtn = createButton('Delete', container,marker.options.title);
+  const deleteBtn = createButton('Delete', container,marker.data._id);
   marker.bindPopup(container);
 
 
   L.DomEvent.on(deleteBtn, 'click', function() {
-      makeRequest('DELETE', `savedPins/${event.target.id}`, '', {
-        place_id: event.target.id //should be from state not dom
+      makeRequest('DELETE', `/search/savedPins/${event.target.id}`, '', {
+        //place_id: event.target.id //should be from state not dom
       }).then((response) => {
 
         //remove icon if removal from database was success
