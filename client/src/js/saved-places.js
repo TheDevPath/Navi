@@ -110,19 +110,42 @@ const dropPin = (pinMarkers=[], mapObj=undefined) => {
 const setPinPopup = (marker) => {
   const container = L.DomUtil.create('div');
   const markerDescription = createLabel(marker.options.title, container);
-  const deleteBtn = createButton('Delete', container);
+  const deleteBtn = createButton('Delete', container,marker.options.title);
   marker.bindPopup(container);
 
 
   L.DomEvent.on(deleteBtn, 'click', function() {
-    console.log("delete button was hit");
-    //droppedPin.remove();
-  });
-}
+      makeRequest('DELETE', `savedPins/${event.target.id}`, '', {
+        place_id: event.target.id //should be from state not dom
+      }).then((response) => {
 
-function createButton(label, container) {
+        //remove icon if removal from database was success
+        marker.remove();
+
+      }).catch((err) => {
+
+        switch (err.response.status){
+          case 400: //duplicate pin
+            const origPin = err.response.data;
+            alert('We had an issue deleting this pin.');
+            /*TO DO:
+            Convert popup alert to toast message
+            */
+            break;
+          default:
+          console.log(err); //error saving pin
+
+        }
+
+      })
+    });
+  }
+
+
+function createButton(label, container,id) {
   var btn = L.DomUtil.create('button', '', container);
   btn.setAttribute('type', 'button');
+  btn.setAttribute('id',id);
   btn.innerHTML = label;
   return btn;
 }
