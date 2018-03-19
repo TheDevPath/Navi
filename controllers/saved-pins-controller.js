@@ -81,6 +81,7 @@ exports.postSavedPins = (appReq, appRes) => {
         lat: appReq.body.lat,
         lng: appReq.body.lng,
         place_id: appReq.body.place_id,
+        desc: appReq.body.desc,
         user: appReq.userId, // authenticated user's id
       });
 

@@ -186,11 +186,10 @@ export default class LeafletOSMMap extends Component {
     //TODO: build function to handle description input using function as state
 
     L.DomEvent.on(saveBtn, 'click', function () {
-      console.log(event);
       makeRequest('POST', 'savedPins', '', {
         lat: event.latlng.lat,
         lng: event.latlng.lng,
-        place_id: saveMarkerTitle.value //should be from state not dom
+        desc: saveMarkerTitle.value //should be from state not dom
       }).then((response) => {
 
         //remove old icon

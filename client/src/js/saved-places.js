@@ -61,7 +61,8 @@ const makePinMarkers = (pinArray = [], L, markerOptions=FAV_MARKER_OPTIONS) => {
         draggable: false,
         autopan: true,
         riseOnHover: true,
-        title: pin.place_id
+        title: pin.place_id,
+        desc: pin.desc
       });
 
     } else {
@@ -69,13 +70,12 @@ const makePinMarkers = (pinArray = [], L, markerOptions=FAV_MARKER_OPTIONS) => {
         draggable: false,
         autopan: true,
         riseOnHover: true,
-        title: pin.place_id
+        title: pin.place_id,
+        desc: pin.desc
       });
     }
 
     const container = L.DomUtil.create('div');
-    console.log('thisMarker');
-    console.log(thisMarker);
 
     thisMarker.data = pin; //save the db data to the marker
     pinMarkers.push(thisMarker);
@@ -110,7 +110,8 @@ const dropPin = (pinMarkers=[], mapObj=undefined) => {
 const setPinPopup = (marker) => {
   console.log(marker);
   const container = L.DomUtil.create('div');
-  const markerDescription = createLabel(marker.options.title, container);
+  console.log(marker);
+  const markerDescription = createLabel(marker.options.desc, container);
   const deleteBtn = createButton('Delete', container,marker.data._id);
   marker.bindPopup(container);
 
