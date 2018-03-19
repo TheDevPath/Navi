@@ -6,7 +6,7 @@ const { ObjectID } = require('mongodb');
 const app = require('../app');
 const SavedPins = require('../models/saved-pins');
 const {
-  pins, populatePins, users, populateUsers,
+  pins, populatePins, users, populateUsers, stopServer
 } = require('./seed/seed');
 
 beforeEach(populateUsers);
@@ -38,6 +38,19 @@ describe('POST /search/savedpins', () => {
           expect(receivedPin).to.deep.include(new_pin);
           done();
         }).catch(e => done(e));
+      });
+  });
+
+  it('should not save a duplicate pin', done => {
+    request(app)
+      .post('/search/savedpins')
+      .set('x-access-token', users[0].tokens[0].token)
+      .send(pins[0])
+      .expect(400)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body.message).to.equal("Duplicate found. Pin not saved.");
+        done();
       });
   });
 

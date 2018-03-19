@@ -5,6 +5,7 @@ const server = require('../../server');
 
 const User = require('../../models/users');
 const SavedPins = require('../../models/saved-pins');
+const SearchHistory = require('../../models/search-history');
 
 const userOneId = new ObjectID();
 const userTwoId = new ObjectID();
@@ -44,6 +45,19 @@ const pins = [{
   user: userTwoId,
 }];
 
+const search_history = [
+  {
+    _id: new ObjectID(),
+    query: "paris, france",
+    user: userOneId
+  },
+  {
+    _id: new ObjectID(),
+    query: "london, england",
+    user: userOneId
+  }
+];
+
 const populatePins = (done) => {
   SavedPins.remove({}).then(() => SavedPins.insertMany(pins)).then(() => done());
 };
@@ -55,6 +69,12 @@ const populateUsers = function (done) {
 
     return Promise.all([userOne, userTwo]);
   }).then(() => done());
+};
+
+const populateSearchHistory = done => {
+  SearchHistory.remove({})
+    .then(() => SearchHistory.insertMany(search_history))
+    .then(() => done());
 };
 
 const deleteTestUser = function (done) {
@@ -69,5 +89,5 @@ const stopServer = (done) => {
 };
 
 module.exports = {
-  pins, populatePins, users, populateUsers, deleteTestUser, stopServer,
+  pins, populatePins, users, populateUsers, populateSearchHistory, search_history, deleteTestUser, stopServer,
 };
