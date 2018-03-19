@@ -28,7 +28,9 @@ export default class Search extends Component {
     this.setState({value: event.target.value});
     // process autocomplete request and update list
     axios.post(`${API_SERVER}/search/autocomplete`, {
-      input: this.state.value,
+      input: this.state.value,      
+      lat: this.props.position.lat,
+      lng: this.props.position.lng,
     }).then((response) => {
       const status = response.data.status;
       const predictions = response.data.predictions;

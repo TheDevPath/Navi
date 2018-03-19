@@ -6,7 +6,7 @@ import { LOGIN_PATH, RESET_PATH, REGISTER_PATH } from "../../config";
 // import components
 import Nav from './Nav';
 import Logo from './Logo';
-import Pins from './Pins';
+
 
 // import routes
 import Home from '../routes/home';
