@@ -64,6 +64,31 @@ describe("Saved search history end points", () => {
         .end(done);
     });
 
+    it("should respond with 401 when no token is provided", done => {
+      request(app)
+        .get("/search/history")
+        .expect(401)
+        .end((err, res) => {
+          if (err) return done(err);
+          const { message } = res.body;
+          expect(message).to.equal("No token provided.")
+          done();
+        });
+    });
+
+    it("should respond with a 403 error for invalid token", done => {
+      request(app)
+        .get("/search/history")
+        .set('x-access-token', "invalid_token")
+        .expect(403)
+        .end((err, res) => {
+          if (err) return done(err);
+          const { message } = res.body;
+          expect(message).to.equal("Failed to authenticate token.");
+          done();
+        });
+    });
+
   });
 
   describe("GET /search/history/recent/:num", () => {
@@ -85,6 +110,31 @@ describe("Saved search history end points", () => {
           expect(searchHistory).to.be.an('array').that.has.lengthOf(1);
           expect(searchHistory[0].user).to.equal(search_history[0].user.toHexString());
         }).end(done);
+    });
+
+    it("should respond with 401 when no token is provided", done => {
+      request(app)
+        .get("/search/history/recent/1")
+        .expect(401)
+        .end((err, res) => {
+          if (err) return done(err);
+          const { message } = res.body;
+          expect(message).to.equal("No token provided.")
+          done();
+        });
+    });
+
+    it("should respond with a 403 error for invalid token", done => {
+      request(app)
+        .get("/search/history/recent/1")
+        .set('x-access-token', "invalid_token")
+        .expect(403)
+        .end((err, res) => {
+          if (err) return done(err);
+          const { message } = res.body;
+          expect(message).to.equal("Failed to authenticate token.");
+          done();
+        });
     });
   });
 
@@ -116,10 +166,35 @@ describe("Saved search history end points", () => {
         })
         .end(done);
     });
+
+    it("should respond with 401 when no token is provided", done => {
+      request(app)
+        .post("/search/history/query here")
+        .expect(401)
+        .end((err, res) => {
+          if (err) return done(err);
+          const { message } = res.body;
+          expect(message).to.equal("No token provided.")
+          done();
+        });
+    });
+
+    it("should respond with a 403 error for invalid token", done => {
+      request(app)
+        .post("/search/history/query here")
+        .set('x-access-token', "invalid_token")
+        .expect(403)
+        .end((err, res) => {
+          if (err) return done(err);
+          const { message } = res.body;
+          expect(message).to.equal("Failed to authenticate token.");
+          done();
+        });
+    });
   });
 
   describe("DELETE /search/history", () => {
-    it("", done => {
+    it("should clear history of user present in jwt token", done => {
       request(app)
         .delete("/search/history")
         .set('x-access-token', user.tokens[0].token)
@@ -137,6 +212,31 @@ describe("Saved search history end points", () => {
               done();
             })
             .catch(done);
+        });
+    });
+
+    it("should respond with 401 when no token is provided", done => {
+      request(app)
+        .delete("/search/history")
+        .expect(401)
+        .end((err, res) => {
+          if (err) return done(err);
+          const { message } = res.body;
+          expect(message).to.equal("No token provided.")
+          done();
+        });
+    });
+
+    it("should respond with a 403 error for invalid token", done => {
+      request(app)
+        .delete("/search/history")
+        .set('x-access-token', "invalid_token")
+        .expect(403)
+        .end((err, res) => {
+          if (err) return done(err);
+          const { message } = res.body;
+          expect(message).to.equal("Failed to authenticate token.");
+          done();
         });
     });
   });
