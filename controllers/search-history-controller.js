@@ -8,10 +8,7 @@ const SearchHistory = require('../models/search-history');
  * @apiError 500 {server error} Problem finding all saved search queries.
  */
 exports.getSearchHistory = (appReq, appRes) => {
-  console.log("getSearchHistory called!");
-   
   SearchHistory.find({ user: appReq.userId }).then((searchHistory) => {
-    console.log("search history found!");
     appRes.status(200).send({ searchHistory });
   }, (e) => {
     appRes.status(500).send(e);

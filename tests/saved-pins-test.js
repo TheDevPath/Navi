@@ -6,7 +6,7 @@ const { ObjectID } = require('mongodb');
 const app = require('../app');
 const SavedPins = require('../models/saved-pins');
 const {
-  pins, populatePins, users, populateUsers, stopServer
+  pins, populatePins, users, populateUsers
 } = require('./seed/seed');
 
 beforeEach(populateUsers);

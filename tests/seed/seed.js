@@ -45,19 +45,6 @@ const pins = [{
   user: userTwoId,
 }];
 
-const search_history = [
-  {
-    _id: new ObjectID(),
-    query: "paris, france",
-    user: userOneId
-  },
-  {
-    _id: new ObjectID(),
-    query: "london, england",
-    user: userOneId
-  }
-];
-
 const populatePins = (done) => {
   SavedPins.remove({}).then(() => SavedPins.insertMany(pins)).then(() => done());
 };
@@ -71,12 +58,6 @@ const populateUsers = function (done) {
   }).then(() => done());
 };
 
-const populateSearchHistory = done => {
-  SearchHistory.remove({})
-    .then(() => SearchHistory.insertMany(search_history))
-    .then(() => done());
-};
-
 const deleteTestUser = function (done) {
   User.remove({
     email: 'test@testing.com',
@@ -88,6 +69,21 @@ const stopServer = (done) => {
   done();
 };
 
+const userObjectWithToken = user => {
+  const _id = new ObjectID();
+  const tokens = [{
+    access: 'auth',
+    token: jwt.sign({ id: _id }, JWT_KEY).toString(),
+  }];
+  return Object.assign(user, { tokens: tokens, _id: _id });
+};
+
 module.exports = {
-  pins, populatePins, users, populateUsers, populateSearchHistory, search_history, deleteTestUser, stopServer,
+  pins, 
+  populatePins, 
+  users, 
+  populateUsers, 
+  deleteTestUser, 
+  stopServer,
+  userObjectWithToken
 };
