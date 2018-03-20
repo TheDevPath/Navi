@@ -6,6 +6,7 @@
   "orientation": "portrait",
   "background_color": "#2196F3",
   "theme_color": "#2196F3",
+  "permissions": ["geolocation"],
   "icons": [{
      "src": "client/src/assets/icons/android-chrome-192x192.png",
        "sizes": "128x128",
