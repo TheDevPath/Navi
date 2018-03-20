@@ -1,7 +1,6 @@
 import {h, Component} from 'preact';
 import style from './style';
 import {makeRequest, token} from "../../js/server-requests-utils";
-import {SAVED_PINS_PATH} from '../../../config';
 import { BASE_ENDPOINTS } from "../../js/server-requests-utils";
 
 export default class SavedPinsCard extends Component {
