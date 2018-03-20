@@ -179,7 +179,7 @@ export default class LeafletOSMMap extends Component {
     this.setState({ droppedMarker: droppedPin });
 
     const container = L.DomUtil.create('div');
-    const saveMarkerTitle = createInput('Title', container);
+    const saveMarkerTitle = createInput('Title', 'markerInput', container);
     const saveBtn = createButton('Save', container);
     const deleteBtn = createButton('Remove', container);
 
@@ -262,8 +262,8 @@ function createButton(label, container) {
   return btn;
 }
 
-function createInput(input, container) {
-  var input = L.DomUtil.create('input','sml-textfield_input', container);
+function createInput(input, cssClass, container) {
+  var input = L.DomUtil.create('input',cssClass, container);
   input.setAttribute('type', 'input');
   input.setAttribute('placeholder', 'Enter Description');
   return input;
