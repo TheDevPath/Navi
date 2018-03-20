@@ -39,12 +39,17 @@ export default class LeafletOSMMap extends Component {
       userMarker: null,
       droppedMarker: null, //used to track unsaved markers on map
       userPosControlOnScreen: false,
+      defaultZoom: 16,
     };
 
-    this.updateUserMarker = this.updateUserMarker.bind(this);
+    this.getUserLocation = this.getUserLocation.bind(this);
     this.onLocationFound = this.onLocationFound.bind(this);
     this.onLocationError = this.onLocationError.bind(this);
+    this.createCenterControl = this.createCenterControl.bind(this);
     this.onMapClick = this.onMapClick.bind(this);
+    this.updateUserMarker = this.updateUserMarker.bind(this);
+    this.updateDroppedMarker = this.updateDroppedMarker.bind(this);
+    this.saveMarkerToDB = this.saveMarkerToDB.bind(this);
   }
 
   componentDidMount() {
@@ -53,7 +58,7 @@ export default class LeafletOSMMap extends Component {
       this.setState({
         map: L.map('map', {
           zoomControl: false,
-          zoom: 16
+          zoom: this.state.defaultZoom,
         })
       });
     }
@@ -76,10 +81,16 @@ export default class LeafletOSMMap extends Component {
     // once map is ready, drop pins (user=undefined --> default)
     fetchAndDropUserPins(undefined, this.state.map, L);
 
-    // set map center accordingly
-    // if (this.props.placeDetail) {
+    // set map center accordingly if routed from home screen search
+    if (this.props.placeDetail && 
+        (this.state.mapCenter !== this.props.placeDetail.geometry.location)) {
+      this.setState({
+        mapCenter: this.props.placeDetail.geometry.location,
+      });
 
-    // }
+      this.updateDroppedMarker(this.state.mapCenter, this.props.placeDetail.place_id);
+      this.state.map.setView(this.state.mapCenter, this.state.defaultZoom);
+    }
   }
 
   /**
@@ -117,7 +128,8 @@ export default class LeafletOSMMap extends Component {
    * 
    * @param {object} position geocode object with lat, lng keys
    */
-  updateDroppedMarker(position) {
+  updateDroppedMarker(position, placeID='') {
+    const saveToDB = this.saveMarkerToDB;
     let latlng = position;
     if (position.latlng) {
       latlng = position.latlng;
@@ -144,7 +156,7 @@ export default class LeafletOSMMap extends Component {
     L.DomEvent.on(saveBtn, 'click', function () {
       // const position = event.latlng;
       const desc = saveMarkerTitle.value;
-      saveMarkerToDB(position, desc);
+      saveToDB(position, desc, placeID);
     });
 
     L.DomEvent.on(deleteBtn, 'click', function() {
@@ -259,13 +271,14 @@ export default class LeafletOSMMap extends Component {
       lat: position.lat,
       lng: position.lng,
       desc,
+      place_id: placeID,
     }).then((response) => {
       //remove old icon
-      droppedPin.remove();
+      this.state.droppedMarker.remove();
 
       //add a new one
       const savedMarker = makePinMarkers([response.data.pin], L);
-      dropPin(savedMarker, event.target);
+      dropPin(savedMarker, this.state.map);
 
       // alert(`Succes: Saved pin at ${event.latlng} to db`);
     }).catch((err) => {
@@ -304,7 +317,8 @@ export default class LeafletOSMMap extends Component {
   render() {
     return (
       <div class={style.fullscreen}>
-        <Search position={this.state.mapCenter} map={this.state.map}>
+        <Search position={this.state.mapCenter} map={this.state.map}
+          routeUrl={this.props.url}>
           <SearchResults />
         </Search>
         <MapPane paneHeight={this.props.paneHeight} />
