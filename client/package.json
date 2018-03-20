@@ -56,7 +56,6 @@
         "preact-cli-sw-precache": "^1.0.3",
         "preact-compat-enzyme": "^0.2.5",
         "preact-jsx-chai": "^2.2.1",
-        "preact-material-components": "^1.3.5",
         "preact-test-utils": "^0.1.3",
         "regenerator-runtime": "^0.11.0"
     },
