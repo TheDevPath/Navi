@@ -180,8 +180,8 @@ export default class LeafletOSMMap extends Component {
 
     const container = L.DomUtil.create('div');
     const saveMarkerTitle = createInput('Title', 'markerInput', container);
-    const saveBtn = createButton('Save', container);
-    const deleteBtn = createButton('Remove', container);
+    const saveBtn = createButton('Save', '', container);
+    const deleteBtn = createButton('Remove', '', container);
 
     //TODO: build function to handle description input using function as state
 
@@ -255,7 +255,7 @@ export default class LeafletOSMMap extends Component {
   }
 }
 
-function createButton(label, container) {
+function createButton(label, cssClass, container) {
   var btn = L.DomUtil.create('button', '', container);
   btn.setAttribute('type', 'button');
   btn.innerHTML = label;
