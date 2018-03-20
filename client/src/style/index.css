@@ -53,3 +53,10 @@ input.markerInput{
 	margin-bottom:4px;
 	width:100%;
 }
+.center{
+	width:100%;
+	align-content: center;
+	text-align:center;
+	margin-bottom:4px;
+	display:block;
+}
