@@ -9,7 +9,7 @@
         "serve": "preact build --no-prerender && preact serve",
         "dev": "preact watch",
         "lint": "eslint src",
-        "test": "mocha ./tests --require babel-polyfill --require ignore-styles --compilers js:babel-core/register --reporter spec || exit 0"
+        "test": "jest"
     },
     "eslintConfig": {
         "extends": "eslint-config-airbnb"
@@ -19,7 +19,10 @@
     ],
     "babel": {
         "presets": [
-            "env"
+            "env",
+            "es2015",
+            "stage-0",
+            "react"
         ],
         "plugins": [
             [
@@ -32,7 +35,12 @@
         ]
     },
     "devDependencies": {
+        "babel-jest": "^20.0.3",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-preset-react": "^6.24.1",
+        "babel-preset-stage-0": "^6.24.1",
         "chai": "^4.1.2",
+        "enzyme": "^2.9.1",
         "eslint": "^4.9.0",
         "eslint-config-airbnb": "^16.1.0",
         "eslint-plugin-import": "^2.7.0",
@@ -41,11 +49,16 @@
         "eslint-plugin-react-compat": "0.0.3",
         "if-env": "^1.0.0",
         "ignore-styles": "^5.0.1",
+        "jest": "^22.4.2",
+        "jest-css-modules": "^1.1.0",
         "mocha": "^5.0.0",
         "preact-cli": "^2.0.1",
         "preact-cli-sw-precache": "^1.0.3",
+        "preact-compat-enzyme": "^0.2.5",
         "preact-jsx-chai": "^2.2.1",
-        "preact-material-components": "^1.3.5"
+        "preact-material-components": "^1.3.5",
+        "preact-test-utils": "^0.1.3",
+        "regenerator-runtime": "^0.11.0"
     },
     "dependencies": {
         "axios": "^0.18.0",

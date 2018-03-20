@@ -2,6 +2,7 @@ import {h, Component} from 'preact';
 import style from './style';
 import {makeRequest, token} from "../../js/server-requests-utils";
 import {SAVED_PINS_PATH} from '../../../config';
+import { BASE_ENDPOINTS } from "../../js/server-requests-utils";
 
 export default class SavedPinsCard extends Component {
   constructor() {
@@ -29,7 +30,7 @@ export default class SavedPinsCard extends Component {
   }
 
   getSavedPins() {
-    makeRequest('GET', SAVED_PINS_PATH)
+    makeRequest('GET', BASE_ENDPOINTS.savedPins)
       .then(function (response) {
         this.displayPins(response.data.savedPins);
       }.bind(this))
