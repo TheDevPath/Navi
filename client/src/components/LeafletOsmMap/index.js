@@ -4,7 +4,7 @@ import style from "./style";
 import MapPane from './MapPane';
 import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
-import { makeRequest } from '../../js/server-requests-utils';
+import { makeRequest, BASE_ENDPOINTS } from '../../js/server-requests-utils';
 import {fetchAndDropUserPins, makePinMarkers, dropPin} from '../../js/saved-places';
 
 /**
@@ -74,7 +74,7 @@ export default class LeafletOSMMap extends Component {
     this.getUserLocation();
 
     // configure map events
-    this.state.map.on('locationfound', this.updateUserMarker);
+    this.state.map.on('locationfound', this.onLocationFound);
     this.state.map.on('locationerror', this.onLocationError);
     this.state.map.on('click', this.onMapClick);
 
@@ -100,9 +100,9 @@ export default class LeafletOSMMap extends Component {
    */
   updateUserMarker(position) {
     let latlng = position;
-    if (position.latlng) {
-      latlng = position.latlng;
-    }
+    // if (position.latlng) {
+    //   latlng = position.latlng;
+    // }
 
     const userMarker = L.circleMarker(latlng, {
       radius: 8,
@@ -171,7 +171,9 @@ export default class LeafletOSMMap extends Component {
    */
   getUserLocation() {
     if (this.props.userPosition) {
+      this.setState({ mapCenter: this.props.userPosition });
       this.updateUserMarker(this.props.userPosition);
+      this.state.map.setView(this.state.mapCenter, this.state.defaultZoom);
     } else {
       this.state.map.locate({
        setView: true,
@@ -246,7 +248,9 @@ export default class LeafletOSMMap extends Component {
    * @param {*} event
    */
   onLocationFound(event) {
+    this.setState({ mapCenter: event.latlng});
     this.updateUserMarker(event.latlng);
+    this.state.map.setView(this.state.mapCenter, this.state.defaultZoom);
   }
 
   /**
@@ -256,7 +260,14 @@ export default class LeafletOSMMap extends Component {
   onLocationError(event) {
     // TODO - dummy message for now if don't have permission to get user
     // user location. Next step is to notify and request permission again.
-    alert(event.message);
+    makeRequest('GET', BASE_ENDPOINTS.geolocation).then((response) => {
+      console.log('MapContainer.geolocation(): ', response);
+      this.setState({ mapCenter: response.data.location });
+      this.updateUserMarker(response.data.location);
+      this.state.map.setView(this.state.mapCenter, this.state.defaultZoom);
+    }).catch((err) => {
+      console.log('MapContainer.getCurrentPosition(): ', err);
+    });
   }
 
   /**
@@ -318,7 +329,7 @@ export default class LeafletOSMMap extends Component {
     return (
       <div class={style.fullscreen}>
         <Search position={this.state.mapCenter} map={this.state.map}
-          routeUrl={this.props.url}>
+          routeUrl={this.props.routeUrl}>
           <SearchResults />
         </Search>
         <MapPane paneHeight={this.props.paneHeight} />

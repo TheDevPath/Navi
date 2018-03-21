@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 import Match from 'preact-router/match';
 import { LOGIN_PATH, RESET_PATH, REGISTER_PATH } from "../../config";
+import { BASE_ENDPOINTS, makeRequest } from '../js/server-requests-utils';
 
 // import components
 import Nav from './Nav';
@@ -29,22 +30,7 @@ export default class App extends Component {
 		};
 
 		this.updateSearchResult = this.updateSearchResult.bind(this);
-	}
-
-	componentDidMount() {
-		// get user location if possible
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition((position) => {
-				this.setState({
-					userPosition: {
-						lat: position.coords.latitude,
-						lng: position.coords.longitude,
-					},
-				});
-			},
-			(error) => {console.log(error)},
-			{enableHighAccuracy:false, maximumAge:Infinity, timeout:60000});
-		}
+		this.setUserPosition = this.setUserPosition.bind(this);
 	}
 
 	/** Gets fired when the route changes.
@@ -59,13 +45,17 @@ export default class App extends Component {
 		this.setState({ searchResult: placeDetail });
 	}
 
+	setUserPosition(userPosition) {
+		this.setState({ userPosition, });
+	}
+
 	render() {
 		return (
 			<div id="app">
 				<Nav navHeight={this.state.navbarHeight}/>
 				<Router onChange={this.handleRoute}>
 					<Home path="/" paneHeight={AVAIL_PANE_HEIGHT}
-						userPosition={this.state.userPosition}
+						setUserPosition={this.setUserPosition}
 						updateSearchResult={this.updateSearchResult}/>
 					<Profile path="/profile/" user="me" />
 					<Profile path="/profile/:user" />

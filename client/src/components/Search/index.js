@@ -67,7 +67,7 @@ export default class Search extends Component {
    * @param {*} placeDetail 
    */
   handleSelectedPlace(placeDetail) {
-    if (this.props.url === '/maps') {
+    if (this.props.routeUrl === '/maps') {
       this.props.map.setZoom(16);
       if (this.state.marker) 
         this.props.map.removeLayer(this.state.marker); 
