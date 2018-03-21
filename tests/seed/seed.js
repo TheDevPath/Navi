@@ -5,6 +5,7 @@ const server = require('../../server');
 
 const User = require('../../models/users');
 const SavedPins = require('../../models/saved-pins');
+const SearchHistory = require('../../models/search-history');
 
 const userOneId = new ObjectID();
 const userTwoId = new ObjectID();
@@ -68,6 +69,21 @@ const stopServer = (done) => {
   done();
 };
 
+const userObjectWithToken = user => {
+  const _id = new ObjectID();
+  const tokens = [{
+    access: 'auth',
+    token: jwt.sign({ id: _id }, JWT_KEY).toString(),
+  }];
+  return Object.assign(user, { tokens: tokens, _id: _id });
+};
+
 module.exports = {
-  pins, populatePins, users, populateUsers, deleteTestUser, stopServer,
+  pins, 
+  populatePins, 
+  users, 
+  populateUsers, 
+  deleteTestUser, 
+  stopServer,
+  userObjectWithToken
 };
