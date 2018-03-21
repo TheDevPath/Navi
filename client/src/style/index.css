@@ -42,3 +42,21 @@ input{
 	line-height:20px;
 	padding: 13px;
 }
+input.markerInput{
+	border-radius: 10px;
+	border: 1px solid #95989A;
+	background-color: #ffffff;
+	font-size: 10px;
+	line-height:10px;
+	padding: 5px;
+	display:block;
+	margin-bottom:4px;
+	width:100%;
+}
+.center{
+	width:100%;
+	align-content: center;
+	text-align:center;
+	margin-bottom:4px;
+	display:block;
+}
