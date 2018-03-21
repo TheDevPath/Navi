@@ -59,11 +59,11 @@ exports.convertToQueryString = (paramsObject) => {
 /**
  * @description Utility function for processing google places autocomplete
  *   results.
- * 
+ *
  * @param {Object} queryResult: JSON response containing two root elememts:
  *   - status: contains metadata on the request along with status codes
  *   - predictions: an array of query predictions
- * 
+ *
  * @returns {[Ojbect]} An array of suggestions as object with two root elements:
  *   - prediction: the predicted query
  *   - placeID: if prediction is a place else ''

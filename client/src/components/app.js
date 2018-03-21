@@ -2,11 +2,11 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 import Match from 'preact-router/match';
 import { LOGIN_PATH, RESET_PATH, REGISTER_PATH } from "../../config";
+import { BASE_ENDPOINTS, makeRequest } from '../js/server-requests-utils';
 
 // import components
 import Nav from './Nav';
 import Logo from './Logo';
-
 
 // import routes
 import Home from '../routes/home';
@@ -24,9 +24,15 @@ export default class App extends Component {
 	constructor() {
 		super();
 		this.state = {
-			navbarHeight: screen.availHeight - AVAIL_PANE_HEIGHT
+			navbarHeight: screen.availHeight - AVAIL_PANE_HEIGHT,
+			userPosition: null,
+			searchResult: null,
 		};
+
+		this.updateSearchResult = this.updateSearchResult.bind(this);
+		this.setUserPosition = this.setUserPosition.bind(this);
 	}
+
 	/** Gets fired when the route changes.
 	 *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
 	 *	@param {string} event.url	The newly routed URL
@@ -35,12 +41,22 @@ export default class App extends Component {
 		this.currentUrl = e.url;
 	};
 
+	updateSearchResult(placeDetail) {
+		this.setState({ searchResult: placeDetail });
+	}
+
+	setUserPosition(userPosition) {
+		this.setState({ userPosition, });
+	}
+
 	render() {
 		return (
 			<div id="app">
 				<Nav navHeight={this.state.navbarHeight}/>
 				<Router onChange={this.handleRoute}>
-					<Home path="/" paneHeight={AVAIL_PANE_HEIGHT}/>
+					<Home path="/" paneHeight={AVAIL_PANE_HEIGHT}
+						setUserPosition={this.setUserPosition}
+						updateSearchResult={this.updateSearchResult}/>
 					<Profile path="/profile/" user="me" />
 					<Profile path="/profile/:user" />
 					<Account path="/register" paneHeight={AVAIL_PANE_HEIGHT}/>
@@ -50,7 +66,8 @@ export default class App extends Component {
           				<Settings path="/settings" paneHeight={AVAIL_PANE_HEIGHT}/>
 					<SignOut path="/signout"/>
 					<Directions path="/directions" />
-					<Maps path="/maps" paneHeight={AVAIL_PANE_HEIGHT}/>
+					<Maps path="/maps" paneHeight={AVAIL_PANE_HEIGHT}
+						userPosition={this.state.userPosition} placeDetail={this.state.searchResult}/>
 				</Router>
 			</div>
 		);
