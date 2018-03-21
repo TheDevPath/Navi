@@ -49,6 +49,7 @@ export default class LeafletOSMMap extends Component {
     this.onMapClick = this.onMapClick.bind(this);
     this.updateUserMarker = this.updateUserMarker.bind(this);
     this.updateDroppedMarker = this.updateDroppedMarker.bind(this);
+    this.addPlaceDetailMarker = this.addPlaceDetailMarker.bind(this);
     this.saveMarkerToDB = this.saveMarkerToDB.bind(this);
   }
 
@@ -83,13 +84,10 @@ export default class LeafletOSMMap extends Component {
 
     // set map center accordingly if routed from home screen search
     if (this.props.placeDetail && 
-        (this.state.mapCenter !== this.props.placeDetail.geometry.location)) {
-      this.setState({
-        mapCenter: this.props.placeDetail.geometry.location,
-      });
-
-      this.updateDroppedMarker(this.state.mapCenter, this.props.placeDetail.place_id);
-      this.state.map.setView(this.state.mapCenter, this.state.defaultZoom);
+        (this.state.mapCenter !== this.props.placeDetail.geometry.location)
+      ) {
+      this.addPlaceDetailMarker(this.props.placeDetail.geometry.location,
+        this.props.placeDetail.place_id);
     }
   }
 
@@ -164,6 +162,21 @@ export default class LeafletOSMMap extends Component {
     });
 
     droppedPin.bindPopup(container);
+  }
+
+  /**
+   * Adds a marker to map per information given by search results place details.
+   * 
+   * @param {object} postion geocode object with lat, lng keys
+   * @param {string} placeID google map's place_id identifier
+   */
+  addPlaceDetailMarker(position, placeID='') {
+    this.setState({
+      mapCenter: position,
+    });
+
+    this.updateDroppedMarker(this.state.mapCenter, placeID);
+    this.state.map.setView(this.state.mapCenter, this.state.defaultZoom);
   }
 
   /**
@@ -329,7 +342,7 @@ export default class LeafletOSMMap extends Component {
     return (
       <div class={style.fullscreen}>
         <Search position={this.state.mapCenter} map={this.state.map}
-          routeUrl={this.props.routeUrl}>
+          routeUrl={this.props.routeUrl} addMarker={this.addPlaceDetailMarker}>
           <SearchResults />
         </Search>
         <MapPane paneHeight={this.props.paneHeight} />

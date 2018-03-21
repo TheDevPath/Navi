@@ -56,7 +56,7 @@ export default class Search extends Component {
           this.handleSelectedPlace(searchResult);
         }          
         else
-          alert(response.data.status);      
+          alert(response.data.status);
       });
       
   }
@@ -68,18 +68,10 @@ export default class Search extends Component {
    */
   handleSelectedPlace(placeDetail) {
     if (this.props.routeUrl === '/maps') {
-      this.props.map.setZoom(16);
-      if (this.state.marker) 
-        this.props.map.removeLayer(this.state.marker); 
-      this.setState({
-        marker : L.marker(placeDetail.geometry.location).addTo(this.props.map),
-        position: placeDetail.geometry.location
-      })
+      this.props.addMarker(placeDetail.geometry.location, placeDetail.place_id);
       
       //TO DO: Customize the marker popup
-      this.state.marker.bindPopup(`<b>${placeDetail.name || ''} </b>${placeDetail.formatted_address}`)
-
-      this.props.map.setView(this.state.position, 16);
+      // this.state.marker.bindPopup(`<b>${placeDetail.name || ''} </b>${placeDetail.formatted_address}`)
     } else {
       this.props.updateSearchResult(placeDetail);
       route('/maps', true);
