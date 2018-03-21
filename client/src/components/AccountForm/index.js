@@ -1,12 +1,11 @@
 import { h, Component, render } from 'preact';
-import React from 'react';
 import style from './style.css';
 import { validateAccountForm, clearForms } from "../../js/validate-account-form";
 import { BASE_ENDPOINTS } from "../../js/server-requests-utils";
 import linkState from "linkstate";
 import { route } from 'preact-router';
 
-export default class AccountForm extends React.Component {
+export default class AccountForm extends Component {
   constructor() {
     super();
 

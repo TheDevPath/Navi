@@ -6,5 +6,6 @@ module.exports = {
     "^react-dom$": "<rootDir>/node_modules/preact-compat-enzyme/lib/index.js"
   },
   "transform": {".*": "<rootDir>/node_modules/jest-css-modules"},
-  "setupFiles": [require.resolve('regenerator-runtime/runtime')]
+  "setupFiles": [require.resolve('regenerator-runtime/runtime')],
+  "snapshotSerializers": [ "preact-render-spy/snapshot" ]
 }

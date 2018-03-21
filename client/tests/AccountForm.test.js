@@ -2,6 +2,7 @@ import {h} from 'preact';
 /** @jsx h */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {shallow} from 'preact-render-spy';
 import {mount} from 'enzyme';
 import AccountForm from '../src/components/AccountForm';
 import {REGISTER_PATH, LOGIN_PATH, RESET_PATH} from '../config';
@@ -49,7 +50,7 @@ const setup = ({testPropsOverrides, wrapperStateOverrides, wrapperPropsOverrides
 
 describe('<AccountForm  path={BASE_ENDPOINTS.userRegister}/>', () => {
 
-  const wrapper = mount(<AccountForm path={BASE_ENDPOINTS.userRegister}/>);
+  const wrapper = shallow(<AccountForm path={BASE_ENDPOINTS.userRegister}/>);
 
   describe('page loads', () => {
 
@@ -61,7 +62,7 @@ describe('<AccountForm  path={BASE_ENDPOINTS.userRegister}/>', () => {
       });
 
       const inputs = testProps.wrapper.find('input');
-      expect(inputs.nodes.length).toBe(4);
+      expect(inputs.length).toBe(4);
     });
   });
 
@@ -75,7 +76,7 @@ describe('<AccountForm  path={BASE_ENDPOINTS.userRegister}/>', () => {
         }
       });
 
-      await Promise.all([testProps.wrapper.find('form').at(0).simulate('submit')]);
+      await Promise.all([testProps.wrapper.find('form').at(0).simulate('submit',{ preventDefault () {} })]);
       expect(testProps.route_url).toBe('/profile');
       expect(testProps.route_replace).toBe(true);
     });
@@ -93,7 +94,7 @@ describe('<AccountForm  path={BASE_ENDPOINTS.userRegister}/>', () => {
         }
       });
 
-      await Promise.all([testProps.wrapper.find('form').at(0).simulate('submit')]);
+      await Promise.all([testProps.wrapper.find('form').at(0).simulate('submit',{ preventDefault () {} })]);
       expect(testProps.alert_message).toBe(VALIDATION_MESSAGE);
     });
 
@@ -110,7 +111,7 @@ describe('<AccountForm  path={BASE_ENDPOINTS.userRegister}/>', () => {
         }
       });
 
-      await Promise.all([testProps.wrapper.find('form').at(0).simulate('submit')]);
+      await Promise.all([testProps.wrapper.find('form').at(0).simulate('submit',{ preventDefault () {} })]);
       expect(testProps.alert_message).toBe(VALIDATION_MESSAGE);
     });
 
@@ -121,7 +122,7 @@ describe('<AccountForm  path={BASE_ENDPOINTS.userRegister}/>', () => {
 
 describe('<AccountForm  path={BASE_ENDPOINTS.userLogin}/>', () => {
 
-  const wrapper = mount(<AccountForm path={BASE_ENDPOINTS.userLogin}/>);
+  const wrapper = shallow(<AccountForm path={BASE_ENDPOINTS.userLogin}/>);
 
   describe('page loads', () => {
 
@@ -133,7 +134,7 @@ describe('<AccountForm  path={BASE_ENDPOINTS.userLogin}/>', () => {
       });
 
       const inputs = testProps.wrapper.find('input');
-      expect(inputs.nodes.length).toBe(2);
+      expect(inputs.length).toBe(2);
     });
   });
 
@@ -141,7 +142,7 @@ describe('<AccountForm  path={BASE_ENDPOINTS.userLogin}/>', () => {
 
 describe('<AccountForm  path={BASE_ENDPOINTS.userReset}/>', () => {
 
-  const wrapper = mount(<AccountForm path={BASE_ENDPOINTS.userReset}/>);
+  const wrapper = shallow(<AccountForm path={BASE_ENDPOINTS.userReset}/>);
 
   describe('page loads', () => {
 
@@ -153,7 +154,7 @@ describe('<AccountForm  path={BASE_ENDPOINTS.userReset}/>', () => {
       });
 
       const inputs = testProps.wrapper.find('input');
-      expect(inputs.nodes.length).toBe(5);
+      expect(inputs.length).toBe(5);
     });
   });
 
@@ -168,12 +169,10 @@ describe('<AccountForm  path={BASE_ENDPOINTS.userReset}/>', () => {
         },
       });
 
-      await Promise.all([testProps.wrapper.find('form').at(0).simulate('submit')]);
+      await Promise.all([testProps.wrapper.find('form').at(0).simulate('submit',{ preventDefault () {} })]);
       expect(testProps.alert_message).toBe(VALIDATION_MESSAGE);
     });
 
   });
 
 });
-
-
