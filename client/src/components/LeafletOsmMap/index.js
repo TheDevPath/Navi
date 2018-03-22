@@ -1,11 +1,15 @@
+// node_module imports
 import { h, Component } from "preact";
 import { route } from "preact-router";
+import { connect } from 'preact-redux';
+
+// app module imports
 import style from "./style";
 import MapPane from './MapPane';
 import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
 import { makeRequest, BASE_ENDPOINTS } from '../../js/server-requests-utils';
-import {fetchAndDropUserPins, makePinMarkers, dropPin} from '../../js/saved-places';
+import { fetchAndDropUserPins, makePinMarkers, dropPin } from '../../js/saved-places';
 
 /**
  * Leaflet related imports: leaflet, pouchdb module, and routing machine module
@@ -30,7 +34,15 @@ const OSM_TILE_LAYER = new L.TileLayer(OSM_URL, {
 // redirect marker icon path to assets directory
 L.Icon.Default.imagePath = '../../assets/icons/leaflet/';
 
-export default class LeafletOSMMap extends Component {
+// react-redux functions
+const mapStateToProps = state => {
+	return {
+    placeDetail: state.placeDetail,
+    userPosition: state.userPosition
+	};
+};
+
+class ConnectedMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -341,8 +353,8 @@ export default class LeafletOSMMap extends Component {
   render() {
     return (
       <div class={style.fullscreen}>
-        <Search position={this.state.mapCenter} map={this.state.map}
-          routeUrl={this.props.routeUrl} addMarker={this.addPlaceDetailMarker}>
+        <Search map={this.state.map} routeUrl={this.props.routeUrl}
+          addMarker={this.addPlaceDetailMarker}>
           <SearchResults />
         </Search>
         <MapPane paneHeight={this.props.paneHeight} />
@@ -372,3 +384,7 @@ function createInput(input, cssClass, container) {
   input.setAttribute('placeholder', 'Enter Description');
   return input;
 }
+
+const MapContainer = connect(mapStateToProps) (ConnectedMap);
+
+export default MapContainer

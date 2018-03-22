@@ -1,29 +1,44 @@
+// node_module imports
 import { h, Component } from 'preact';
-import style from './style';
 import { route } from 'preact-router';
+import { connect } from 'preact-redux';
+
+// app module imports
+import style from './style';
 import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
 import { BASE_ENDPOINTS, makeRequest } from '../../js/server-requests-utils';
+import { updateUserPosition } from '../../js/store/actions';
 
-export default class Home extends Component {
-	constructor(props) {
-		super(props);
+// react-redux functions
+const mapStateToProps = state => {
+	return {
+		userPosition: state.userPosition,
+	};
+};
 
-		this.state = {
-			userPosition: null,
-		}
+const mapDispatchToProps = dispatch => {
+	return {
+		updateUserPosition: userPosition => dispatch(updateUserPosition(userPosition)),
+	};
+};
+
+class ConnectedHome extends Component {
+	constructor() {
+		super();
 
 		this.routeToMap = this.routeToMap.bind(this);
 	}
 
 	componentDidMount() {
-		makeRequest('GET', BASE_ENDPOINTS.geolocation).then((response) => {
-			console.log('Home.geolocation(): ', response);
-			this.setState({ userPosition: response.data.location });
-			this.props.setUserPosition(this.state.userPosition);
-		}).catch((err) => {
-			console.log('Home.geolocation(): ', err);
-		});
+		if (!this.props.userPosition) {
+			makeRequest('GET', BASE_ENDPOINTS.geolocation).then((response) => {
+				console.log('Home.geolocation(): ', response);
+				this.props.updateUserPosition(response.data.location);
+			}).catch((err) => {
+				console.log('Home.geolocation(): ', err);
+			});
+		}
 	}
 
 	routeToMap() {
@@ -39,8 +54,7 @@ export default class Home extends Component {
 				</div>
 				<div class={style.search}>
 					<p>Where can we take you today?</p>
-					<Search position={this.state.userPosition} routeUrl={this.props.url}
-						updateSearchResult={this.props.updateSearchResult}>
+					<Search routeUrl={this.props.url}>
 						<SearchResults />
 					</Search>
 				</div>
@@ -53,3 +67,7 @@ export default class Home extends Component {
 		);
 	}
 }
+
+const Home = connect(mapStateToProps, mapDispatchToProps) (ConnectedHome);
+
+export default Home;

@@ -1,11 +1,31 @@
+// node_module imports
 import { h , Component, cloneElement } from 'preact';
-import style from './style';
 import axios from 'axios';
-import {API_SERVER} from '../../../config';
 import { route } from 'preact-router';
+import { connect } from 'preact-redux';
+
+// app module imports
+import style from './style';
+import {API_SERVER} from '../../../config';
+import { updatePlaceDetail } from '../../js/store/actions';
+
 const OK_STATUS = 'OK';
 
-export default class Search extends Component {
+// react-redux functions
+const mapStateToProps = state => {
+	return {
+    placeDetail: state.placeDetail,
+    userPosition: state.userPosition
+	};
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		updatePlaceDetail: placeDetail => dispatch(updatePlaceDetail(placeDetail))
+	};
+};
+
+class ConnectedSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,8 +33,6 @@ export default class Search extends Component {
       predictions: [],
       placeIDs: [],
       descSubfields: [],
-      marker: null,
-      position: {},
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -27,8 +45,8 @@ export default class Search extends Component {
     // process autocomplete request and update list
     axios.post(`${API_SERVER}/search/autocomplete`, {
       input: this.state.value,      
-      lat: this.props.position.lat,
-      lng: this.props.position.lng,
+      lat: this.props.userPosition.lat,
+      lng: this.props.userPosition.lng,
     }).then((response) => {
       const status = response.data.status;
       const predictions = response.data.predictions;
@@ -47,24 +65,22 @@ export default class Search extends Component {
     event.preventDefault();
     axios.post(`${API_SERVER}/search/textsearch`, {
       input: this.state.value,
-      lat: this.props.position.lat,
-      lng: this.props.position.lng,
+      lat: this.props.userPosition.lat,
+      lng: this.props.userPosition.lng,
       }).then((response) => { 
-        if(response.data.status == OK_STATUS)
-        {
+        if (response.data.status == OK_STATUS) {
           const [searchResult] = response.data.results;
           this.handleSelectedPlace(searchResult);
-        }          
-        else
+        } else {
           alert(response.data.status);
+        }
       });
-      
   }
 
   /**
    * On search input query completion, add a marker to the map at the search result.
    *
-   * @param {*} placeDetail 
+   * @param {object} placeDetail 
    */
   handleSelectedPlace(placeDetail) {
     if (this.props.routeUrl === '/maps') {
@@ -73,10 +89,10 @@ export default class Search extends Component {
       //TO DO: Customize the marker popup
       // this.state.marker.bindPopup(`<b>${placeDetail.name || ''} </b>${placeDetail.formatted_address}`)
     } else {
-      this.props.updateSearchResult(placeDetail);
+      this.props.updatePlaceDetail(placeDetail);
       route('/maps', true);
     }
-  }
+  };
 
   render() {
     // pass props to children components
@@ -97,3 +113,7 @@ export default class Search extends Component {
     );
   }
 }
+
+const Search = connect(mapStateToProps, mapDispatchToProps) (ConnectedSearch);
+
+export default Search;

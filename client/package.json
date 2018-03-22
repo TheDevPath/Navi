@@ -55,9 +55,11 @@
         "pouchdb-browser": "^6.4.3",
         "preact": "^8.2.6",
         "preact-compat": "^3.17.0",
+        "preact-redux": "^2.0.3",
         "preact-render-to-string": "^3.7.0",
         "preact-router": "^2.5.7",
         "prop-types": "^15.6.0",
+        "redux": "^3.7.2",
         "universal-cookie": "^2.1.2"
     }
 }
