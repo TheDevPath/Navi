@@ -6,3 +6,10 @@ export const updateUserPosition = userPosition => (
     userPosition,
   }
 );
+
+export const updatePlaceDetail =   placeDetail => (
+  {
+    type: types.UPDATE_PLACE_DETAIL,
+      placeDetail,
+  }
+);
