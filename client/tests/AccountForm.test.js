@@ -1,9 +1,5 @@
 import {h} from 'preact';
-/** @jsx h */
-import React from 'react';
-import ReactDOM from 'react-dom';
 import {shallow} from 'preact-render-spy';
-import {mount} from 'enzyme';
 import AccountForm from '../src/components/AccountForm';
 import {REGISTER_PATH, LOGIN_PATH, RESET_PATH} from '../config';
 jest.mock('preact-router');
