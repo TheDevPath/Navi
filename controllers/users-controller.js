@@ -1,8 +1,59 @@
 const User = require('../models/users');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const events = require('events');
 const { JWT_KEY } = require('../config');
 
+// create event handler for this controller
+const usersControllerEE = new events.EventEmitter();
+
+/**
+ * Helper functions
+ */
+
+const validateEmail = (email) => {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+};
+
+const validatePassword = (password) => {
+  const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
+  return re.test(String(password));
+};
+
+const comparePassword = (password1, password2) => bcrypt.compareSync(password1, password2);
+
+const getInvalidPasswordResponse = appRes => appRes.status(401).send({
+  auth: false,
+  token: null,
+});
+
+/**
+ * Helper function to query database to ensure a validated email
+ *  isn't already assigned to a user.
+ *
+ * @param {string} validEmail email address that has passed validation
+ * @returns {boolean} promise object that resolves to boolean confirming whether
+ *  or not email is already assigned to a user.
+ */
+const uniqueEmail = (validEmail) => {
+  return new Promise((resolve, reject) => {
+    User.count({ email: validEmail }, (err, result) => {
+      if (err) {
+        reject(err);
+      }
+
+      if (result > 0) {
+        resolve(false);
+      }
+      resolve(true);
+    });
+  });
+};
+
+/**
+ * Request handler functions
+ */
 
 /**
  * @description Handles user registeration
@@ -23,19 +74,10 @@ exports.registerUser = (appReq, appRes) => {
    *  Checks whether password is of minimum 6 characters & that it has atleast one number,
    *   one letter, & atleast one specail character.
    */
-  const validEmail = (email) => {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  };
-
-  const validPassword = (password) => {
-    const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/;
-    return re.test(String(password));
-  };
-
+  // validate user info
   if (appReq.body.email && appReq.body.name && appReq.body.password) {
-    if (!validEmail(appReq.body.email)) return appRes.status(400).send('Email is not of the valid format');
-    if (!validPassword(appReq.body.password)) {
+    if (!validateEmail(appReq.body.email)) return appRes.status(400).send('Email is not of the valid format');
+    if (!validatePassword(appReq.body.password)) {
       return appRes.status(400)
         .send('Password should have minimum length of 6 & it should have atleast one letter, one number, and one special character');
     }
@@ -44,17 +86,14 @@ exports.registerUser = (appReq, appRes) => {
   }
 
   // check whether user already exists with given email
-  User.count({ email: appReq.body.email }, (err, result) => {
-    if (err) {
-      return appRes.status(500)
-        .send('There was a problem registering the user.');
+  uniqueEmail(appReq.body.email).then((result) => {
+    if (!result) {
+      return appRes.status(409).send('Email already in use.');
     }
-    if (result > 0) return appRes.status(409).send('Email already in use.');
 
     // encrypt password
     const HASHED_PASSWORD = bcrypt.hashSync(appReq.body.password, 8);
-
-    //This is inside User.count so that it does not run before the User.count check finishes
+  
     User.create(
       {
         name: appReq.body.name,
@@ -66,17 +105,18 @@ exports.registerUser = (appReq, appRes) => {
           return appRes.status(500)
             .send('There was a problem registering the user.');
         }
-
+  
         // create token
-        const token = jwt.sign({id: user._id}, JWT_KEY, {
+        const token = jwt.sign({ id: user._id }, JWT_KEY, {
           expiresIn: 86400, // expires in 24 hours
         });
-
-        appRes.status(200).send({auth: true, token});
+  
+        appRes.status(200).send({ auth: true, token });
       },
     );
-
-
+  }).catch(() => {
+    return appRes.status(500)
+      .send('There was a problem registering the user.');
   });
 };
 
@@ -119,13 +159,15 @@ exports.loginUser = (appReq, appRes) => {
   User.findOne({ email: appReq.body.email }, (err, user) => {
     if (err) return appRes.status(500).send('Error on the server.');
     if (!user) return appRes.status(404).send('No user found.');
-    if(!checkPassword(appReq.body.password,user.password)) return getInvalidPasswordResponse(appRes);
+    if (!comparePassword(appReq.body.password, user.password)) {
+      return getInvalidPasswordResponse(appRes);
+    }
 
     const token = jwt.sign({ id: user._id }, JWT_KEY, {
       expiresIn: 86400,
     });
 
-    appRes.status(200).send({
+    return appRes.status(200).send({
       auth: true,
       token,
     });
@@ -156,44 +198,98 @@ exports.logoutUser = (appReq, appRes) => {
  * @apiError 404 {request error} User not found.
  * @apiError 500 {server error} Problem finding user.
  *
- * @param {string} appReq.body.email - email provided by user
- * @param {string} appReq.body.password - user provided password
- * @param {string} appReq.body.new_password - user provided password
+ * @param {string} appReq.body.password - current user password
+ * @param {string} appReq.body.new_password - user provided new password
  * @param {string} appReq.body.confirm_password - user provided password
  */
 exports.resetPassword = (appReq, appRes) => {
-
   const HASHED_PASSWORD = bcrypt.hashSync(appReq.body.new_password, 8);
 
-  User.findOne({ email: appReq.body.email }, (err, user) => {
+  User.findById(appReq.userId, (err, user) => {
     if (err) return appRes.status(500).send('Error on the server.');
     if (!user) return appRes.status(404).send('No user found.');
-    if(!checkPassword(appReq.body.password,user.password)) return getInvalidPasswordResponse(appRes);
+    if (!comparePassword(appReq.body.password, user.password)) {
+      return getInvalidPasswordResponse(appRes);
+    }
 
     user.password = HASHED_PASSWORD;
-    user.save(function (err, updatedUser) {
-      if (err) return appRes.status(500).send('Error on the server.');
-    });
 
-    const token = jwt.sign({ id: user._id }, JWT_KEY, {
-      expiresIn: 86400,
-    });
+    user.save((error, updatedUser) => {
+      if (error) return appRes.status(500).send('Error on the server.');
 
-    appRes.status(200).send({
-      auth: true,
-      token,
+      // TODO - do we need resend the token again? It already exists...
+      const token = jwt.sign({ id: updatedUser._id }, JWT_KEY, {
+        expiresIn: 86400,
+      });
+
+      return appRes.status(200).send({
+        auth: true,
+        token,
+      });
     });
   });
-
 };
 
-const checkPassword = (password1, password2) => {
-  return bcrypt.compareSync(password1, password2);
-}
+/**
+ * @description Handles updating user info
+ *
+ * @api {POST} /users/update
+ * @apiSuccess 200 {auth: true, token: token} jsonwebtoken.
+ * @apiError 401 {auth: false, token: null} Invalid password.
+ * @apiError 404 {request error} User not found.
+ * @apiError 500 {server error} Problem finding user.
+ *
+ * @param {string} appReq.body.name - name provided by user
+ * @param {string} appReq.body.email - email provided by user
+ */
+exports.update = (appReq, appRes) => {
+  const updateFields = {};
 
-const getInvalidPasswordResponse = (appRes) => {
-  return appRes.status(401).send({
-    auth: false,
-    token: null,
+  // event lister for when to process update
+  usersControllerEE.on('update', () => {
+    User.findByIdAndUpdate(
+      appReq.userId,
+      { $set: updateFields },
+      { new: true },
+      (error, updatedUser) => {
+        if (error) {
+          return appRes.status(500).send('Error on the server.');
+        }
+
+        return appRes.status(200).send({
+          // don't send password!!
+          user: {
+            name: updatedUser.name,
+            email: updatedUser.email,
+            _id: updatedUser._id,
+          },
+        });
+      },
+    );
   });
-}
+
+  // prepare name for update
+  if (appReq.body.name) {
+    updateFields.name = appReq.body.name;
+  }
+
+  // process email verification and rest of user update accordingly
+  // halt if email request not unique even if name request included
+  if (appReq.body.email && validateEmail(appReq.body.email)) {
+    uniqueEmail(appReq.body.email).then((result) => {
+      if (result) {
+        updateFields.email = appReq.body.email;
+        usersControllerEE.emit('update');
+      }
+      
+      appRes.status(400).send('Email is already in use!');
+    }).catch((error) => {
+      appRes.status(500).send(error);
+    });
+  } else if (appReq.body.name) { // handle name only update
+    usersControllerEE.emit('update');
+  } else { // only email update requested but invalid email
+    appRes.status(400)
+      .send('Email is not of the valid format!');
+  }
+};

@@ -11,6 +11,7 @@
 .welcome > h2 {
 	text-align: center;
 	margin: 3vh auto auto;
+	letter-spacing:3px;
 }
 
 .welcome > img {
@@ -34,15 +35,34 @@
 }
 
 .mapLink {
-	position: fixed;
-	right: 15vw;
-	bottom: 5vh;
+	color: #087E8B;
+	text-decoration:none;
+	font-size:15px;
+	font-family:'Open Sans', arial, sans-serif;
 }
 
 .pin {
-	width: 9vw;
-	height: 9vh;
-	position: fixed;
-	right: 5vw;
-	bottom: 3vh;
+    width: 38px;
+    height: 38px;
+}
+.myLocation{
+    position: absolute;
+    bottom: 25px;
+    right: 0px;
+    height: 30px;
+    width: 150px;
+}
+@media only screen and (min-width: 800px){
+	.welcome > img {
+		width: 20vw;
+	}
+	.search{
+		width: 35vw;
+		margin: 0 auto;
+	}
+	.search input{
+		width: 100%;
+	}
+		
+
 }

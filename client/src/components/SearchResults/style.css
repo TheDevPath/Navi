@@ -1,8 +1,18 @@
 ul {
-  position: relative;
+  display: inherit;
+  padding: 0vw 12vw;
 }
 
 .list {
   height: 2vh;
   width: 100%;
+}
+
+.mainText {
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.secondaryText {
+  margin-top: 0px;
 }

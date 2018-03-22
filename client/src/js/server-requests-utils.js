@@ -17,7 +17,7 @@ const TOKEN_COOKIE = 'token';
 /**
  * Key-value pairs for existing base server endpoints
  */
-const BASE_ENDPOINTS = {
+export const BASE_ENDPOINTS = {
   savedPins: '/search/savedpins',
   savedDirections: '/search/directions',
   savedHistory: '/search/history',
@@ -28,6 +28,9 @@ const BASE_ENDPOINTS = {
   userLogout: '/users/logout',
   userRegister: '/users/register',
   textsearch: '/search/textsearch',
+  userReset: '/users/reset-password',
+  userUpdate: '/users/update',
+  geolocation: '/map/geolocation',
 }
 
 /**
@@ -53,7 +56,7 @@ export const token = {
 
   getCookie: () => {
     const cookies = new Cookies();
-    return cookies.get(TOKEN_COOKIE);  
+    return cookies.get(TOKEN_COOKIE);
   }
 
 }
@@ -76,14 +79,14 @@ export const token = {
  __include__ import {makeRequest} from "../../js/server-requests-utils"
  __exmample__  makeRequest('GET','savedPins').then(res => {return res.data})
 
- __output__ Promise that returns an object with the following keys: 
-    * config 
+ __output__ Promise that returns an object with the following keys:
+    * config
     * data: response body
     * headers
     * request
     * status
     * statusText
-  
+
   See: https://www.npmjs.com/package/axios#response-schema for more on the output
  */
 
@@ -96,33 +99,19 @@ export const makeRequest = (method='GET', baseEndPoint, endPointAddon='', bodyDa
     return new Promise(function (res,rej) {
       rej(TypeError(`Invalid request method: ${method}`));
     })
-  } 
+  }
 
   const url = ((BASE_ENDPOINTS[baseEndPoint] || baseEndPoint) + endPointAddon).trim();
   headers['x-access-token'] = token.getCookie();
-
-  const config = {method, 
+  const config = {method,
     url,
     params,
     headers,
     baseURL: API_SERVER,
     data: bodyData
   }
-  
+
+  console.log('makeRequest().config: ', config);
+
   return axios.request(config);
 }
-
-
-/* 
-Incomplete Function...
-
-import { url } from 'inspector';
-
-const AXIOS_INSTANCE = axios.create({
-  baseURL: API_SERVER
-});
-
-exports.postAutocomplete = (input='') => { //ERR: url is read only
-  // return AXIOS_INSTANCE.post(url=BASE_ENDPOINTS.autocomplete, {input});
-}
- */
