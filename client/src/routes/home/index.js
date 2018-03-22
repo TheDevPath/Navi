@@ -1,9 +1,18 @@
+// node_module imports
 import { h, Component } from 'preact';
-import style from './style';
 import { route } from 'preact-router';
+import { connect } from 'preact-redux';
+
+// app module imports
+import style from './style';
 import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
 import { BASE_ENDPOINTS, makeRequest } from '../../js/server-requests-utils';
+
+// redux functions
+const mapStateToProps = state => {
+	return { userPosition: state.userPosition };
+};
 
 export default class Home extends Component {
 	constructor(props) {
