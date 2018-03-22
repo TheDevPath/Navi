@@ -40,6 +40,15 @@ export default class PlaceDetails extends Component {
     }
 
 
+    static getStarsForRating (rating) {
+        const partials = rating.toString().split('.');
+        let fullStars = new Array(parseInt(partials[0]));
+        const halfStar  = partials[1] >= 0.5;
+        fullStars = fullStars.fill().map(s => <i class="fa fa-star"></i>);
+        return fullStars.concat(halfStar && <i class="fa fa-star-half"></i>);
+    }
+
+
     /**
      * JSX for partial screen mode information about a place
      * @returns {XML[]}
@@ -61,33 +70,60 @@ export default class PlaceDetails extends Component {
     fullScreenMode () {
         const {
             name,
+            place_id,
+            rating,
             formatted_address,
             formatted_phone_number,
+            international_phone_number,
             website,
             opening_hours,
             imgURL
             } = this.state.place;
         return [
-            <div class={style.details__item}>
-                <img alt={`${name} picture`} src={imgURL} class={style.place__image}/>
-            </div>,
-            <div class={style.details__item}>{name}</div>,
-            <div class={style.details__item}>{formatted_address}</div>,
-            <div class={style.details__item}>{formatted_phone_number}</div>,
-            <div class={style.details__item}>{PlaceDetails.prettyWebsiteName(website)}</div>,
-            <div class={style.details__item}>
-                <div>
-                    Open now: {opening_hours.open_now ? 'yes' : 'no'}
-                    <span class="style.details__days-toggler"
-                          onClick={() => this.setState({showWorkingHours: !this.state.showWorkingHours})}>
-                        <i class="fa fa-angle-down"></i>
-                    </span>
-                </div>
-                <div class={this.state.showWorkingHours ? style.hours__seen : style.hours__hidden}>
-                    {opening_hours.weekday_text.map(period => <div>{period}</div>)}
+            <div class={style.details__img}>
+                <img alt={`${name} picture`} src={imgURL || 'http://via.placeholder.com/350x150'} class={style.place__image}/>
+                <div class={style.details__directions}>
+                    <a href="#" class={style.directions__link}><i class="fa fa-exchange"></i></a>
                 </div>
             </div>,
-            <div class={style.details__item}><a href="#" onClick={e => this.setState({fullScreenMode: false})}>X</a></div>
+            <div class={style.details__basicinfo}>
+                <div class={style.details__name}>{name}</div>
+                <div class={style.details__rating}>
+                    {rating}
+                    {PlaceDetails.getStarsForRating(rating)}
+                </div>
+            </div>,
+            <div class={style.details__extra}>
+                <div class={style.details__address}>
+                    <i class="fa fa-compass"></i>
+                    <p>{formatted_address}</p>
+                </div>
+                <div class={style.details__phone}>
+                    <i class="fa fa-mobile"></i>
+                    <p>{formatted_phone_number}</p>
+                </div>
+                <div class={style.details__website}>
+                    <i class="fa fa-mouse-pointer"></i>
+                    <a href={website}>{PlaceDetails.prettyWebsiteName(website)}</a>
+                </div>
+                <div class={style.details__workinghours}>
+                    <div>
+                        <div class={style.details__periodtitle}>
+                            Open now: {opening_hours.open_now ? 'yes' : 'no'}
+                            <span class="style.details__days-toggler"
+                              onClick={() => this.setState({showWorkingHours: !this.state.showWorkingHours})}>
+                            <i class="fa fa-angle-down"></i>
+                        </span>
+                        </div>
+                        <div class={this.state.showWorkingHours ? style.hours__seen : style.hours__hidden}>
+                            {opening_hours.weekday_text.map(period => <div class={style.details__period}>{period}</div>)}
+                        </div>
+                    </div>
+                </div>
+            </div>,
+            <div class={style.details__modeswitch}>
+                <i class="fa fa-2x fa-arrow-up" onClick={e => this.setState({fullScreenMode: false})}></i>
+            </div>
         ]
     }
 
@@ -110,8 +146,9 @@ export default class PlaceDetails extends Component {
         return (
             this.state.place &&
             <div class={style.placeDetails__container}>
-                <div class={this.state.fullScreenMode ? style.placeDetails__innerbig : style.placeDetails__innersmall}>
-                    <button class={style.directionsButton}>Directions</button>
+                <div class={this.state.fullScreenMode
+                 ? style.placeDetails__innerbig
+                 : style.placeDetails__innersmall}>
                     {this.state.fullScreenMode ?  this.fullScreenMode() : this.partialScreenMode()}
                 </div>
             </div>
@@ -126,7 +163,14 @@ export default class PlaceDetails extends Component {
 
 
 
-
+/*
+ My questions:
+ 1) Image url is not presetn in Google API response.
+ 2) How to test the server via Postman (headers)
+ 3) No directions component?
+ 4) How to mix classNames in preact (Classnames library does not work)
+ 5) Issue on destructuring response form Google
+ */
 
 
 
