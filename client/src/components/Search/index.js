@@ -27,8 +27,8 @@ export default class Search extends Component {
     // process autocomplete request and update list
     axios.post(`${API_SERVER}/search/autocomplete`, {
       input: this.state.value,      
-      lat: this.props.position.lat,
-      lng: this.props.position.lng,
+      lat: this.state.position.lat,
+      lng: this.state.position.lng,
     }).then((response) => {
       const status = response.data.status;
       const predictions = response.data.predictions;
@@ -47,8 +47,8 @@ export default class Search extends Component {
     event.preventDefault();
     axios.post(`${API_SERVER}/search/textsearch`, {
       input: this.state.value,
-      lat: this.props.position.lat,
-      lng: this.props.position.lng,
+      lat: this.state.position.lat,
+      lng: this.state.position.lng,
       }).then((response) => { 
         if(response.data.status == OK_STATUS)
         {
