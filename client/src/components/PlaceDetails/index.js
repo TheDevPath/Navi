@@ -3,46 +3,29 @@
  */
 import { h, Component } from "preact";
 import style from "./style";
+import {makeRequest} from "../../js/server-requests-utils";
 import axios from 'axios';
 import classNames from 'classnames';
 import 'font-awesome/css/font-awesome.min.css';
 
 const CONFIG = require('../../../../config/secrets.json');
 
+
 export default class PlaceDetails extends Component {
 
     constructor (props) {
         super(props);
-        this.place = props.place || this.testPlace;
+        // as It's not completely clear for now how this component will get place_id
+        // for making a request I keep two properties for state: placeId for making a request
+        // and a place object itself
+        this.placeId = 'ChIJxxRh5LCe4jARFw0N68oQ9cw';
+        this.place = props.place || testPlace;
         this.state = {
-            fullScreenMode : false,
+            fullScreenMode : true,
             showWorkingHours : false,
-            image : ''
         }
     }
 
-
-    /**
-     * A mock-up object which represent information about a place from back-end
-     * @type {{placeName: string, address: string, phoneNumber: string, openNow: boolean, openingHours: string[], website: (XML|string|void|*|any), pictureURL: string}}
-     */
-    testPlace = {
-        placeName    : 'Saxophone Bar',
-        address      : '3/8 ซอย ราชวิถี 11 Phayathai Rd, Khwaeng Thanon Phaya Thai, Khet Ratchathewi, Krung Thep Maha Nakhon 10400, Thailand',
-        phoneNumber  : '+66 2 246 5472',
-        openNow      : true,
-        openingHours : [
-            "Monday: 6:00 PM – 2:00 AM",
-            "Tuesday: 6:00 PM – 2:00 AM",
-            "Wednesday: 6:00 PM – 2:00 AM",
-            "Thursday: 6:00 PM – 2:00 AM",
-            "Friday: 6:00 PM – 2:00 AM",
-            "Saturday: 6:00 PM – 2:00 AM",
-            "Sunday: 6:00 PM – 2:00 AM"
-        ],
-        website      : PlaceDetails.prettyUrl('http://www.saxophonepub.com/'),
-        photoReference   : 'CmRaAAAAl5eVwYeNMgYRyZaQxMVi2FxARxWDLMxX8kh4zHmsfiwUTNruKJw0zfU7hPu96j-XDi_V-bYOHDnaId3lEIgyOvFESntTNgbCB6Nr5iPEQUzTgTD87uM2dAi8yqQTgBWTEhDFE5rUR3ZAtD8YFL7HbOkRGhQjoJlBJbiOv8uJU1rGQ5DVpXguWA'
-    }
 
 
     /**
@@ -50,13 +33,16 @@ export default class PlaceDetails extends Component {
      * @param url
      * @returns {XML|string|void|*|any}
      */
-    static prettyUrl (url) {
+    static prettyWebsiteName (url) {
         const regex = new RegExp('[^http:\/\/][^]*', 'g');
         return regex.exec(url)[0].replace('/', '');
     }
 
 
-
+    /**
+     * JSX for partial screen mode information about a place
+     * @returns {XML[]}
+     */
     partialScreenMode () {
         return [
             <div class={style.details__item}>{this.place.placeName}</div>,
@@ -65,20 +51,16 @@ export default class PlaceDetails extends Component {
         ];
     }
 
-    getPlacePictureFromGoogle () {
-        const url = `https://maps.googleapis.com/maps/api/place/photo?
-        key=${CONFIG.google_maps.api_key}&
-        photoreference=${this.place.photoReference}&
-        maxwidth=300`;
-        axios.get(url)
-            .then(image => {
-                this.setState({image})
-            })
-            .catch(err => `ERR: ${err.response}`)
-    }
 
+    /**
+     * JSX for full screen mode information about a place
+     * @returns {XML[]}
+     */
     fullScreenMode () {
         return [
+            <div class={style.details__item}>
+                <img alt={`${this.place.name} picture`} src={this.place.imgURL} class={style.place__image}/>
+            </div>,
             <div class={style.details__item}>{this.place.name}</div>,
             <div class={style.details__item}>{this.place.address}</div>,
             <div class={style.details__item}><img src={this.place.pictureURL}/></div>,
@@ -101,8 +83,12 @@ export default class PlaceDetails extends Component {
     }
 
     componentDidMount() {
-        this.getPlacePictureFromGoogle();
+        console.log('===========================================================');
+        makeRequest('GET', 'places', '', '', {place_id : this.placeId})
+            .then((data) =>  console.log('DATA', data))
+            .catch(e => console.error('ERROR', e))
     }
+
 
     render () {
         return (
@@ -114,4 +100,27 @@ export default class PlaceDetails extends Component {
             </div>
         )
     }
+}
+
+
+/**
+ * A mock-up object which represent information about a place from back-end
+ * @type {{placeName: string, address: string, phoneNumber: string, openNow: boolean, openingHours: string[], website: (XML|string|void|*|any), pictureURL: string}}
+ */
+const testPlace = {
+    placeName    : 'Saxophone Bar',
+    address      : '3/8 ซอย ราชวิถี 11 Phayathai Rd, Khwaeng Thanon Phaya Thai, Khet Ratchathewi, Krung Thep Maha Nakhon 10400, Thailand',
+    phoneNumber  : '+66 2 246 5472',
+    openNow      : true,
+    openingHours : [
+        "Monday: 6:00 PM – 2:00 AM",
+        "Tuesday: 6:00 PM – 2:00 AM",
+        "Wednesday: 6:00 PM – 2:00 AM",
+        "Thursday: 6:00 PM – 2:00 AM",
+        "Friday: 6:00 PM – 2:00 AM",
+        "Saturday: 6:00 PM – 2:00 AM",
+        "Sunday: 6:00 PM – 2:00 AM"
+    ],
+    website      : PlaceDetails.prettyWebsiteName('http://www.saxophonepub.com/'),
+    imgURL   : 'http://via.placeholder.com/350x150'
 }

@@ -19,6 +19,10 @@
     transition: height 0.3s ease-in-out;
 }
 
+.place__image {
+    width: 100%;
+}
+
 .hours__hidden {
     height: 0px;
     visibility: hidden;
