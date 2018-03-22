@@ -13,8 +13,7 @@ export default class Search extends Component {
       predictions: [],
       placeIDs: [],
       descSubfields: [],
-      marker: null,
-      position: {},
+      marker: null
     };
 
     this.handleChange = this.handleChange.bind(this);
