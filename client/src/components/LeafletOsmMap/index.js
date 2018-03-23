@@ -184,10 +184,13 @@ export default class LeafletOSMMap extends Component {
    */
   getUserLocation() {
     if (this.props.userPosition) {
+      console.log('MapContainer: already have user location: ',
+        this.props.userPosition);
       this.setState({ mapCenter: this.props.userPosition });
       this.updateUserMarker(this.props.userPosition);
       this.state.map.setView(this.state.mapCenter, this.state.defaultZoom);
     } else {
+      console.log('MapContainer: getting user location');
       this.state.map.locate({
        setView: true,
        enableHighAccuracy: false,
@@ -195,72 +198,73 @@ export default class LeafletOSMMap extends Component {
        maximumAge: Infinity,
      });
     }
- }
+  }
 
- /**
-  * Create control button for returning user to their current location
-  *   on the map
-  */
- createCenterControl() {
-   L.Control.Center = L.Control.extend({
-     onAdd: map => {
-       const center = this.state.userMarker.getLatLng();
-       const container = L.DomUtil.create(
-         'div',
-         'leaflet-bar leaflet-control leaflet-control-custom'
-       );
+  /**
+    * Create control button for returning user to their current location
+    *   on the map
+    */
+  createCenterControl() {
+    L.Control.Center = L.Control.extend({
+      onAdd: map => {
+        const center = this.state.userMarker.getLatLng();
+        const container = L.DomUtil.create(
+          'div',
+          'leaflet-bar leaflet-control leaflet-control-custom'
+        );
 
-       const controlText = L.DomUtil.create('div');
-       controlText.style.color = 'rgb(25,25,25)';
-       controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-       controlText.style.fontSize = '16px';
-       controlText.style.lineHeight = '38px';
-       controlText.style.paddingLeft = '5px';
-       controlText.style.paddingRight = '5px';
-       controlText.innerHTML = 'Center Map';
-       container.appendChild(controlText);
+        const controlText = L.DomUtil.create('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '16px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Center Map';
+        container.appendChild(controlText);
 
-       L.DomEvent.disableClickPropagation(container);
+        L.DomEvent.disableClickPropagation(container);
 
-       container.style.backgroundColor = '#fff';
-       container.style.border = '2px solid #e7e7e7';
-       container.style.borderRadius = '3px';
-       container.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-       container.style.cursor = 'pointer';
-       container.style.marginBottom = '22px';
-       container.style.textAlign = 'center';
-       container.title = 'Click to recenter the map';
+        container.style.backgroundColor = '#fff';
+        container.style.border = '2px solid #e7e7e7';
+        container.style.borderRadius = '3px';
+        container.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        container.style.cursor = 'pointer';
+        container.style.marginBottom = '22px';
+        container.style.textAlign = 'center';
+        container.title = 'Click to recenter the map';
 
-       L.DomEvent.on(container, 'mouseenter', function(e) {
-         e.target.style.background = '#e7e7e7';
-       });
+        L.DomEvent.on(container, 'mouseenter', function(e) {
+          e.target.style.background = '#e7e7e7';
+        });
 
-       L.DomEvent.on(container, 'mouseleave', function(e) {
-         // e.target.style.color = '#ccc';
-         e.target.style.background = '#fff';
-       });
-       L.DomEvent.on(container, 'click', function() {
-         map.setView(center, 16);
-       });
-       return container;
-     }
-   });
+        L.DomEvent.on(container, 'mouseleave', function(e) {
+          // e.target.style.color = '#ccc';
+          e.target.style.background = '#fff';
+        });
+        L.DomEvent.on(container, 'click', function() {
+          map.setView(center, 16);
+        });
+        return container;
+      }
+    });
 
-   L.control.center = function(opts) {
-     return new L.Control.Center(opts);
-   };
+    L.control.center = function(opts) {
+      return new L.Control.Center(opts);
+    };
 
-   L.control
-     .center()
-     .setPosition('bottomright')
-     .addTo(this.state.map);
- }
+    L.control
+      .center()
+      .setPosition('bottomright')
+      .addTo(this.state.map);
+  }
 
   /**
    * Handle leaflet map get device location event
    * @param {*} event
    */
   onLocationFound(event) {
+    console.log('MapContainer: user position found: ', event.latlng);
     this.setState({ mapCenter: event.latlng});
     this.updateUserMarker(event.latlng);
     this.state.map.setView(this.state.mapCenter, this.state.defaultZoom);
@@ -268,19 +272,12 @@ export default class LeafletOSMMap extends Component {
 
   /**
    * Handle leaflet map get device location failure
-   * @param {*} event
+   * @param {*} err
    */
-  onLocationError(event) {
-    // TODO - dummy message for now if don't have permission to get user
+  onLocationError(err) {
+    // TODO - alert message for now if don't have permission to get user
     // user location. Next step is to notify and request permission again.
-    makeRequest('GET', BASE_ENDPOINTS.geolocation).then((response) => {
-      console.log('MapContainer.geolocation(): ', response);
-      this.setState({ mapCenter: response.data.location });
-      this.updateUserMarker(response.data.location);
-      this.state.map.setView(this.state.mapCenter, this.state.defaultZoom);
-    }).catch((err) => {
-      console.log('MapContainer.getCurrentPosition(): ', err);
-    });
+    alert(err.message);
   }
 
   /**
