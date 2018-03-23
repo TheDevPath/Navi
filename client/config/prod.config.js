@@ -1,3 +1,4 @@
 module.exports = {
-    APP_NAME: 'navi'
+    APP_NAME: 'navi',
+    API_SERVER: ''
 };
