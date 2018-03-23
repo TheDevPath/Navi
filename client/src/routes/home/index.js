@@ -7,7 +7,6 @@ import { connect } from 'preact-redux';
 import style from './style';
 import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
-import { BASE_ENDPOINTS, makeRequest } from '../../js/server-requests-utils';
 import { updateUserPosition } from '../../js/store/actions';
 
 // react-redux functions
@@ -31,13 +30,29 @@ class ConnectedHome extends Component {
 	}
 
 	componentDidMount() {
+		// get user location if not already available
 		if (!this.props.userPosition) {
-			makeRequest('GET', BASE_ENDPOINTS.geolocation).then((response) => {
-				console.log('Home.geolocation(): ', response);
-				this.props.updateUserPosition(response.data.location);
-			}).catch((err) => {
-				console.log('Home.geolocation(): ', err);
-			});
+			console.log('Home: getting user location');
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					const userPosition = {
+						lat: position.coords.latitude,
+						lng: position.coords.longitude
+					}
+					this.props.updateUserPosition(userPosition);
+					console.log('\tuser position found: ', userPosition);
+				},
+				(err) => {
+					alert(err.message);
+				},
+				{
+					enableHighAccuracy: false,
+					timeout: 60000,
+					maximumAge: Infinity,
+				}
+			);
+		} else {
+			console.log('Home: already have user location: ', this.props.userPosition);
 		}
 	}
 
