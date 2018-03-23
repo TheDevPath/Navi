@@ -43,7 +43,6 @@
         "jest": "^22.4.2",
         "jest-css-modules": "^1.1.0",
         "preact-cli": "^2.0.1",
-        "preact-cli-sw-precache": "^1.0.3",
         "preact-compat-enzyme": "^0.2.5",
         "preact-render-spy": "^1.2.2",
         "preact-test-utils": "^0.1.3",
