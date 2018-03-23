@@ -1,7 +1,7 @@
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 import Match from 'preact-router/match';
-import { LOGIN_PATH, RESET_PATH, REGISTER_PATH } from "../../config";
+
 import { BASE_ENDPOINTS, makeRequest } from '../js/server-requests-utils';
 
 // import components
