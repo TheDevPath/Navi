@@ -3,7 +3,8 @@ import style from './style';
 import PropTypes from 'prop-types';
 import AccountForm from '../../components/AccountForm';
 import ForgotPasswordForm from '../../components/ForgotPasswordForm';
-import { LOGIN_PATH, RESET_PATH, REGISTER_PATH } from "../../../config";
+import { BASE_ENDPOINTS } from "../../js/server-requests-utils";
+
 
 
 export default class Account extends Component {
@@ -16,15 +17,15 @@ export default class Account extends Component {
 			)
     }else if(this.props.path == '/register'){
       renderedForm = (
-        <AccountForm path={REGISTER_PATH}/>
+        <AccountForm path={BASE_ENDPOINTS.userRegister}/>
       )
     }else if(this.props.path == '/reset-password'){
       renderedForm = (
-        <AccountForm path={RESET_PATH}/>
+        <AccountForm path={BASE_ENDPOINTS.userReset}/>
       )
 		}else{
 			renderedForm = (
-        <AccountForm path={LOGIN_PATH}/>
+        <AccountForm path={BASE_ENDPOINTS.userLogin}/>
 			)
 		}
 

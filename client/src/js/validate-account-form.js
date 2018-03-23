@@ -1,6 +1,11 @@
 import {route} from 'preact-router';
 import { makeRequest, token, BASE_ENDPOINTS } from './server-requests-utils';
-import { LOGIN_PATH, REGISTER_PATH, RESET_PATH, UPDATE_PATH } from '../../config';
+
+const ALERT_MESSAGES = {
+  passwordFormat: "Password should have at least 6 characters, should have at least one letter, number, and special character",
+  mismatchedPasswords: "Try again, passwords don't match!",
+}
+
 
 const validEmail = (email) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -26,13 +31,13 @@ const validateReset = (formData) => {
       !validPassword(confirm_password)) {
         return {
           status: false,
-          message: 'Password should have atleast 6 characts, should have atleast one letter, number, and special character',
+          message: ALERT_MESSAGES.passwordFormat,
           body: null,
         };
     } else if (!passwordsMatch(new_password, confirm_password)) {
       return {
         status: false,
-        message: 'Try again, new passwords don\'t match!',
+        message: ALERT_MESSAGES.mismatchedPasswords,
         body: null,
       };
     } else {
@@ -66,7 +71,7 @@ const validateLogin = (formData) => {
   if (!validPassword(password)) {
     return {
       status: false,
-      message: 'Password should have atleast 6 characts, should have atleast one letter, number, and special character',
+      message: ALERT_MESSAGES.passwordFormat,
       body: null,
     };
   }
@@ -84,13 +89,13 @@ const validateRegister = (formData) => {
   if (!validPassword(password) || !validPassword(confirm_password)) {
       return {
         status: false,
-        message: 'Password should have atleast 6 characts, should have atleast one letter, number, and special character',
+        message: ALERT_MESSAGES.passwordFormat,
         body: null,
       };
   } else if (!passwordsMatch(password, confirm_password)) {
     return {
       status: false,
-      message: 'Try again, passwords don\'t match!',
+      message: ALERT_MESSAGES.mismatchedPasswords,
       body: null,
     };
   } else {
@@ -109,7 +114,7 @@ export const validateAccountForm = (args) => {
 
   let result = null;
 
-  if (path === RESET_PATH) {
+  if (path === BASE_ENDPOINTS.userReset) {
     result = validateReset(formData);
     
     if (result.body.email || result.body.name) {
@@ -117,11 +122,11 @@ export const validateAccountForm = (args) => {
     }
   }
 
-  if (path === REGISTER_PATH) {
+  if (path === BASE_ENDPOINTS.userRegister) {
     result = validateRegister(formData);
   }
 
-  if (path == LOGIN_PATH) {
+  if (path == BASE_ENDPOINTS.userLogin) {
     result = validateLogin(formData);
   }
 
