@@ -5,3 +5,9 @@
 .txt-cntr{
 	text-align: center;
 }
+
+#inspiration{
+    display: block;
+ height: 50px;
+ width: 50px;
+}
