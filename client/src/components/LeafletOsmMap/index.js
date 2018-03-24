@@ -41,6 +41,7 @@ export default class LeafletOSMMap extends Component {
       droppedMarker: null, //used to track unsaved markers on map
       userPosControlOnScreen: false,
       defaultZoom: 16,
+      placeId: null,
     };
 
     this.getUserLocation = this.getUserLocation.bind(this);
@@ -52,6 +53,7 @@ export default class LeafletOSMMap extends Component {
     this.updateDroppedMarker = this.updateDroppedMarker.bind(this);
     this.addPlaceDetailMarker = this.addPlaceDetailMarker.bind(this);
     this.saveMarkerToDB = this.saveMarkerToDB.bind(this);
+    this.placeIdPasser  = this.placeIdPasser.bind(this);
   }
 
   componentDidMount() {
@@ -331,6 +333,15 @@ export default class LeafletOSMMap extends Component {
   }
 
   /**
+   * Call back for setting placeId to the state of this component after
+   * search operation
+   * @param placeId
+     */
+  placeIdPasser(placeId) {
+    this.setState({placeId});
+  }
+
+  /**
    * On map click event, add a marker to the map at the clicked location.
    *
    * @param {object} event
@@ -343,10 +354,11 @@ export default class LeafletOSMMap extends Component {
     return (
       <div class={style.fullscreen}>
         <Search position={this.state.mapCenter} map={this.state.map}
-          routeUrl={this.props.routeUrl} addMarker={this.addPlaceDetailMarker}>
+          routeUrl={this.props.routeUrl} addMarker={this.addPlaceDetailMarker}
+          placeIdPasser={this.placeIdPasser}>
           <SearchResults />
         </Search>
-        <PlaceDetails/>
+        <PlaceDetails placeId={this.state.placeId}/>
         <MapPane paneHeight={this.props.paneHeight} />
       </div>
     );

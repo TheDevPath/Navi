@@ -69,7 +69,8 @@ export default class Search extends Component {
   handleSelectedPlace(placeDetail) {
     if (this.props.routeUrl === '/maps') {
       this.props.addMarker(placeDetail.geometry.location, placeDetail.place_id);
-      
+      // callback from parent component to retrieve place_id for usage in PlaceDetails
+      this.props.placeIdPasser(placeDetail.place_id);
       //TO DO: Customize the marker popup
       // this.state.marker.bindPopup(`<b>${placeDetail.name || ''} </b>${placeDetail.formatted_address}`)
     } else {

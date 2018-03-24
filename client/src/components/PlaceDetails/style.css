@@ -34,26 +34,28 @@ i {
 
 .details__directions {
     background: white;
-    border-radius: 1rem;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
     color:#28c0d1;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    width: 3rem;
     height: 3rem;
-    right: 5%;
-    bottom: 10%;
+    width: 100%;
 }
 
-.details__directions:hover {
-    cursor:pointer;
+.details__directions  p {
+    font-weight: 700;
+    margin-right: 0.5rem;
 }
 
 .directions__link {
     color: #28c0d1;
+    text-decoration: none;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+
+
+.directions__link:hover {
+    cursor:pointer;
 }
 
 
@@ -136,11 +138,15 @@ i {
 .hours__hidden {
     height: 0;
     opacity: 0;
-    transition: all 0.5s ease-in-out;
+    transition:
+            opacity 0.3s ease-in-out,
+            height  0.3s 0.3s;
 }
 
 .hours__seen {
-    height: auto;
+    height: 10rem;
     opacity:1;
-    transition: all 0.5s ease-in-out;
+    transition:
+            height 0.3s ease-in-out,
+            opacity 0.2s 0.3s;
 }
