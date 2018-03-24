@@ -111,8 +111,8 @@ const setPinPopup = (marker) => {
   console.log(marker);
   const container = L.DomUtil.create('div');
   console.log(marker);
-  const markerDescription = createLabel(marker.options.desc, container);
-  const deleteBtn = createButton('Delete', container,marker.data._id);
+  const markerDescription = createLabel(marker.options.desc, 'center', container);
+  const deleteBtn = createButton('Delete', 'center',container, marker.data._id);
   marker.bindPopup(container);
 
 
@@ -144,8 +144,8 @@ const setPinPopup = (marker) => {
   }
 
 
-function createButton(label, container,id) {
-  var btn = L.DomUtil.create('button', '', container);
+function createButton(label, cssClass, container,id) {
+  var btn = L.DomUtil.create('button', cssClass, container);
   btn.setAttribute('type', 'button');
   btn.setAttribute('id',id);
   btn.innerHTML = label;
@@ -153,8 +153,8 @@ function createButton(label, container,id) {
 }
 
 
-function createLabel(label, container) {
-  var displayLabel = L.DomUtil.create('div','', container);
+function createLabel(label, cssClass, container) {
+  var displayLabel = L.DomUtil.create('div',cssClass, container);
   displayLabel.innerHTML = label;
   return displayLabel;
 }

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="950.804 11 31.196 26.402">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: url(#radial-gradient);
+      }
+    </style>
+    <radialGradient id="radial-gradient" cx="13.228" cy="13.187" r="13.187" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.611" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fff"/>
+    </radialGradient>
+  </defs>
+  <g id="NaviHomeIcon" transform="translate(931)">
+    <circle id="Ellipse_8" data-name="Ellipse 8" class="cls-1" cx="5.489" cy="5.489" r="5.489" transform="translate(19.804 24.826)"/>
+    <circle id="Ellipse_9" data-name="Ellipse 9" class="cls-1" cx="5.489" cy="5.489" r="5.489" transform="translate(19.804 11)"/>
+    <circle id="Ellipse_10" data-name="Ellipse 10" class="cls-2" cx="13.201" cy="13.201" r="13.201" transform="translate(24.598 11)"/>
+  </g>
+</svg>

@@ -1,0 +1,152 @@
+i {
+    margin-left: 5px;
+}
+
+.placeDetails__container {
+    position: absolute;
+    width: 25vw;
+    min-height: 100vh;
+    z-index: 1000;
+    display: grid;
+    grid-template-rows: 4rem 1fr 0.5rem;
+}
+
+.placeDetails__innerbig, .placeDetails__innersmall {
+    grid-row: 2;
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid lightslategrey;
+    border-radius: 8px;
+}
+
+.placeDetails__innersmall {
+    min-height: 40vh;
+    transition: height 0.3s ease-in-out;
+}
+
+.placeDetails__innerbig {
+    min-height : calc(100vh - 4.5rem);
+    transition: height 0.3s ease-in-out;
+}
+
+.details__img {
+    position: relative;
+}
+
+.details__directions {
+    background: white;
+    border-radius: 10px;
+    color:#28c0d1;
+    height: 3rem;
+    width: 100%;
+}
+
+.details__directions  p {
+    font-weight: 700;
+    margin-right: 0.5rem;
+}
+
+.directions__link {
+    color: #28c0d1;
+    text-decoration: none;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+
+
+.directions__link:hover {
+    cursor:pointer;
+}
+
+
+.place__image {
+    width: 100%;
+    object-fit: contain;
+}
+
+.details__basicinfo {
+    display:flex;
+    flex-direction: column;
+    background: #28c0d1;
+    padding: 1rem;
+}
+
+.details__name, .details__rating {
+    margin-bottom: 0.5rem;
+    color: whitesmoke;
+    font-weight: 500;
+}
+
+.details__extra {
+    padding: 1rem 2rem;
+    display:flex;
+    flex-direction: column;
+}
+
+.details__address, .details__phone, .details__website, .details__workinghours {
+    display:flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 12px;
+}
+
+.details__website > a {
+    text-decoration: none;
+    color: #444;
+}
+
+.details__website > a:hover {
+    text-decoration: underline;
+}
+
+.details__extra > div > i {
+    margin-right: 1rem;
+}
+
+.details__workinghours {
+    min-height: 3rem;
+}
+
+.details__periodtitle {
+    margin-bottom: 1rem;
+}
+
+.details__period {
+    margin-bottom: 0.5rem;
+}
+
+.details__modeswitch {
+    position:absolute;
+    bottom: 2%;
+    right: 5%;
+}
+
+.details__modeswitch >  i {
+    color: #d3d3d3;
+    background: transparent;
+}
+
+.details__modeswitch > i:hover {
+    cursor:pointer;
+}
+
+/**
+** Animations
+**/
+
+.hours__hidden {
+    height: 0;
+    opacity: 0;
+    transition:
+            opacity 0.3s ease-in-out,
+            height  0.3s 0.3s;
+}
+
+.hours__seen {
+    height: 10rem;
+    opacity:1;
+    transition:
+            height 0.3s ease-in-out,
+            opacity 0.2s 0.3s;
+}

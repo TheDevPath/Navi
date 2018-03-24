@@ -30,6 +30,7 @@ export const BASE_ENDPOINTS = {
   textsearch: '/search/textsearch',
   userReset: '/users/reset-password',
   userUpdate: '/users/update',
+  geolocation: '/map/geolocation',
 }
 
 /**
@@ -61,6 +62,19 @@ export const token = {
 }
 
  /* makeRequest(...)
+  The makeRequest() function takes arguments of the form:
+  (method='GET', baseEndPoint, endPointAddon='', bodyData={}, params={}, headers={}).
+  The "method" and "baseEndPoint" arguments are required, method defaults to "GET" request if not provided.
+  The BASE_ENDPOINT object encapsulates most if not all of the currently available base endpoints for the
+  backend server. The remaining arguments allow for the following flexibility via a single function call:
+
+  * endPointAddon: some base endpoints have additional url extensions for more specific requests
+    (the controller.js files have some doc on those but as usual feel free to ask for more clarification)
+  * bodyData: primarily for "POST" requests were additional data is needed for processing the request
+  * params: for url params that need to be sent along with the request.
+  * headers: for passing header requirements
+    (unnecessary for most request since token headers are currently automatically configured)
+
 
  __include__ import {makeRequest} from "../../js/server-requests-utils"
  __exmample__  makeRequest('GET','savedPins').then(res => {return res.data})
