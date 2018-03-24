@@ -3,7 +3,6 @@ import style from './style';
 import { route } from 'preact-router';
 import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
-import { BASE_ENDPOINTS, makeRequest } from '../../js/server-requests-utils';
 
 export default class Home extends Component {
 	constructor(props) {
@@ -17,13 +16,31 @@ export default class Home extends Component {
 	}
 
 	componentDidMount() {
-		makeRequest('GET', BASE_ENDPOINTS.geolocation).then((response) => {
-			console.log('Home.geolocation(): ', response);
-			this.setState({ userPosition: response.data.location });
-			this.props.setUserPosition(this.state.userPosition);
-		}).catch((err) => {
-			console.log('Home.geolocation(): ', err);
-		});
+		// get user location if not already available
+		if (!this.state.userPosition) {
+			console.log('Home: getting user location');
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					this.setState({
+						userPosition: {
+							lat: position.coords.latitude,
+							lng: position.coords.longitude
+						}
+					});
+					console.log('\tuser position found: ', this.state.userPosition);
+				},
+				(err) => {
+					alert(err.message);
+				},
+				{
+					enableHighAccuracy: false,
+					timeout: 60000,
+					maximumAge: Infinity,
+				}
+			);
+		} else {
+			console.log('Home: already have user location: ', this.state.userPosition);
+		}
 	}
 
 	routeToMap() {
