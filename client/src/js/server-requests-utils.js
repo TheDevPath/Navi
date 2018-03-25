@@ -30,7 +30,7 @@ export const BASE_ENDPOINTS = {
   textsearch: '/search/textsearch',
   userReset: '/users/reset-password',
   userUpdate: '/users/update',
-  geolocation: '/map/geolocation',
+  geocode: '/map/geocode',
 }
 
 /**
