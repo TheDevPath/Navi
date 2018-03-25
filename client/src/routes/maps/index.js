@@ -5,7 +5,8 @@ import { connect } from 'preact-redux';
 
 // app module imports
 import style from "./style";
-import MapContainer from '../../components/LeafletOsmMap';
+import Search from '../../components/Search';
+import SearchResults from '../../components/SearchResults';
 import { makeRequest, BASE_ENDPOINTS } from '../../js/server-requests-utils';
 import { fetchAndDropUserPins, makePinMarkers, dropPin } from '../../js/saved-places';
 
@@ -348,8 +349,11 @@ class ConnectedMapExplorer extends Component {
   render() {
     return (
       <div class={style.maps}>
-        <MapContainer paneHeight={this.props.paneHeight}
-          routeUrl={this.props.url} map={this.state.map}/>
+        <Search map={this.state.map} routeUrl={this.props.routeUrl}
+          addMarker={this.addPlaceDetailMarker}>
+          <SearchResults />
+        </Search>
+        <div id="map" style={{height: this.props.paneHeight}}/>
       </div>
     );
   }
