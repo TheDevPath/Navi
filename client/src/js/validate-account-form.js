@@ -1,7 +1,11 @@
 import {route} from 'preact-router';
-import {makeRequest, token} from './server-requests-utils';
-import { LOGIN_PATH, REGISTER_PATH, RESET_PATH } from '../../config';
-import { resolve } from 'url';
+import { makeRequest, token, BASE_ENDPOINTS } from './server-requests-utils';
+
+const ALERT_MESSAGES = {
+  passwordFormat: "Password should have at least 6 characters, should have at least one letter, number, and special character",
+  mismatchedPasswords: "Try again, passwords don't match!",
+}
+
 
 const validEmail = (email) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -27,13 +31,13 @@ const validateReset = (formData) => {
       !validPassword(confirm_password)) {
         return {
           status: false,
-          message: 'Password should have atleast 6 characts, should have atleast one letter, number, and special character',
+          message: ALERT_MESSAGES.passwordFormat,
           body: null,
         };
     } else if (!passwordsMatch(new_password, confirm_password)) {
       return {
         status: false,
-        message: 'Try again, new passwords don\'t match!',
+        message: ALERT_MESSAGES.mismatchedPasswords,
         body: null,
       };
     } else {
@@ -45,8 +49,8 @@ const validateReset = (formData) => {
     }
   }
 
-  // validate user info has at least on field completed
-  if (name.length < 1 && email.length < 1) {
+  // validate user info has at least one field completed
+  if (!name && !email) {
     return {
       status: false,
       message: 'Please enter a new name and/or email address!',
@@ -55,7 +59,7 @@ const validateReset = (formData) => {
   }
   
   return {
-    status: false,
+    status: true,
     message: 'Success - valid request!',
     body: {name, email},
   };
@@ -67,7 +71,7 @@ const validateLogin = (formData) => {
   if (!validPassword(password)) {
     return {
       status: false,
-      message: 'Password should have atleast 6 characts, should have atleast one letter, number, and special character',
+      message: ALERT_MESSAGES.passwordFormat,
       body: null,
     };
   }
@@ -85,13 +89,13 @@ const validateRegister = (formData) => {
   if (!validPassword(password) || !validPassword(confirm_password)) {
       return {
         status: false,
-        message: 'Password should have atleast 6 characts, should have atleast one letter, number, and special character',
+        message: ALERT_MESSAGES.passwordFormat,
         body: null,
       };
   } else if (!passwordsMatch(password, confirm_password)) {
     return {
       status: false,
-      message: 'Try again, passwords don\'t match!',
+      message: ALERT_MESSAGES.mismatchedPasswords,
       body: null,
     };
   } else {
@@ -106,18 +110,23 @@ const validateRegister = (formData) => {
 // Exports below
 export const validateAccountForm = (args) => {
 
-  const {path, formData} = args;
+  let {path, formData} = args;
+
   let result = null;
 
-  if (path === RESET_PATH) {
+  if (path === BASE_ENDPOINTS.userReset) {
     result = validateReset(formData);
+    
+    if (result.body.email || result.body.name) {
+      path = BASE_ENDPOINTS.userUpdate;
+    }
   }
 
-  if (path === REGISTER_PATH) {
+  if (path === BASE_ENDPOINTS.userRegister) {
     result = validateRegister(formData);
   }
 
-  if (path == LOGIN_PATH) {
+  if (path == BASE_ENDPOINTS.userLogin) {
     result = validateLogin(formData);
   }
 
@@ -134,7 +143,13 @@ export const validateAccountForm = (args) => {
   return new Promise((resolve, reject) => {
     makeRequest('POST', path, '', body)
     .then(function (response) {
+      // TODO - need to better handle token assignment and update
+      // because depending on the type of response this is accidentally
+      // removing the token. This temp change should prevent that
+      // from happening for now.
+      if (response.data.token) {
         token.setCookie(response.data.token);
+      }
         resolve({status, message});
       })
       .catch(function (error) {

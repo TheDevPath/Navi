@@ -2,10 +2,9 @@ const http = require('https');
 const { URL } = require('url');
 const { GOOGLE_API_KEY } = require('../config');
 const { convertToQueryString, processAutocomplete } = require('./utils-controller');
-// const googleMapsClient = require('@google/maps').createClient({
-//   key: GOOGLE_API_KEY,
-//   Promise: Promise, // allow for using promises instead of callbacks
-// });  // docs: https://googlemaps.github.io/google-maps-services-js/docs/
+
+// used for location biasing for search results requests
+const RADIUS_BOUND = 1000;
 
 /**
  * Geolocation API access
@@ -154,14 +153,14 @@ exports.autocomplete = (appReq, appRes) => {
     input: appReq.body.input,
     key: GOOGLE_API_KEY,
     location: `${appReq.body.lat},${appReq.body.lng}` || '',
-    radius: appReq.body.radius || '',
+    radius: appReq.body.radius || RADIUS_BOUND,
     types: appReq.body.types || '',
     strictbounds,
   };
   const BASE_URL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?';
   const queryString = convertToQueryString(params);
   const reqUrl = new URL(`${BASE_URL}${queryString}`);
-
+  
   http.get(reqUrl, (res) => {
     const chunks = [];
 
@@ -177,7 +176,9 @@ exports.autocomplete = (appReq, appRes) => {
         status: queryResult.status,
         predictions: outcome.descriptions,
         placeIds: outcome.placeIds,
+        descSubfields: outcome.descSubfields,
       };
+
       appRes.status(200).send(result);
     });
   }).on('error', (err) => {
@@ -316,8 +317,6 @@ exports.directions = (appReq, appRes) => {
   const BASE_URL = 'https://maps.googleapis.com/maps/api/directions/json?';
   const queryString = convertToQueryString(params);
   const reqUrl = new URL(`${BASE_URL}${queryString}`);
-  console.log(params);
-  console.log(reqUrl);
 
   http.get(reqUrl, (res) => {
     const chunks = [];
@@ -381,7 +380,6 @@ exports.geocode = (appReq, appRes) => {
   const BASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json?';
   const queryString = convertToQueryString(params);
   const reqUrl = new URL(`${BASE_URL}${queryString}`);
-  console.log(reqUrl);
 
   http.get(reqUrl, (res) => {
     const chunks = [];
@@ -432,7 +430,7 @@ exports.textSearch = (appReq, appRes) => {
     input: appReq.body.input,
     key: GOOGLE_API_KEY,
     location: `${appReq.body.lat},${appReq.body.lng}` || '',
-    radius: appReq.body.radius || '',
+    radius: appReq.body.radius || RADIUS_BOUND,
     types: appReq.body.types || '',
     strictbounds,
   };
@@ -447,7 +445,6 @@ exports.textSearch = (appReq, appRes) => {
     res.on('end', () => {
       const body = Buffer.concat(chunks);
       const queryResult = JSON.parse(body.toString());
-
       appRes.status(200).send(queryResult);
     });
   }).on('error', (err) => {

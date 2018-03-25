@@ -59,11 +59,11 @@ exports.convertToQueryString = (paramsObject) => {
 /**
  * @description Utility function for processing google places autocomplete
  *   results.
- * 
+ *
  * @param {Object} queryResult: JSON response containing two root elememts:
  *   - status: contains metadata on the request along with status codes
  *   - predictions: an array of query predictions
- * 
+ *
  * @returns {[Ojbect]} An array of suggestions as object with two root elements:
  *   - prediction: the predicted query
  *   - placeID: if prediction is a place else ''
@@ -71,11 +71,19 @@ exports.convertToQueryString = (paramsObject) => {
 exports.processAutocomplete = (queryResult) => {
   const descriptions = [];
   const placeIds = [];
+  const descSubfields = [];
+
   queryResult.predictions.forEach((result) => {
-    const description = result.description;
+    const { description } = result;
     const placeId = result.place_id || '';
+    const subfields = {
+      mainText: result.structured_formatting.main_text,
+      secondaryText: result.structured_formatting.secondary_text,
+    };
+
     descriptions.push(description);
     placeIds.push(placeId);
+    descSubfields.push(subfields);
   });
-  return {descriptions, placeIds};
+  return { descriptions, placeIds, descSubfields };
 };
