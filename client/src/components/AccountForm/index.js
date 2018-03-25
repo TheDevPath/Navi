@@ -1,7 +1,7 @@
 import { h, Component, render } from 'preact';
 import style from './style.css';
 import { validateAccountForm, clearForms } from "../../js/validate-account-form";
-import { LOGIN_PATH, REGISTER_PATH, RESET_PATH } from '../../../config';
+import { BASE_ENDPOINTS } from "../../js/server-requests-utils";
 import linkState from "linkstate";
 import { route } from 'preact-router';
 
@@ -32,7 +32,7 @@ export default class AccountForm extends Component {
     validateAccountForm(args).then((response) => {
       console.log('validateAccountForm(): ', response);
       if (response.status) {
-        if (this.props.path === RESET_PATH) {
+        if (this.props.path === BASE_ENDPOINTS.userReset) {
           alert(response.message);
         } else {  // redirect to /profile with success for login/registration
           route(`/profile`, true);
@@ -41,9 +41,15 @@ export default class AccountForm extends Component {
         // TODO - alert failure to process
         alert(response.message);
       }
-      }).catch(function (error) {
-          alert(error);
-        });
+    }).catch(function (error) {
+      // TODO - standardize API error output so we can handle cleanly
+      // on frontend
+      if (error.response) {
+        alert(error.response.data);
+      } else {
+        alert(error);
+      }
+    });
    };
 
   componentWillUnmount = () => {
@@ -56,7 +62,7 @@ export default class AccountForm extends Component {
 
   render({ path },{ name, email, password, new_password, confirm_password }) {
 
-    //DEFAULT TO LOGIN_PATH
+    //DEFAULT TO LOGIN PATH
     let display =
       <div class={style.display}>
         <form class={style.form} onSubmit={this.handleSubmit}>
@@ -78,11 +84,11 @@ export default class AccountForm extends Component {
         <p class={style.link2}><a href="/forgot-password">forgot password?</a></p>
       </div>;
 
-    if(path === REGISTER_PATH){
+    if(path === BASE_ENDPOINTS.userRegister){
       display =
       <div class={style.display}>
         <form class={style.form} onSubmit={this.handleSubmit}>
-          <input class={style.formChild} name="name" type="text" placeholder="firstname lastname"
+          <input class={style.formChild} name="name" type="text" placeholder="Name"
             value={name} onInput={linkState(this, 'name')} required/>
           <input class={style.formChild} id="email" name="email" type="email" placeholder='email address' 
             value={email} onInput={linkState(this, 'email')} required/>
@@ -95,7 +101,7 @@ export default class AccountForm extends Component {
       </div>;
     }
     
-    if(path === RESET_PATH){
+    if(path === BASE_ENDPOINTS.userReset){
       display =
       <div>
         <form class={style.form} onSubmit={this.handleSubmit}>

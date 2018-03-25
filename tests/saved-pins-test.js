@@ -6,7 +6,7 @@ const { ObjectID } = require('mongodb');
 const app = require('../app');
 const SavedPins = require('../models/saved-pins');
 const {
-  pins, populatePins, users, populateUsers,
+  pins, populatePins, users, populateUsers
 } = require('./seed/seed');
 
 beforeEach(populateUsers);
@@ -14,27 +14,43 @@ beforeEach(populatePins);
 
 describe('POST /search/savedpins', () => {
   it('should create new saved pin', (done) => {
+    const new_pin = {
+      lat: 10,
+      lng: 20,
+      place_id: 'testing pin1',
+      user: users[0]._id
+    };
     request(app)
       .post('/search/savedpins')
       .set('x-access-token', users[0].tokens[0].token)
-      .send(pins[0])
+      .send(new_pin)
       .expect(200)
       .expect((res) => {
-        expect(res.body.pin.lat).to.equal(pins[0].lat);
-        expect(res.body.pin.lng).to.equal(pins[0].lng);
+        expect(res.body.pin.lat).to.equal(new_pin.lat);
+        expect(res.body.pin.lng).to.equal(new_pin.lng);
       })
       .end((err, res) => {
         if (err) {
           return done(err);
         }
 
-        SavedPins.find().then((savedPins) => {
-          expect(savedPins.length).to.equal(pins.length + 1);
-          expect(savedPins[0].lat).to.equal(pins[0].lat);
-          expect(savedPins[0].lng).to.equal(pins[0].lng);
-          expect(savedPins[0].user._id).to.equal(pins[0].user._id);
+        SavedPins.findOne({lat: 10, lng: 20}).then(receivedPin => {
+          expect(receivedPin).to.deep.include(new_pin);
           done();
         }).catch(e => done(e));
+      });
+  });
+
+  it('should not save a duplicate pin', done => {
+    request(app)
+      .post('/search/savedpins')
+      .set('x-access-token', users[0].tokens[0].token)
+      .send(pins[0])
+      .expect(400)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body.message).to.equal("Duplicate found. Pin not saved.");
+        done();
       });
   });
 

@@ -1,10 +1,8 @@
 import { h, Component } from "preact";
 import style from "./style";
-import axios from 'axios';
-import { API_SERVER, SAVE_DIRECTIONS_PATH } from '../../../config';
 import MapPane from '../../components/LeafletOsmMap/MapPane';
 import Itinerary from "./Itinerary";
-import { makeRequest, token } from "../../js/server-requests-utils";
+import { makeRequest, BASE_ENDPOINTS } from "../../js/server-requests-utils";
 const SUCCESS_STATUS = 200;
 const ERROR_STATUS = 500;
 
@@ -153,7 +151,7 @@ export default class Directions extends Component {
   }
 
   saveDirections() {
-    makeRequest('POST', SAVE_DIRECTIONS_PATH, '',
+    makeRequest('POST', BASE_ENDPOINTS.savedDirections, '',
       {
         origin: this.state.origin,
         destination: this.state.destination,

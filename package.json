@@ -1,5 +1,5 @@
 {
-    "name": "googlemaps-offline-navigator",
+    "name": "navi",
     "version": "0.0.1",
     "description": "Open source project for Grow with Google Udacity Scholarship Challenge - Navigation app using offline first strategy and google maps api",
     "main": "server.js",
@@ -11,11 +11,12 @@
         "test": "concurrently \"npm run test-server\" \"npm run test-client\"",
         "test-server": "cross-env NODE_ENV=test mocha tests --timeout 10000 -r chai/register-expect",
         "test-watch": "nodemon --exec 'npm test'",
-        "test-client": "npm test --prefix client"
+        "test-client": "npm test --prefix client",
+        "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/TheDevPath/googleMaps-offline-navigator.git"
+        "url": "https://github.com/TheDevPath/Navi.git"
     },
     "contributors": [
         "Bryan Sharpley (https://github.com/motosharpley)",
