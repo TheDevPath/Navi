@@ -1,8 +1,7 @@
 import { h , Component, cloneElement } from 'preact';
 import style from './style';
-import axios from 'axios';
-import {API_SERVER} from '../../../config';
 import { route } from 'preact-router';
+import { makeRequest, BASE_ENDPOINTS } from '../../js/server-requests-utils';
 const OK_STATUS = 'OK';
 
 export default class Search extends Component {
@@ -24,7 +23,7 @@ export default class Search extends Component {
   handleChange(event) {
     this.setState({value: event.target.value});
     // process autocomplete request and update list
-    axios.post(`${API_SERVER}/search/autocomplete`, {
+    makeRequest('POST', BASE_ENDPOINTS.autocomplete, '', {
       input: this.state.value,      
       lat: this.props.position.lat,
       lng: this.props.position.lng,
@@ -44,20 +43,19 @@ export default class Search extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    axios.post(`${API_SERVER}/search/textsearch`, {
+    makeRequest('POST', BASE_ENDPOINTS.textsearch, '', {
       input: this.state.value,
       lat: this.props.position.lat,
       lng: this.props.position.lng,
-      }).then((response) => { 
-        if(response.data.status == OK_STATUS)
-        {
-          const [searchResult] = response.data.results;
-          this.handleSelectedPlace(searchResult);
-        }          
-        else
-          alert(response.data.status);
-      });
-      
+    }).then((response) => { 
+      if(response.data.status == OK_STATUS)
+      {
+        const [searchResult] = response.data.results;
+        this.handleSelectedPlace(searchResult);
+      }          
+      else
+        alert(response.data.status);
+    });      
   }
 
   /**

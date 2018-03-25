@@ -2,22 +2,16 @@
  * Library for handling frontend requests to server api endpoints
  */
 
+ // node_modules imports
 import axios from 'axios';
-import { API_SERVER } from '../../config';
 import Cookies from "universal-cookie";
 
-/**
-* Configuration of Axios for making server requests
-* See 'Creating an instance' and 'Request Config' sections for more information:
-* https://www.npmjs.com/package/axios
-*/
+// app module imports
+import { API_SERVER } from '../../config';
 
+// module constants
 const TOKEN_COOKIE = 'token';
-
-/**
- * Key-value pairs for existing base server endpoints
- */
-export const BASE_ENDPOINTS = {
+export const BASE_ENDPOINTS = { // Key-value pairs for existing base server endpoints
   savedPins: '/search/savedpins',
   savedDirections: '/search/directions',
   savedHistory: '/search/history',
@@ -30,52 +24,46 @@ export const BASE_ENDPOINTS = {
   textsearch: '/search/textsearch',
   userReset: '/users/reset-password',
   userUpdate: '/users/update',
-  geolocation: '/map/geolocation',
+  geocode: '/map/geocode',
 }
-
-/**
- * Utility functions
- */
-
-
- /**
- * Exported functions
- */
-
 
 export const token = {
   setCookie: val => {
     const cookies = new Cookies();
     cookies.set(TOKEN_COOKIE, val, {path: '/'});
   },
-
+  
   deleteCookie: () => {
     const cookies = new Cookies();
     cookies.remove(TOKEN_COOKIE);
   },
-
+  
   getCookie: () => {
     const cookies = new Cookies();
     return cookies.get(TOKEN_COOKIE);
   }
-
+  
 }
 
- /* makeRequest(...)
+/* makeRequest(...)
 
- __include__ import {makeRequest} from "../../js/server-requests-utils"
- __exmample__  makeRequest('GET','savedPins').then(res => {return res.data})
+__include__ import {makeRequest} from "../../js/server-requests-utils"
+__exmample__  makeRequest('GET','savedPins').then(res => {return res.data})
 
- __output__ Promise that returns an object with the following keys:
-    * config
-    * data: response body
-    * headers
-    * request
-    * status
-    * statusText
+__output__ Promise that returns an object with the following keys:
+* config
+* data: response body
+* headers
+* request
+* status
+* statusText
 
-  See: https://www.npmjs.com/package/axios#response-schema for more on the output
- */
+* See: https://www.npmjs.com/package/axios#response-schema for more on the output
+*
+* Configuration of Axios for making server requests
+* See 'Creating an instance' and 'Request Config' sections for more information:
+* https://www.npmjs.com/package/axios
+*/
 
 export const makeRequest = (method='GET', baseEndPoint, endPointAddon='', bodyData={}, params={}, headers={}) => {
 
