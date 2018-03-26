@@ -5,14 +5,15 @@
 }
 
 .display {
-    margin: 10vh 0px;
+
+    margin: 10vh auto 0;
 }
 
 .logo {
     display: inherit;
     margin: auto;
     padding: 2vh;
-    width: 50%;
+    width: 50vw;
 }
 
 .form {
@@ -26,15 +27,7 @@
     font-size: 1.2em;
 }
 
-.formChild {
-    display: block;
-    margin: 1vh auto;
-    width: 100%;
-    padding: 3vw;
-    border-color: lightslategray;
-    border-radius: 8px;
-    font-size: 1.2em;
-}
+
 
 .formChildReset {
     display: block;
@@ -56,7 +49,10 @@
 .strike > span {
     position: relative;
     display: inline-block;
-    color: blue;
+    color: #087E8B;
+	font-weight:bold;
+	text-transform:lowercase;
+	font-family: 'Open Sans Bold';
 }
 
 .strike > span:before,
@@ -87,11 +83,62 @@
     font-size: 1.1em;
     color: blue;
 }
-
+.link2 a,  a{
+	    color: #087E8B;
+    text-decoration: none;
+    font-size: 15px;
+    font-family: 'Open Sans', arial, sans-serif;
+	font-weight:bold;
+}
 button {
-    background-color: #5A98A1;
+    background-color: #28C0D1;
+	color: #ffffff;
+	text-transform:uppercase;
+	font-weight:bold;
+	border-radius: 10px;
+	font-size: 16px;
+    line-height: 20px;
+    padding: 13px;
+	width: 100%;
+	border:0;
+	margin:20px 0 40px;
+}
+button:hover{
+	background: #28c0d1;
+    background: linear-gradient(135deg, #28c0d1 0%,#10416c 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#28c0d1', endColorstr='#10416c',GradientType=1 );
 }
 
 .regBtn {
-    background-color: #2c5b61;
+    background-color: #10416C;
+}
+input {
+    border-radius: 10px;
+    border: 1px solid #95989A;
+    background-color: #ffffff;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 13px;
+	margin: 10px 0;
+}
+@media only screen and (min-width: 800px)  {
+
+	.logo{
+		width: 40vw;
+	}
+	.display {
+	width: 50vw;
+
+}
+}
+
+@media only screen and (min-width: 1200px)  {
+
+	.logo{
+		width: 20vw;
+	}
+	.display {
+	width: 35vw;
+
+}
 }
