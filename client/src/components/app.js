@@ -2,8 +2,6 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 import Match from 'preact-router/match';
 
-import { BASE_ENDPOINTS, makeRequest } from '../js/server-requests-utils';
-
 // import components
 import Nav from './Nav';
 import Logo from './Logo';
