@@ -8,7 +8,39 @@ export default class Home extends Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			userPosition: null,
+		}
+
 		this.routeToMap = this.routeToMap.bind(this);
+	}
+
+	componentDidMount() {
+		// get user location if not already available
+		if (!this.state.userPosition) {
+			console.log('Home: getting user location');
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					this.setState({
+						userPosition: {
+							lat: position.coords.latitude,
+							lng: position.coords.longitude
+						}
+					});
+					console.log('\tuser position found: ', this.state.userPosition);
+				},
+				(err) => {
+					alert(err.message);
+				},
+				{
+					enableHighAccuracy: false,
+					timeout: 60000,
+					maximumAge: Infinity,
+				}
+			);
+		} else {
+			console.log('Home: already have user location: ', this.state.userPosition);
+		}
 	}
 
 	routeToMap() {
@@ -24,13 +56,16 @@ export default class Home extends Component {
 				</div>
 				<div class={style.search}>
 					<p>Where can we take you today?</p>
-					<Search>
+					<Search position={this.state.userPosition} routeUrl={this.props.url}
+						updateSearchResult={this.props.updateSearchResult}>
 						<SearchResults />
 					</Search>
 				</div>
+				<div class={style.myLocation}>
 				<a href="/maps" class={style.mapLink}>where am I?</a>
-				<img src='../../assets/icons/leaflet/SVG/CurrentLocationPin.svg'
+				<img src='../../assets/icons/leaflet/SVG/FindLocationPin.svg'
 					class={style.pin} onClick={this.routeToMap}/>	
+				</div>
 			</div>
 		);
 	}
