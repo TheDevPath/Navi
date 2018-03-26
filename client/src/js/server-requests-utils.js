@@ -25,6 +25,7 @@ export const BASE_ENDPOINTS = { // Key-value pairs for existing base server endp
   userReset: '/users/reset-password',
   userUpdate: '/users/update',
   geocode: '/map/geocode',
+  directions: '/map/directions',
 }
 
 export const token = {

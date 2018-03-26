@@ -12,8 +12,9 @@ const ERROR_STATUS = 500;
 import '../../../node_modules/leaflet/dist/leaflet.css';
 import '../../../node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import L from '../../js/leaflet-tileLayer-pouchdb-cached';
-import Routing from '../../../node_modules/leaflet-routing-machine/src/index.js';
+import '../../../node_modules/leaflet-routing-machine/src/index.js';
 import 'leaflet-easybutton';
+import '../../js/lrm-google';
 
 /**
 * TIle layer configuration and attribution constants
@@ -64,7 +65,7 @@ export default class Directions extends Component {
     const map = L.map('map');
     const selfDir = this;
     map.addLayer(OSM_TILE_LAYER);
-    this.control = Routing.control({
+    this.control = L.Routing.control({
       waypoints: [
         L.latLng(this.state.origin.lat,
           this.state.origin.lng),
@@ -76,6 +77,7 @@ export default class Directions extends Component {
       showAlternatives: true,
       show: false,
       collapsible: false,
+      router: L.Routing.google(),
     }).addTo(map);
 
     this.control.on('routeselected', (e) => {
