@@ -21,15 +21,11 @@ L.Routing.Google = L.Class.extend({
     const origin = `${waypoints[0].latLng.lat},${waypoints[0].latLng.lng}`;
     const destination = `${waypoints[1].latLng.lat},${waypoints[1].latLng.lng}`;
 
-    console.log('waypoints: ', waypoints);
-    console.log('context: ', context);
-    console.log('options: ', options);
-    console.log('callback: ', callback);
-
     // get directions
     makeRequest('POST', BASE_ENDPOINTS.directions, '', {
       origin,
       destination,
+      units: 'metric',
     }).then((response) => {
       console.log('google api response:\n', response);
       this._processResponse(response, waypoints, callback, context, options);
