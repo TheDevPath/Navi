@@ -287,6 +287,9 @@ exports.placeDetails = (appReq, appRes) => {
  * @param {string} transit_routing_preference - (optional) Specifies preferences for transit
  * routes. Using this parameter, you can bias the options returned, rather than accepting
  * the default best route chosen by the API. [less_walking, fewer_transfers]
+ * @param {string} units - specifies the unit system for displaying results:
+ *   - metric: km/meters
+ *   - imperial: miles/feet
  *
  * @returns {Object} Default google maps json response
  *   (https://google-developers.appspot.com/maps/documentation/directions/intro#DirectionsResponseElements)
@@ -313,6 +316,7 @@ exports.directions = (appReq, appRes) => {
     traffic_model: trafficModel,
     transit_mode: appReq.body.transit_mode || '',
     transit_routing_preference: transitRoutingPref || '',
+    units: appReq.body.units || '',
   };
   const BASE_URL = 'https://maps.googleapis.com/maps/api/directions/json?';
   const queryString = convertToQueryString(params);
