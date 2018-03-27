@@ -102,16 +102,3 @@ export default class Search extends Component {
     );
   }
 }
-
-function average(...nums) {
-    if (nums.length === 0)
-        return 0;
-    
-    let total = 0;
-    
-    for (let num of nums) {
-        total += num;
-    }
-    
-    return total / nums.length;
-}
