@@ -287,8 +287,36 @@ L.TileLayer.include({
 				this._seedOneTile(tile, remaining, seedData);
 			}
 		}.bind(this));
-	}
+	},
 
+	cacheAhead: function(coords, done, zoom=18) {
+		var tile = document.createElement('img');
+
+		tile.onerror = L.bind(this._tileOnError, this, done, tile);
+
+		if (this.options.crossOrigin) {
+			tile.crossOrigin = '';
+		}
+
+		/*
+		 Alt tag is *set to empty string to keep screen readers from reading URL and for compliance reasons
+		 http://www.w3.org/TR/WCAG20-TECHS/H67
+		 */
+		tile.alt = '';
+
+		let tileUrl = this.getTileUrl(coords);
+		tileUrl = tileUrl.replace('NaN', zoom); // fix tileUrl with correct zoom value
+
+		// if available get cached tile image
+		this._db.get(tileUrl,
+			{
+				rev: true,
+				attachments: true,
+				binary: true,  // return attachment data as Blobs instead of as base64-encoded strings
+			},
+			this._onCacheLookup(tile, tileUrl, done)
+		);
+	}
 });
 
 export default L;
