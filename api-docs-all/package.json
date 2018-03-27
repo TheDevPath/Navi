@@ -1,0 +1,16 @@
+{
+  "name": "google",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "index.js",
+  "dependencies": {
+    "apidoc": "^0.17.6",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
