@@ -3,6 +3,7 @@ const L = require('leaflet');
 const decodePolyline = require('decode-google-map-polyline');
 
 // app module imports
+const { latLngToPoint, pointToLatLng } = require('./osm-tile-name');
 const { makeRequest, BASE_ENDPOINTS } = require('./server-requests-utils')
 
 L.Routing = L.Routing || {};
@@ -12,8 +13,9 @@ L.Routing.Google = L.Class.extend({
 
   },
 
-  initialize: function(options) {
+  initialize: function(options, TILE_LAYER) {
     L.Util.setOptions(this, options);
+    this._TILE_LAYER = TILE_LAYER;
   },
 
   route: function(waypoints, callback, context, options) {
@@ -65,6 +67,18 @@ L.Routing.Google = L.Class.extend({
         });
       });
 
+      // prefetch/cache polylines
+      if (this._TILE_LAYER) {
+        route.coordinates.forEach((latLng) => {
+          const coord = latLngToPoint(latLng.lat, latLng.lng, 18);
+
+          // TODO - if needed cache all four corners by looping +1 for x/y
+          this._TILE_LAYER.cacheAhead(coord, () => {
+            // console.log('cached coord: ', coord);
+          });
+        });
+      }
+
       routes.push(route);
     });
 
@@ -72,6 +86,6 @@ L.Routing.Google = L.Class.extend({
   }
 });
 
-L.Routing.google = function(options={}) {
-  return new L.Routing.Google(options);
+L.Routing.google = function(options={}, TILE_LAYER=null) {
+  return new L.Routing.Google(options, TILE_LAYER);
 };
