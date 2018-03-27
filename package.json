@@ -7,7 +7,7 @@
         "start": "node server.js",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "client": "npm run start --prefix client",
-        "server": "nodemon server.js",
+        "server": "nodemon --inspect server.js",
         "test": "concurrently \"npm run test-server\" \"npm run test-client\"",
         "test-server": "cross-env NODE_ENV=test mocha tests --timeout 10000 -r chai/register-expect",
         "test-watch": "nodemon --exec 'npm test'",
