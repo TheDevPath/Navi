@@ -75,6 +75,14 @@ export default class Search extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps, prevState) {
+    if (this.props.position === null ||
+        (nextProps.position.lat !== this.props.position.lat &&
+         nextProps.position.lng !== this.props.position.lng)) {
+          this.props = nextProps;
+        }
+  }
+
   render() {
     // pass props to children components
     const childWithProps = this.props.children.map((child) => {
