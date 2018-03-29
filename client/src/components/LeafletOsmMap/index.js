@@ -5,7 +5,7 @@ import MapPane from './MapPane';
 import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
 import { makeRequest, BASE_ENDPOINTS } from '../../js/server-requests-utils';
-import {fetchAndDropUserPins, makePinMarkers, dropPin} from '../../js/saved-places';
+import { fetchAndDropUserPins, makePinMarkers, dropPin } from '../../js/saved-places';
 
 /**
  * Leaflet related imports: leaflet, pouchdb module, and routing machine module
@@ -83,12 +83,16 @@ export default class LeafletOSMMap extends Component {
     fetchAndDropUserPins(undefined, this.state.map, L);
 
     // set map center accordingly if routed from home screen search
-    if (this.props.placeDetail && 
-        (this.state.mapCenter !== this.props.placeDetail.geometry.location)
-      ) {
+
+    if (this.props.placeDetail &&
+      (this.state.mapCenter !== this.props.placeDetail.geometry.location)
+    ) {
       this.addPlaceDetailMarker(this.props.placeDetail.geometry.location,
         this.props.placeDetail.place_id);
     }
+
+
+
   }
 
   /**
@@ -126,7 +130,7 @@ export default class LeafletOSMMap extends Component {
    * 
    * @param {object} position geocode object with lat, lng keys
    */
-  updateDroppedMarker(position, placeID='') {
+  updateDroppedMarker(position, placeID = '') {
     const saveToDB = this.saveMarkerToDB;
     let latlng = position;
     if (position.latlng) {
@@ -157,7 +161,7 @@ export default class LeafletOSMMap extends Component {
       saveToDB(position, desc, placeID);
     });
 
-    L.DomEvent.on(deleteBtn, 'click', function() {
+    L.DomEvent.on(deleteBtn, 'click', function () {
       droppedPin.remove();
     });
 
@@ -170,7 +174,7 @@ export default class LeafletOSMMap extends Component {
    * @param {object} postion geocode object with lat, lng keys
    * @param {string} placeID google map's place_id identifier
    */
-  addPlaceDetailMarker(position, placeID='') {
+  addPlaceDetailMarker(position, placeID = '') {
     this.setState({
       mapCenter: position,
     });
@@ -192,11 +196,11 @@ export default class LeafletOSMMap extends Component {
     } else {
       console.log('MapContainer: getting user location');
       this.state.map.locate({
-       setView: true,
-       enableHighAccuracy: false,
-       timeout: 60000,
-       maximumAge: Infinity,
-     });
+        setView: true,
+        enableHighAccuracy: false,
+        timeout: 60000,
+        maximumAge: Infinity,
+      });
     }
   }
 
@@ -234,22 +238,22 @@ export default class LeafletOSMMap extends Component {
         container.style.textAlign = 'center';
         container.title = 'Click to recenter the map';
 
-        L.DomEvent.on(container, 'mouseenter', function(e) {
+        L.DomEvent.on(container, 'mouseenter', function (e) {
           e.target.style.background = '#e7e7e7';
         });
 
-        L.DomEvent.on(container, 'mouseleave', function(e) {
+        L.DomEvent.on(container, 'mouseleave', function (e) {
           // e.target.style.color = '#ccc';
           e.target.style.background = '#fff';
         });
-        L.DomEvent.on(container, 'click', function() {
+        L.DomEvent.on(container, 'click', function () {
           map.setView(center, 16);
         });
         return container;
       }
     });
 
-    L.control.center = function(opts) {
+    L.control.center = function (opts) {
       return new L.Control.Center(opts);
     };
 
@@ -265,8 +269,17 @@ export default class LeafletOSMMap extends Component {
    */
   onLocationFound(event) {
     console.log('MapContainer: user position found: ', event.latlng);
-    this.setState({ mapCenter: event.latlng});
+    this.setState({ mapCenter: event.latlng });
     this.updateUserMarker(event.latlng);
+
+    if (this.props.selectedPin) {
+      this.setState({
+        mapCenter: {
+          lat: this.props.selectedPin.lat,
+          lng: this.props.selectedPin.lng
+        }
+      });
+    }
     this.state.map.setView(this.state.mapCenter, this.state.defaultZoom);
   }
 
@@ -287,7 +300,11 @@ export default class LeafletOSMMap extends Component {
    * @param {string} desc user provide description for dropped marker
    * @param {string} placeID google map's place_id identifier
    */
-  saveMarkerToDB(position, desc='', placeID='') {
+  saveMarkerToDB(position, desc = '', placeID = '') {
+    if (desc == '') {
+      alert('Enter a description for the pin.');
+      return;
+    }
     makeRequest('POST', 'savedPins', '', {
       lat: position.lat,
       lng: position.lng,
@@ -303,7 +320,7 @@ export default class LeafletOSMMap extends Component {
 
       // alert(`Succes: Saved pin at ${event.latlng} to db`);
     }).catch((err) => {
-      switch (err.response.status){
+      switch (err.response.status) {
         case 400: //duplicate pin
           const origPin = err.response.data;
           alert('This pin is already on your map.');
@@ -312,16 +329,16 @@ export default class LeafletOSMMap extends Component {
           */
           break;
         case 403: //user not signed in
-        /*TO DO:
-        Convert to overlay/lightbox window to sign up form
-        */
+          /*TO DO:
+          Convert to overlay/lightbox window to sign up form
+          */
           if (confirm("Would you like to sign in to save places?")) {
             route('/signin', true);
           }
 
           break;
         default:
-        console.log(err); //error saving pin
+          console.log(err); //error saving pin
       }
     });
   }
@@ -364,7 +381,7 @@ function createButton(label, cssClass, container) {
 }
 
 function createInput(input, cssClass, container) {
-  var input = L.DomUtil.create('input',cssClass, container);
+  var input = L.DomUtil.create('input', cssClass, container);
   input.setAttribute('type', 'input');
   input.setAttribute('placeholder', 'Enter Description');
   return input;
