@@ -7,7 +7,7 @@ export default class MapExplorer extends Component {
     return (
       <div class={style.maps}>
         <MapContainer paneHeight={this.props.paneHeight} routeUrl={this.props.url}
-          userPosition={this.props.userPosition} placeDetail={this.props.placeDetail}/>
+          userPosition={this.props.userPosition} placeDetail={this.props.placeDetail} selectedPin={this.props.selectedPin} />
       </div>
     );
   }
