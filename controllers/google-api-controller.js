@@ -152,7 +152,7 @@ exports.autocomplete = (appReq, appRes) => {
   const params = {
     input: appReq.body.input,
     key: GOOGLE_API_KEY,
-    location: appReq.body.lat || '',
+    location: `${appReq.body.lat},${appReq.body.lng}` || '',
     radius: appReq.body.radius || RADIUS_BOUND,
     types: appReq.body.types || '',
     strictbounds,
