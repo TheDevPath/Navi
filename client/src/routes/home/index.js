@@ -13,6 +13,7 @@ export default class Home extends Component {
 		}
 
 		this.routeToMap = this.routeToMap.bind(this);
+		this.resetSelectedPin = this.resetSelectedPin.bind(this);
 	}
 
 	componentDidMount() {
@@ -43,8 +44,13 @@ export default class Home extends Component {
 		}
 	}
 
-	routeToMap() {
+	routeToMap() {		
+		this.resetSelectedPin();
 		route('/maps', true);
+	}
+
+	resetSelectedPin() {
+		this.props.selectedPin(null);
 	}
 
 	render() {
@@ -62,7 +68,7 @@ export default class Home extends Component {
 					</Search>
 				</div>
 				<div class={style.myLocation}>
-				<a href="/maps" class={style.mapLink}>where am I?</a>
+				<a href="/maps" class={style.mapLink} onClick={this.resetSelectedPin}>where am I?</a>
 				<img src='../../assets/icons/leaflet/SVG/FindLocationPin.svg'
 					class={style.pin} onClick={this.routeToMap}/>	
 				</div>
