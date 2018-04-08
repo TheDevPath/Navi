@@ -49,8 +49,8 @@ export default class App extends Component {
 		this.setState({ userPosition, });
 	}
 
-	setSelectedPin(pin) {
-		this.setState({ selectedPin: pin });
+	setSelectedPin(selectedPin) {
+		this.setState({ selectedPin });
 	}
 
 	render() {
@@ -60,7 +60,7 @@ export default class App extends Component {
 				<Router onChange={this.handleRoute}>
 					<Home path="/" paneHeight={AVAIL_PANE_HEIGHT}
 						setUserPosition={this.setUserPosition}
-						updateSearchResult={this.updateSearchResult} />
+						updateSearchResult={this.updateSearchResult} selectedPin={this.setSelectedPin}/>
 					<Profile path="/profile/" user="me" setSelectedPin={this.setSelectedPin} />
 					<Profile path="/profile/:user" setSelectedPin={this.setSelectedPin} />
 					<Account path="/register" paneHeight={AVAIL_PANE_HEIGHT} />
