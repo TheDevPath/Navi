@@ -17,15 +17,16 @@ export default class Home extends Component {
 		}
 
 		this.routeToMap = this.routeToMap.bind(this);
+		this.resetSelectedPin = this.resetSelectedPin.bind(this);
 	}
 
 	componentDidMount() {
 		if (this.state.userPosition.lat && this.state.userPosition.lng) {
 			this._setBusyMessage('');
 			return;
-		}   
+		}
 
-		if ('geolocation' in navigator === false){
+		if ('geolocation' in navigator === false) {
 			this._setBusyMessage('Could not find your location');
 			return;
 		}
@@ -40,24 +41,29 @@ export default class Home extends Component {
 						lng: position.coords.longitude
 					}
 				});
-				console.log('\tuser position found: ', this.state.userPosition);
-			},
-			(err) => {
-				if (err.code && err.code === 1)
-					self._setBusyMessage('Could not find your location');
-				else
-					self._setBusyMessage('Error occurred while getting your location');
-			},
-			{
-				enableHighAccuracy: false,
-				timeout: 60000,
-				maximumAge: Infinity,
-			}
-		);
+
+			console.log('\tuser position found: ', this.state.userPosition);
+		},
+		(err) = {
+			if (err.code && err.code === 1)
+				self._setBusyMessage('Cound not find your location');
+			else
+				self._setBusyMessage('Error occurred while getting your location');
+		},
+		{
+			enableHighAccuracy: false,
+			timeout: 60000,
+			maximumAge: Infinity			
+		});
 	}
 
-	routeToMap() {
+	routeToMap() {		
+		this.resetSelectedPin();
 		route('/maps', true);
+	}
+
+	resetSelectedPin() {
+		this.props.selectedPin(null);
 	}
 
 	_setBusyMessage(message) {
@@ -80,9 +86,9 @@ export default class Home extends Component {
 					<p>{this.state.busyMessage || ''}</p>
 				</div>
 				<div class={style.myLocation}>
-				<a href="/maps" class={style.mapLink}>where am I?</a>
+				<a href="/maps" class={style.mapLink} onClick={this.resetSelectedPin}>where am I?</a>
 				<img src='../../assets/icons/leaflet/SVG/FindLocationPin.svg'
-					class={style.pin} onClick={this.routeToMap}/> 
+					class={style.pin} onClick={this.routeToMap}/>	
 				</div>
 			</div>
 		);
