@@ -9,7 +9,11 @@ export default class Home extends Component {
 		super(props);
 
 		this.state = {
-			userPosition: null,
+			busyMessage: 'Loading your location...',
+			userPosition: {
+				lat: '',
+				lng: ''
+			},
 		}
 
 		this.routeToMap = this.routeToMap.bind(this);
@@ -17,31 +21,40 @@ export default class Home extends Component {
 	}
 
 	componentDidMount() {
-		// get user location if not already available
-		if (!this.state.userPosition) {
-			console.log('Home: getting user location');
-			navigator.geolocation.getCurrentPosition(
-				(position) => {
-					this.setState({
-						userPosition: {
-							lat: position.coords.latitude,
-							lng: position.coords.longitude
-						}
-					});
-					console.log('\tuser position found: ', this.state.userPosition);
-				},
-				(err) => {
-					alert(err.message);
-				},
-				{
-					enableHighAccuracy: false,
-					timeout: 60000,
-					maximumAge: Infinity,
-				}
-			);
-		} else {
-			console.log('Home: already have user location: ', this.state.userPosition);
+		if (this.state.userPosition.lat && this.state.userPosition.lng) {
+			this._setBusyMessage('');
+			return;
 		}
+
+		if ('geolocation' in navigator === false) {
+			this._setBusyMessage('Could not find your location');
+			return;
+		}
+
+		const self = this;
+		navigator.geolocation.getCurrentPosition(
+			(position) => {
+				this.setState({
+					busyMessage: '',
+					userPosition: {
+						lat: position.coords.latitude,
+						lng: position.coords.longitude
+					}
+				});
+
+			console.log('\tuser position found: ', this.state.userPosition);
+		},
+		(err) = {
+			if (err.code && err.code === 1)
+				self._setBusyMessage('Cound not find your location');
+			else
+				self._setBusyMessage('Error occurred while getting your location');
+		},
+		{
+			enableHighAccuracy: false,
+			timeout: 60000,
+			maximumAge: Infinity			
+		});
 	}
 
 	routeToMap() {		
@@ -51,6 +64,10 @@ export default class Home extends Component {
 
 	resetSelectedPin() {
 		this.props.selectedPin(null);
+	}
+
+	_setBusyMessage(message) {
+		this.setState({ busyMessage: message });
 	}
 
 	render() {
@@ -66,6 +83,7 @@ export default class Home extends Component {
 						updateSearchResult={this.props.updateSearchResult}>
 						<SearchResults />
 					</Search>
+					<p>{this.state.busyMessage || ''}</p>
 				</div>
 				<div class={style.myLocation}>
 				<a href="/maps" class={style.mapLink} onClick={this.resetSelectedPin}>where am I?</a>
