@@ -1,6 +1,6 @@
 import {h, Component} from "preact";
 import {makeRequest} from "./server-requests-utils";
-
+import {createButton, createLabel} from "./utilities";
 
 /* Set all settings for saved place icon
 Waiting for new icon for favorites
@@ -142,22 +142,6 @@ const setPinPopup = (marker) => {
       })
     });
   }
-
-
-function createButton(label, cssClass, container,id) {
-  var btn = L.DomUtil.create('button', cssClass, container);
-  btn.setAttribute('type', 'button');
-  btn.setAttribute('id',id);
-  btn.innerHTML = label;
-  return btn;
-}
-
-
-function createLabel(label, cssClass, container) {
-  var displayLabel = L.DomUtil.create('div',cssClass, container);
-  displayLabel.innerHTML = label;
-  return displayLabel;
-}
 
 //Export Statements
 export {fetchAndDropUserPins, makePinMarkers, dropPin};

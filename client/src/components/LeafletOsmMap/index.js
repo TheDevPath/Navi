@@ -6,6 +6,7 @@ import Search from '../../components/Search';
 import SearchResults from '../../components/SearchResults';
 import { makeRequest, BASE_ENDPOINTS } from '../../js/server-requests-utils';
 import { fetchAndDropUserPins, makePinMarkers, dropPin } from '../../js/saved-places';
+import {createButton, createInput} from "../../js/utilities";
 
 /**
  * Leaflet related imports: leaflet, pouchdb module, and routing machine module
@@ -14,7 +15,6 @@ import '../../../node_modules/leaflet/dist/leaflet.css';
 import '../../../node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import L from '../../js/leaflet-tileLayer-pouchdb-cached';
 import Routing from '../../../node_modules/leaflet-routing-machine/src/index.js';
-
 /**
  * TIle layer configuration and attribution constants
  */
@@ -97,7 +97,7 @@ export default class LeafletOSMMap extends Component {
 
   /**
    * Handles updating marker identifying user's current location.
-   * 
+   *
    * @param {object} position geocode object with lat, lng keys
    */
   updateUserMarker(position) {
@@ -127,7 +127,7 @@ export default class LeafletOSMMap extends Component {
 
   /**
    * Updates the state of a dropped pin on map.
-   * 
+   *
    * @param {object} position geocode object with lat, lng keys
    */
   updateDroppedMarker(position, placeID = '') {
@@ -170,7 +170,7 @@ export default class LeafletOSMMap extends Component {
 
   /**
    * Adds a marker to map per information given by search results place details.
-   * 
+   *
    * @param {object} postion geocode object with lat, lng keys
    * @param {string} placeID google map's place_id identifier
    */
@@ -295,7 +295,7 @@ export default class LeafletOSMMap extends Component {
 
   /**
    * Attempts to save the marker to database.
-   * 
+   *
    * @param {object} position geocode object with lat, lng key values
    * @param {string} desc user provide description for dropped marker
    * @param {string} placeID google map's place_id identifier
@@ -371,18 +371,4 @@ export default class LeafletOSMMap extends Component {
     this.state.map.remove();
     this.setState({ map: null });
   }
-}
-
-function createButton(label, cssClass, container) {
-  var btn = L.DomUtil.create('button', '', container);
-  btn.setAttribute('type', 'button');
-  btn.innerHTML = label;
-  return btn;
-}
-
-function createInput(input, cssClass, container) {
-  var input = L.DomUtil.create('input', cssClass, container);
-  input.setAttribute('type', 'input');
-  input.setAttribute('placeholder', 'Enter Description');
-  return input;
 }
