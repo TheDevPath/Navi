@@ -60,3 +60,11 @@ input.markerInput{
 	margin-bottom:4px;
 	display:block;
 }
+.logo{
+	width: 50vw;
+}
+
+@media only screen and (min-width: 800px)
+.logo {
+    width: 20vw;
+}

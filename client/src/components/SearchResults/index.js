@@ -1,7 +1,6 @@
 import { h, Component } from 'preact';
 import style from './style.css';
-import axios from 'axios';
-import {API_SERVER} from '../../../config';
+import { makeRequest, BASE_ENDPOINTS } from '../../js/server-requests-utils';
 const OK_STATUS = 'OK'
 
 export default class UnorderedList extends Component {
@@ -19,21 +18,19 @@ export default class UnorderedList extends Component {
    */
   handleClick(event, prediction) {
     event.preventDefault();
-    axios.post(`${API_SERVER}/map/geocode`, {
-      input: prediction     
-      }).then((response) => { 
-        console.log(response);
-        if(response.data.status == OK_STATUS)
-        {
-          const [searchResult] = response.data.results;
-          this.props.onClicked(searchResult);
-        }          
-        else
-          alert(response.data.status);
-      
-      });
-    }
-
+    makeRequest('POST', BASE_ENDPOINTS.geocode, '', {
+      input: prediction
+    }).then((response) => { 
+      console.log(response);
+      if(response.data.status == OK_STATUS)
+      {
+        const [searchResult] = response.data.results;
+        this.props.onClicked(searchResult);
+      }          
+      else
+        alert(response.data.status);
+    });
+  }
 
   render() {
     return (

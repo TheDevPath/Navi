@@ -2,8 +2,6 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 import Match from 'preact-router/match';
 
-import { BASE_ENDPOINTS, makeRequest } from '../js/server-requests-utils';
-
 // import components
 import Nav from './Nav';
 import Logo from './Logo';
@@ -27,10 +25,12 @@ export default class App extends Component {
 			navbarHeight: screen.availHeight - AVAIL_PANE_HEIGHT,
 			userPosition: null,
 			searchResult: null,
+			selectedPin: null,
 		};
 
 		this.updateSearchResult = this.updateSearchResult.bind(this);
 		this.setUserPosition = this.setUserPosition.bind(this);
+		this.setSelectedPin = this.setSelectedPin.bind(this);
 	}
 
 	/** Gets fired when the route changes.
@@ -49,25 +49,29 @@ export default class App extends Component {
 		this.setState({ userPosition, });
 	}
 
+	setSelectedPin(selectedPin) {
+		this.setState({ selectedPin });
+	}
+
 	render() {
 		return (
 			<div id="app">
-				<Nav navHeight={this.state.navbarHeight}/>
+				<Nav navHeight={this.state.navbarHeight} />
 				<Router onChange={this.handleRoute}>
 					<Home path="/" paneHeight={AVAIL_PANE_HEIGHT}
 						setUserPosition={this.setUserPosition}
-						updateSearchResult={this.updateSearchResult}/>
-					<Profile path="/profile/" user="me" />
-					<Profile path="/profile/:user" />
-					<Account path="/register" paneHeight={AVAIL_PANE_HEIGHT}/>
-					<Account path="/signin" paneHeight={AVAIL_PANE_HEIGHT}/>
-					<Account path="/forgot-password" paneHeight={AVAIL_PANE_HEIGHT}/>
-          				<Account path="/reset-password" paneHeight={AVAIL_PANE_HEIGHT}/>
-          				<Settings path="/settings" paneHeight={AVAIL_PANE_HEIGHT}/>
-					<SignOut path="/signout"/>
+						updateSearchResult={this.updateSearchResult} selectedPin={this.setSelectedPin}/>
+					<Profile path="/profile/" user="me" setSelectedPin={this.setSelectedPin} />
+					<Profile path="/profile/:user" setSelectedPin={this.setSelectedPin} />
+					<Account path="/register" paneHeight={AVAIL_PANE_HEIGHT} />
+					<Account path="/signin" paneHeight={AVAIL_PANE_HEIGHT} />
+					<Account path="/forgot-password" paneHeight={AVAIL_PANE_HEIGHT} />
+					<Account path="/reset-password" paneHeight={AVAIL_PANE_HEIGHT} />
+					<Settings path="/settings" paneHeight={AVAIL_PANE_HEIGHT} />
+					<SignOut path="/signout" />
 					<Directions path="/directions" />
 					<Maps path="/maps" paneHeight={AVAIL_PANE_HEIGHT}
-						userPosition={this.state.userPosition} placeDetail={this.state.searchResult}/>
+						userPosition={this.state.userPosition} placeDetail={this.state.searchResult} selectedPin={this.state.selectedPin} />
 				</Router>
 			</div>
 		);
